@@ -1,0 +1,32 @@
+[
+    {
+        "shopper": 1,
+        "listnumber": 2,
+        "name": "Bulk Barn"
+    },
+    {
+        "shopper": 1,
+        "listnumber": 1,
+        "name": "Costco"
+    },
+    {
+        "shopper": 1,
+        "listnumber": 3,
+        "name": "Groceries"
+    },
+    {
+        "shopper": 2,
+        "listnumber": 2,
+        "name": "Bulk Barn"
+    },
+    {
+        "shopper": 2,
+        "listnumber": 1,
+        "name": "Costco"
+    },
+    {
+        "shopper": 2,
+        "listnumber": 3,
+        "name": "Groceries"
+    }
+]
