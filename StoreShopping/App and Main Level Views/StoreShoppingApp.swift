@@ -46,6 +46,7 @@ struct StoreShoppingApp: App {
     @StateObject var mastervalues = MasterValues()
     @StateObject var modelshopper = ModelShopper()
     @StateObject var modelshoplist = ModelShopList()
+    @StateObject var modellocation = ModelLocation()
 	@StateObject var today = Today()
 	@StateObject var inStoreTimer = InStoreTimer()
 	
@@ -75,6 +76,7 @@ struct StoreShoppingApp: App {
                 .environmentObject(mastervalues)
                 .environmentObject(modelshopper)
                 .environmentObject(modelshoplist)
+                .environmentObject(modellocation)
 		}
 	}
     // rbq added 2023-03-31

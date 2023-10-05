@@ -11,7 +11,12 @@ import SwiftUI
 struct ShopListRowView: View {
 
     var shoplist: CKShopListRec
+
+    @EnvironmentObject var modellocation: ModelLocation
+
     var tapAction: () -> ()
+
+    @State var myCount = 0
 
     var body: some View {
         HStack {
@@ -58,7 +63,14 @@ struct ShopListRowView: View {
     } // end of body: some View
 
     func subtitle() -> String {
-        return "Location Counts not Available"
+
+        modellocation.getACount(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
+            myCount = count
+        }
+        return "\(myCount) Locations"
+
+
+
         // FIXME: show the counts
 //        if shoplist.locationCount == 1 {
 //            return "1 Location"

@@ -33,6 +33,11 @@ class MasterValues: ObservableObject {
     // state to trigger a sheet to appear to add a new location
     @Published var isAddNewShopListSheetPresented: Bool
     @Published var isChangeShopListSheetPresented: Bool
+
+    @Published var isAddNewLocationSheetPresented = false
+    @Published var isChangeLocationSheetPresented = false
+
+
     @Published var MasterShopperShopper: Int {
         willSet {
             MyDefaults().myMasterShopperShopper = newValue

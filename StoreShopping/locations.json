@@ -1,0 +1,167 @@
+[
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 1,
+    "name" : "Produce",
+    "green" : 1,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : -1
+  },
+  {
+    "shopper": 1,
+    "listnumber": 1,
+    "locationnumber": 1,
+    "name" : "Produce",
+    "green" : 1,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : -1
+  },
+  {
+    "shopper": 1,
+    "listnumber": 2,
+    "locationnumber": 2,
+    "name" : "Herbs",
+    "green" : 0.37254902720451355,
+    "blue" : 0.95686274766921997,
+    "red" : 0.15686249732971191,
+    "opacity" : 1,
+    "visitationOrder" : -1
+  },
+  {
+      "shopper": 1,
+      "listnumber": 1,
+      "locationnumber": 3,
+    "name" : "Pharmacy",
+    "green" : 0.31859704852104187,
+    "blue" : 0.18143770098686218,
+    "red" : 0.92194116115570068,
+    "opacity" : 1,
+    "visitationOrder" : 3
+  },
+  {
+      "shopper": 1,
+      "listnumber": 1,
+      "locationnumber": 4,
+    "name" : "Meats",
+    "green" : 0.099999986588954926,
+    "blue" : 0.92196530103683472,
+    "red" : 0.89306360483169556,
+    "opacity" : 0.22832369804382324,
+    "visitationOrder" : 1
+  },
+  {
+      "shopper": 1,
+      "listnumber": 1,
+      "locationnumber": 5,
+    "name" : "Groceries ",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 2
+  },
+  {
+      "shopper": 1,
+      "listnumber": 1,
+      "locationnumber": 6,
+    "name" : "Dairy ",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 0
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 7,
+    "name" : "Bakery",
+    "green" : 0.5405731201171875,
+    "blue" : 0.69049084186553955,
+    "red" : 0.23897114396095276,
+    "opacity" : 0.5,
+    "visitationOrder" : 3
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 4,
+    "name" : "Meats",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 4
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 8,
+    "name" : "Deli",
+    "green" : 0.4739149808883667,
+    "blue" : 0.20240795612335205,
+    "red" : 0.34445768594741821,
+    "opacity" : 1,
+    "visitationOrder" : 2
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 6,
+    "name" : "Dairy ",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 5
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 3,
+    "name" : "Pharmacy ",
+    "green" : 0.31859704852104187,
+    "blue" : 0.18143770098686218,
+    "red" : 0.92194116115570068,
+    "opacity" : 0.5,
+    "visitationOrder" : 8
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 5,
+    "name" : "Groceries",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 6
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 9,
+    "name" : "Cereal",
+    "green" : 0.99999994039535522,
+    "blue" : 0,
+    "red" : 0,
+    "opacity" : 0.5,
+    "visitationOrder" : 0
+  },
+  {
+      "shopper": 1,
+      "listnumber": 3,
+      "locationnumber": 10,
+    "name" : "Frozen",
+    "green" : 0.021352814510464668,
+    "blue" : 0.22099831700325012,
+    "red" : 0.059842191636562347,
+    "opacity" : 0.82545927753598669,
+    "visitationOrder" : 7
+  }
+]

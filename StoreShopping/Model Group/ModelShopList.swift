@@ -1,5 +1,5 @@
 //
-//  ModelLocation.swift
+//  ModelShopList.swift
 //  StoreShopping
 //
 //  Created by Brian Quick on 2023-09-30.
@@ -32,8 +32,8 @@ class ModelShopList: ObservableObject {
     var isTracing: Bool = false
     func tracing(function: String) {
         if isTracing {
-            print("ModelCourse \(function) ")
-            Logger.log("ModelCourse \(function)")
+            print("ModelShopList \(function) ")
+            Logger.log("ModelShopList \(function)")
         }
     }
     init() {
@@ -107,12 +107,18 @@ class ModelShopList: ObservableObject {
             .store(in: &cancellables)
     }
     func getAll(shopper: Int) {
-        tracing(function: "ModelShopList.getAll")
+        tracing(function: "getAll")
         let predicate = NSPredicate(format:"shopper == %@", NSNumber(value: shopper))
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.ShopList.rawValue, sortDescriptions: sort)
             .receive(on: DispatchQueue.main)
-            .sink { _ in
+            .sink { c in
+                switch c {
+                case .finished:
+                    self.tracing(function: "getAll .finished")
+                case .failure(let error):
+                    self.tracing(function: "getAll error = \(error.localizedDescription)")
+                }
 
             } receiveValue: { [weak self] returnedItems in
                 self?.shoplists = returnedItems

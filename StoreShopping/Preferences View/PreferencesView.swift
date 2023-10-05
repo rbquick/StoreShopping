@@ -73,7 +73,7 @@ struct PreferencesView: View {
                               loadSampleData()
                         }
                         .myCentered()
-                        .disabled(modelshoplist.shoplists.count > 0)
+//                        .disabled(modelshoplist.shoplists.count > 0)
 
                         // 2. offload data as JSON
                         Button("Write database as JSON") {
@@ -112,8 +112,9 @@ struct PreferencesView: View {
 //                let currentLocationCount = Location.count() // what it is now
 //                let currentItemCount = Item.count() // what it is now
 //                populateDatabaseFromJSON(persistentStore: persistentStore)
-                loadShopingLists()
-                loadShoppers()
+//                loadShopingLists()
+//                loadShoppers()
+                loadLocations()
                 shoplistsAdded = modelshoplist.shoplists.count - currentShopListCount // rbq added 2023-03-31
 //                locationsAdded = Location.count() - currentLocationCount // now the differential
 //                itemsAdded = Item.count() - currentItemCount // now the differential
@@ -126,6 +127,43 @@ struct PreferencesView: View {
     //                        to: kLocationsFilename)
     //        }
     // rbq added 2023-03-30
+
+    func loadLocations() {
+        var mylists = [LocationCodable]()
+        guard let url = Bundle.main.url(forResource: "locations", withExtension: "json")
+                   else {
+                       print("Json file not found")
+                       return
+                   }
+
+               let data = try? Data(contentsOf: url)
+        do {
+            let decoder = JSONDecoder()
+            let shoplists = try decoder.decode([LocationCodable].self, from: data!)
+            mylists = shoplists
+
+            var myrecords = [CKRecord]()
+            for mylist in mylists {
+                let myrecord = CKRecord(recordType: myRecordType.Location.rawValue)
+                myrecord["shopper"] = mylist.shopper
+                myrecord["listnumber"] = mylist.listnumber
+                myrecord["locationnumber"] = mylist.locationnumber
+                myrecord["name"] = mylist.name
+                myrecord["visitationOrder"] = mylist.visitationOrder
+                myrecord["red"] = mylist.red
+                myrecord["green"] = mylist.green
+                myrecord["blue"] = mylist.blue
+                myrecord["opacity"] = mylist.opacity
+                myrecords.append(myrecord)
+            }
+            if myrecords.count > 0 {
+                CloudKitUtility.saveAllRecords(myrecords)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+        return
+    }
 
     func loadShopingLists() {
         var mylists = [ShopListCodable]()
