@@ -15,17 +15,7 @@ struct LocationsView: View {
 
 		// MARK: - @State and @StateObject Properties
 
-
-	
-		// NOTE for SL16: this view no longer supports deletion of a Location
-		//by swiping in the List.  deletion should be rare ... but is best handled
-		// in the context for the ModifyExistingLocation detail view where
-		// you can see all the items at the Location ... perhaps you want to
-		// move those to other locations before deleting (you don't have to
-		// do this, since deletion will just move all the items a this Location
-		// into the Unknown Location).
-	
-		// MARK: - BODY
+    @State var editLocationRec = CKLocationRec.example1()
 
 	var body: some View {
 		VStack(spacing: 0) {
@@ -36,12 +26,10 @@ struct LocationsView: View {
 			List {
                 Section(header: Text("Locations Listed: \(modellocation.locations.count)")) {
                     ForEach(modellocation.locations) { location in
-						NavigationLink(value: location) {
-							LocationRowView(location: location)
-						} // end of NavigationLink
+                            LocationRowView(location: location) { setChangeLocation(location: location) }
 					} // end of ForEach
                     // FIXME: implement this move locaations
-//					.onMove(perform: moveLocations)
+					.onMove(perform: moveLocations)
 				} // end of Section
 			} // end of List
 			.listStyle(InsetGroupedListStyle())
@@ -54,31 +42,37 @@ struct LocationsView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 			ToolbarItem(placement: .navigationBarLeading) { EditButton() }
 		}
-//        .sheet(isPresented: $mastervalues.isAddNewLocationSheetPresented) {
-//			AddNewLocationView()
-//		}
-//        .sheet(isPresented: $mastervalues.isChangeLocationSheetPresented) {
-//            // FIXME:  have to find the locaation that is selected in the list
-//            ModifyExistingLocationView(location: modellocation.locations[0])
-//        }
+        .sheet(isPresented: $mastervalues.isAddNewLocationSheetPresented) {
+            UpdateLocationView(draftLocation: CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: modellocation.GetNextLocationNumber(), name: "New Location", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!)
+		}
+        .sheet(isPresented: $mastervalues.isChangeLocationSheetPresented) {
+            // FIXME:  have to find the locaation that is selected in the list
+            UpdateLocationView(draftLocation: editLocationRec)
+        }
 		.onAppear { handleOnAppear() }
 		
 	} // end of var body: some View
-	
+                    func setChangeLocation(location: CKLocationRec) {
+                                editLocationRec = location
+                                mastervalues.isChangeLocationSheetPresented = true
+                            }
 		// this is new to SL16: allowing you to reorder Locations by dragging.
 		// we make a copy of the current ordering of the locations array (some
 		// type coercion in necessary) and then rewrite all the visitationOrders
 		// after the move (except for the unknown location).
     // FIXME: implement this move locaations
-//	func moveLocations(at offsets: IndexSet, destination: Int) {
-//		var oldLocations = locations.compactMap({ $0 }) as! [Location]
-//		oldLocations.move(fromOffsets: offsets, toOffset: destination)
+	func moveLocations(at offsets: IndexSet, destination: Int) {
+//        print(modellocation.locations[0].name)
+        var oldLocations = modellocation.locations.compactMap({ $0 }) as! [CKLocationRec]
+		oldLocations.move(fromOffsets: offsets, toOffset: destination)
+        modellocation.locations = oldLocations
+        modellocation.updateVisitationOrder()
 //		var position = 0
 //		for location in oldLocations where !location.isUnknownLocation {
-//			location.visitationOrder = position
+//			location.visitationOrder_ = position
 //			position += 1
 //		}
-//	}
+	}
 	
 	func handleOnAppear() {
 			// because the unknown location is created lazily, this will

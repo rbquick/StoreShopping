@@ -14,7 +14,7 @@ struct LocationRowView: View {
 	
 	let location: CKLocationRec
 	
-	 //var rowData: LocationRowData
+    var tapAction: () -> ()
 
 	var body: some View {
 		HStack {
@@ -35,6 +35,7 @@ struct LocationRowView: View {
 //				Text(String(location.visitationOrder))
 //			}
 		} // end of HStack
+        .onTapGesture(perform: tapAction)
 	} // end of body: some View
 	
 	func subtitle() -> String {

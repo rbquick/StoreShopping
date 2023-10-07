@@ -21,6 +21,8 @@
 		710BE0002AC8A9E30036F339 /* Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFFF2AC8A9E30036F339 /* Development.swift */; };
 		710BE0022AC980670036F339 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BE0012AC980670036F339 /* View+Extensions.swift */; };
 		7113EFAD2ACC223F00EA143B /* DraftShopListForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7113EFAC2ACC223F00EA143B /* DraftShopListForm.swift */; };
+		713EA42C2AD0B53300DC1411 /* UpdateLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713EA42B2AD0B53300DC1411 /* UpdateLocationView.swift */; };
+		713EA42E2AD0B6B600DC1411 /* DraftLocationForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713EA42D2AD0B6B600DC1411 /* DraftLocationForm.swift */; };
 		716BF5332AC6D645009197F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 716BF5322AC6D645009197F6 /* Assets.xcassets */; };
 		716BF5362AC6D645009197F6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 716BF5352AC6D645009197F6 /* Preview Assets.xcassets */; };
 		719609992ACF4A65008706EE /* ModelLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719609982ACF4A65008706EE /* ModelLocation.swift */; };
@@ -30,7 +32,7 @@
 		719E60382ACED442002409F4 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = 719E60372ACED442002409F4 /* locations.json */; };
 		71CA430B2ACAD5C800E5457A /* CKShopperRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA430A2ACAD5C800E5457A /* CKShopperRec.swift */; };
 		71CA430E2ACADB6500E5457A /* ModelShopper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA430D2ACADB6500E5457A /* ModelShopper.swift */; };
-		71CA43102ACB8B7F00E5457A /* AddNewShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA430F2ACB8B7F00E5457A /* AddNewShopListView.swift */; };
+		71CA43102ACB8B7F00E5457A /* UpdateShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA430F2ACB8B7F00E5457A /* UpdateShopListView.swift */; };
 		71CED15A2AC7663800F5E4E9 /* CompactMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1552AC7663800F5E4E9 /* CompactMainView.swift */; };
 		71CED15B2AC7663800F5E4E9 /* NavigationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1562AC7663800F5E4E9 /* NavigationItem.swift */; };
 		71CED15C2AC7663800F5E4E9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1572AC7663800F5E4E9 /* MainView.swift */; };
@@ -60,6 +62,8 @@
 		710BDFFF2AC8A9E30036F339 /* Development.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Development.swift; sourceTree = "<group>"; };
 		710BE0012AC980670036F339 /* View+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		7113EFAC2ACC223F00EA143B /* DraftShopListForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftShopListForm.swift; sourceTree = "<group>"; };
+		713EA42B2AD0B53300DC1411 /* UpdateLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLocationView.swift; sourceTree = "<group>"; };
+		713EA42D2AD0B6B600DC1411 /* DraftLocationForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftLocationForm.swift; sourceTree = "<group>"; };
 		716BF52B2AC6D643009197F6 /* StoreShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		716BF5322AC6D645009197F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		716BF5352AC6D645009197F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -71,7 +75,7 @@
 		71CA430A2ACAD5C800E5457A /* CKShopperRec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKShopperRec.swift; sourceTree = "<group>"; };
 		71CA430C2ACADA6000E5457A /* shoppers.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = shoppers.json; sourceTree = "<group>"; };
 		71CA430D2ACADB6500E5457A /* ModelShopper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelShopper.swift; sourceTree = "<group>"; };
-		71CA430F2ACB8B7F00E5457A /* AddNewShopListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddNewShopListView.swift; sourceTree = "<group>"; };
+		71CA430F2ACB8B7F00E5457A /* UpdateShopListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateShopListView.swift; sourceTree = "<group>"; };
 		71CED1552AC7663800F5E4E9 /* CompactMainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompactMainView.swift; sourceTree = "<group>"; };
 		71CED1562AC7663800F5E4E9 /* NavigationItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationItem.swift; sourceTree = "<group>"; };
 		71CED1572AC7663800F5E4E9 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -99,7 +103,7 @@
 		710BDFE22AC827590036F339 /* Shopist Lists and Views */ = {
 			isa = PBXGroup;
 			children = (
-				71CA430F2ACB8B7F00E5457A /* AddNewShopListView.swift */,
+				71CA430F2ACB8B7F00E5457A /* UpdateShopListView.swift */,
 				7113EFAC2ACC223F00EA143B /* DraftShopListForm.swift */,
 				710BDFE32AC827740036F339 /* ShopListsView.swift */,
 				710BDFF52AC874A70036F339 /* ShopListRowView.swift */,
@@ -209,6 +213,8 @@
 			children = (
 				7196099B2ACF4DD4008706EE /* LocationsView.swift */,
 				7196099D2ACF5348008706EE /* LocationRowView.swift */,
+				713EA42B2AD0B53300DC1411 /* UpdateLocationView.swift */,
+				713EA42D2AD0B6B600DC1411 /* DraftLocationForm.swift */,
 			);
 			path = "Location Lists and Views";
 			sourceTree = "<group>";
@@ -348,13 +354,15 @@
 				710BDFF82AC8775E0036F339 /* Model.swift in Sources */,
 				71CED15D2AC7663800F5E4E9 /* StoreShoppingApp.swift in Sources */,
 				719E60362ACEC5D7002409F4 /* CKLocationRec.swift in Sources */,
+				713EA42C2AD0B53300DC1411 /* UpdateLocationView.swift in Sources */,
 				7196099C2ACF4DD4008706EE /* LocationsView.swift in Sources */,
 				71CA430E2ACADB6500E5457A /* ModelShopper.swift in Sources */,
+				713EA42E2AD0B6B600DC1411 /* DraftLocationForm.swift in Sources */,
 				71CED1722AC76D1F00F5E4E9 /* GlobalTimer.swift in Sources */,
 				710BDFFB2AC8A65F0036F339 /* PreferencesView.swift in Sources */,
 				710BE0022AC980670036F339 /* View+Extensions.swift in Sources */,
 				710BE0002AC8A9E30036F339 /* Development.swift in Sources */,
-				71CA43102ACB8B7F00E5457A /* AddNewShopListView.swift in Sources */,
+				71CA43102ACB8B7F00E5457A /* UpdateShopListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

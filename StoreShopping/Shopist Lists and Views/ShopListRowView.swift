@@ -21,7 +21,6 @@ struct ShopListRowView: View {
     var body: some View {
         HStack {
 
-                // --- build the little circle to tap on the left
             ZStack {
                     // not sure if i want to have at least a visible circle here at the bottom layer or not.  for
                     // some color choices (e.g., Dairy = white) nothing appears to be shown as tappable
@@ -49,8 +48,8 @@ struct ShopListRowView: View {
             VStack(alignment: .leading) {
                 Text(shoplist.name)
                     .font(.headline)
-//                Text("\(shoplist.listnumber)")
-//                    .font(.headline)
+                Text("\(shoplist.listnumber)")
+                    .font(.headline)
                 Text(subtitle())
                     .font(.caption)
             }
@@ -69,19 +68,12 @@ struct ShopListRowView: View {
         }
         return "\(myCount) Locations"
 
-
-
-        // FIXME: show the counts
-//        if shoplist.locationCount == 1 {
-//            return "1 Location"
-//        } else {
-//            return "\(shoplist.locationCount) Locations"
-//        }
     }
 }
 
 //struct ShopListRowView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ShopListRowView()
+//        ShopListRowView(shoplist: CKShopListRec.example1(), tapAction: () -> ())
+//            .environmentObject(ModelLocation())
 //    }
 //}

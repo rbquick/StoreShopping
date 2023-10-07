@@ -9,7 +9,6 @@ import SwiftUI
 
 struct UpdateShopListView: View {
 
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var mastervalues: MasterValues
 

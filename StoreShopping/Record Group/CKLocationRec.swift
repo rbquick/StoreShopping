@@ -80,6 +80,17 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
         record["opacity"] = opacity
         self.init(record: record)
     }
+    // simplified test of "is the unknown location"
+    var isUnknownLocation: Bool { visitationOrder == kUnknownLocationVisitationOrder }
+
+    var visitationOrder_: Int {
+        get {
+            return record["visitationOrder"] as? Int ?? 1
+        }
+        set {
+            record["visitationOrder"] = newValue
+        }
+    }
 
     func update(shopper: Int64, listnumber: Int64, locationnumber: Int64, name: String, visitationOrder: Int, red: Double, green: Double, blue: Double, opacity: Double) -> CKLocationRec? {
         let record = record
