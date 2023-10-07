@@ -13,39 +13,62 @@ struct UpdateLocationView: View {
     @EnvironmentObject var mastervalues: MasterValues
 
     @State  var draftLocation: CKLocationRec
+    @State var returnedMessage: String = ""
+    @State var name = ""
+    @State var red = 0.5
+    @State var green = 0.5
+    @State var blue = 0.5
+    @State var opacity = 0.5
+    @State var addOrUpdateLiteral = ""
 
 
     var body: some View {
-            // the trailing closure provides the DraftLocationView with what to do after the user has
-            // chosen to delete the Location, namely to dismiss this view,"
-            // so we "go back" up the navigation stack
-        DraftLocationForm(draftLocation: draftLocation) {
+        NavigationStack {
+            DraftLocationForm(draftLocation: draftLocation, name: $name, red: $red, green: $green, blue: $blue, opacity: $opacity)
+                .navigationBarTitle(addOrUpdateLiteral)
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction, content: cancelButton)
+                    ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftLocation.canBeSaved) }
+                }
+        }
+        .onAppear() {
+            name = draftLocation.name
+            red = draftLocation.red
+            green = draftLocation.green
+            blue = draftLocation.blue
+            opacity = draftLocation.opacity
+            if mastervalues.isChangeLocationSheetPresented {
+                addOrUpdateLiteral = "Changing Location "
+            } else {
+                addOrUpdateLiteral = "Add New Location"
+            }
+        }
+    }
+    func cancelButton() -> some View {
+        Button {
             mastervalues.isChangeLocationSheetPresented = false
             mastervalues.isAddNewLocationSheetPresented = false
+        } label: {
+            Text("Cancel")
         }
-            .navigationBarTitle("Modify Location")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
-            }
     }
-
-    func customBackButton() -> some View {
-            //...  see comments in ModifyExistingItemView about using
-            // our own back button.
+    func saveButton() -> some View {
         Button {
-            modellocation.addOrUpdate(location: draftLocation) {_ in
-                print("location updated")
-            }
+            change()
 
             mastervalues.isChangeLocationSheetPresented = false
             mastervalues.isAddNewLocationSheetPresented = false
         } label: {
-            HStack(spacing: 5) {
-                Image(systemName: "chevron.left")
-                Text("Back")
-            }
+                Text("Save")
+        }
+    }
+    func change() {
+        guard let changeRec = draftLocation.update(shopper: draftLocation.shopper, listnumber: draftLocation.listnumber, locationnumber: draftLocation.locationnumber, name: name, visitationOrder: draftLocation.visitationOrder, red: red, green: green, blue: blue, opacity: opacity) else { return }
+        modellocation.addOrUpdate(location: changeRec) { rtnMessage in
+            returnedMessage = rtnMessage
+            print(returnedMessage)
         }
     }
 

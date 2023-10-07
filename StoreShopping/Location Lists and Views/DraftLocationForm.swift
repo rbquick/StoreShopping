@@ -8,10 +8,6 @@
 
 import SwiftUI
 
-	// the DraftLocationView is a simple Form that allows the user to edit
-	// the fields of a DraftLocation, which in turn stands as an editable "draft"
-	// of the values either associated with an existing Location, or the default
-	// values to use in creating a new Location.
 struct DraftLocationForm: View {
 	
 		// incoming data:
@@ -19,10 +15,15 @@ struct DraftLocationForm: View {
 		// -- an optional action to execute if the user decides to delete
 		//      a draft in the case that it represents an existing Location
 	@State var draftLocation: CKLocationRec
-	var dismissAction: (() -> Void)?
+    @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var mastervalues: MasterValues
+    @Binding public var name: String
+    @Binding public var red: Double
+    @Binding public var green: Double
+    @Binding public var blue: Double
+    @Binding public var opacity: Double
 
-        // fields that are changing
-    @State var name = ""
+    @State private var color = Color.red
 	
 		// trigger for adding a new item at this Location
 	@State private var isAddNewItemSheetPresented = false
@@ -50,9 +51,12 @@ struct DraftLocationForm: View {
 					SLFormLabelText(labelText: "Name: ")
 					TextField("Location name", text: $name)
 				}
-				ColorPicker("Location Color", selection: $draftLocation.color)
-			} // end of Section 1
-			
+				ColorPicker("Location Color", selection: $color)
+
+            } // end of Section 1
+            .onChange(of: color) { _ in
+                mygetcolor()
+            }
 				// Section 2: Delete button, if the data is associated with an existing Location
 			if locationCanBeDeleted {
 				Section(header: Text("Location Management")) {
@@ -65,7 +69,10 @@ struct DraftLocationForm: View {
 															isPresented: $isConfirmDeleteLocationPresented,
 															titleVisibility: .visible) {
 						Button("Yes", role: .destructive) {
-                            print("delete button")
+                            modellocation.delete(location: draftLocation) { returnvalue in
+                                print(returnvalue)
+                            }
+                            mastervalues.isChangeLocationSheetPresented = false
                             // FIXME: delete record
 //							if let location = draftLocation.associatedLocation {
 //								Location.delete(location)
@@ -88,8 +95,9 @@ struct DraftLocationForm: View {
 //			}
 			
 		} // end of Form
+
         .onAppear() {
-            name = draftLocation.name
+            color = Color(red: red, green: green, blue: blue, opacity: opacity)
         }
 		.sheet(isPresented: $isAddNewItemSheetPresented) {
             Text("add new item screen required")
@@ -97,15 +105,15 @@ struct DraftLocationForm: View {
 		}
 
 	} // end of var body: some View
-	
-	var locationItemCount: Int {
+
+    var locationItemCount: Int {
         // FIXME: get item counts
 //		if let location = draftLocation.associatedLocation {
 //			return location.items.count
 //		}
 		return 0
 	}
-		
+
 	func ItemsListHeader() -> some View {
 		HStack {
 			Text("At this Location: \(locationItemCount) items")
@@ -117,9 +125,42 @@ struct DraftLocationForm: View {
 			}
 		}
 	}
-	
+    func mygetcolor() {
+        red = (color.components?.r ?? 0.5) as Double
+        green = (color.components?.g ?? 0.5) as Double
+        blue = (color.components?.b ?? 0.5) as Double
+        opacity = (color.components?.o ?? 0.5) as Double
+    }
 }
+//
+// got this from a stackoverflow question
+// https://stackoverflow.com/questions/56586055/how-to-get-rgb-components-from-color-in-swiftui
+//
+extension Color {
 
+    var components: (r: Double, g: Double, b: Double, o: Double)? {
+        let uiColor: UIColor
+
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var o: CGFloat = 0
+
+        if self.description.contains("NamedColor") {
+            let lowerBound = self.description.range(of: "name: \"")!.upperBound
+            let upperBound = self.description.range(of: "\", bundle")!.lowerBound
+            let assetsName = String(self.description[lowerBound..<upperBound])
+
+            uiColor = UIColor(named: assetsName)!
+        } else {
+            uiColor = UIColor(self)
+        }
+
+        guard uiColor.getRed(&r, green: &g, blue: &b, alpha: &o) else { return nil }
+
+        return (Double(r), Double(g), Double(b), Double(o))
+    }
+}
 // this is a quick way to see a list of items associated
 // with a given location that we're editing.
 // FIXME: implement to see items at this location

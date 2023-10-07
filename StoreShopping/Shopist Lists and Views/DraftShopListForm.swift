@@ -14,7 +14,6 @@ struct DraftShopListForm: View {
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
-    var dismissAction: (() -> Void)?
 
     // trigger for adding a new item at this Location
     @State private var isAddNewLocationSheetPresented = false
@@ -68,7 +67,7 @@ struct DraftShopListForm: View {
 //            }
         } // end of Form
         .onAppear() {
-            name = draftShopList.name
+           // name = draftShopList.name
         }
         // FIXME: to be implemented
 //        .sheet(isPresented: $isAddNewLocationSheetPresented) {

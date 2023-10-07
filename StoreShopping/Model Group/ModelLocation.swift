@@ -104,6 +104,26 @@ class ModelLocation: ObservableObject {
 
         return message
     }
+    func delete(location: CKLocationRec, completion: @escaping (String) -> ()) {
+        tracing(function: "delete")
+        guard let index = locations.firstIndex(where: { $0.id == location.id }) else { return }
+        CloudKitUtility.delete(item: location)
+            .receive(on: DispatchQueue.main)
+            .sink { c in
+                switch c {
+                case .finished:
+                    self.tracing(function: "delete .finished")
+                    completion("location deleted")
+                case .failure(let error):
+                    self.tracing(function: "delete error = \(error.localizedDescription)")
+                    completion("delete error = \(error.localizedDescription)")
+                }
+            } receiveValue: { success in
+#warning("condition this when developing delete verses single delete")
+                self.locations.remove(at: index)
+        }
+            .store(in: &cancellables)
+    }
     func GetNextLocationNumber() -> Int64 {
         tracing(function: "GetNextlistnumber")
         let lastnum = locations.map { $0.locationnumber }.max()!

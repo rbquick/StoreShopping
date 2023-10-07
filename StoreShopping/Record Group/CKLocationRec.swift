@@ -121,6 +121,7 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
             }
         }
     }
+    var canBeSaved: Bool { name.count > 0 }
 
     static func example1() -> CKLocationRec {
         return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 1, name: "example1", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
