@@ -8,11 +8,14 @@
 
 import SwiftUI
 
+
 // MARK: - LocationRowView
 
 struct LocationRowView: View {
 	
 	let location: CKLocationRec
+
+    @EnvironmentObject var modelitem: ModelItem
 	
     var tapAction: () -> ()
 
@@ -26,6 +29,7 @@ struct LocationRowView: View {
 			VStack(alignment: .leading) {
 				Text(location.name)
 					.font(.headline)
+                Text("List: \(location.listnumber) Location: \(location.locationnumber)")
 				Text(subtitle())
 					.font(.caption)
 			}
@@ -39,13 +43,7 @@ struct LocationRowView: View {
 	} // end of body: some View
 	
 	func subtitle() -> String {
-        return "Items not available yet"
-        // FIXME: get this count once items are on file
-//		if location.itemCount == 1 {
-//			return "1 item"
-//		} else {
-//			return "\(location.itemCount) items"
-//		}
+        return "\(modelitem.countOfItemsOnList(listnumber: location.listnumber, locationnumber: location.locationnumber )) Total items"
 	}
 	
 }

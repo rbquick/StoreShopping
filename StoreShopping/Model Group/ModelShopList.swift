@@ -63,7 +63,7 @@ class ModelShopList: ObservableObject {
        tracing(function: "addOrUpdate")
         let message = "Adding shoplist"
         print(shoplist.id)
-        let index = shoplists.firstIndex(where: { $0.shopper == shoplist.shopper && $0.listnumber == shoplist.listnumber })
+        let index = shoplists.firstIndex(where: { $0.id == shoplist.id })
 
         CloudKitUtility.update(item: shoplist)
             .receive(on: DispatchQueue.main)

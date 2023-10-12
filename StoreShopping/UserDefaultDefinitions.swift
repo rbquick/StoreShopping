@@ -37,6 +37,9 @@ class MasterValues: ObservableObject {
     @Published var isAddNewLocationSheetPresented = false
     @Published var isChangeLocationSheetPresented = false
 
+    // control to bring up a sheet used to add a new item
+    @Published var isAddNewItemSheetPresented = false
+    @Published var isChangeNewItemSheetPresented = false
 
     @Published var MasterShopperShopper: Int {
         willSet {

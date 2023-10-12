@@ -29,6 +29,9 @@ struct PreferencesView: View {
     @State private var itemsAdded: Int = 0
     @State private var returnedMessage: String = ""
 
+
+
+
     // user default. 0 = purchased today; 3 = purchased up to 3 days ago, ...
     @AppStorage(kPurchasedMostRecentlyKey)
     private var historyMarker = kPurchasedMostRecentlyDefaultValue
@@ -41,6 +44,8 @@ struct PreferencesView: View {
     // this is the @FetchRequest that ties this view to CoreData Locations
     @EnvironmentObject var modelshopper: ModelShopper
     @EnvironmentObject var modelshoplist: ModelShopList
+    @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitem: ModelItem
     // FIXME: remove these as they get replaced
     //    @FetchRequest(fetchRequest: Location.allLocationsPreferences())
     //    private var locations: FetchedResults<Location>
@@ -92,10 +97,18 @@ struct PreferencesView: View {
                         Button("Refresh All Data") {
                             modelshoplist.getAll(shopper: MyDefaults().myMasterShopperShopper)
                             modelshopper.getAll()
+                            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper)
                         }
                         .myCentered()
                     } // end of List
                     .listRowSeparator(.automatic)
+                    VStack {
+                        List {
+                            ForEach(modelitem.items) { item in
+                                Text("\(item.shopper) - \(item.listnumber) - \(item.name)")
+                            }
+                        }
+                    }
                 } // end of Section
                             } // end of if kShowDevTools
             } // end of Form
@@ -114,20 +127,48 @@ struct PreferencesView: View {
 //                populateDatabaseFromJSON(persistentStore: persistentStore)
 //                loadShopingLists()
 //                loadShoppers()
-                loadLocations()
+//                loadLocations()
+                loadItems()
                 shoplistsAdded = modelshoplist.shoplists.count - currentShopListCount // rbq added 2023-03-31
 //                locationsAdded = Location.count() - currentLocationCount // now the differential
 //                itemsAdded = Item.count() - currentItemCount // now the differential
                 confirmDataHasBeenAdded = true
             }
-    //
-    //        func writeDatabase() {
-    //            writeAsJSON(items: Item.allItems(), to: kItemsFilename)
-    //            writeAsJSON(items: Location.allUserLocations(),
-    //                        to: kLocationsFilename)
-    //        }
-    // rbq added 2023-03-30
 
+    func loadItems() {
+        guard let url = Bundle.main.url(forResource: "items", withExtension: "json")
+        else {
+            print("Json file not found")
+            return
+        }
+        let data = try? Data(contentsOf: url)
+        do {
+            let decoder = JSONDecoder()
+            let jsonData  = try decoder.decode(ItemsCodable.self, from: data!)
+            var myrecords = [CKRecord]()
+            for item in jsonData.ItemCodables { let location = modellocation.GetLocationByName(for: item.locationName)
+                let myrecord = CKRecord(recordType: myRecordType.Item.rawValue)
+                myrecord["shopper"] = location.shopper
+                myrecord["listnumber"] = location.listnumber
+                myrecord["locationnumber"] = location.locationnumber
+                myrecord["onList"] = item.onList
+                myrecord["quantity"] = item.quantity
+                myrecord["isAvailable"] = item.isAvailable
+                myrecord["name"] = item.name
+                myrecords.append(myrecord)
+                print(item.name)
+            }
+
+            if myrecords.count > 0 {
+                CloudKitUtility.saveAllRecords(myrecords)
+            }
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
+
+
+    }
     func loadLocations() {
         var mylists = [LocationCodable]()
         guard let url = Bundle.main.url(forResource: "locations", withExtension: "json")
@@ -237,24 +278,43 @@ struct PreferencesView: View {
         //        for location in locations {
         //            Location.delete(location)
         //        }
-        print("Shoppers: \(modelshopper.shoppers.count)")
-        for shopper in modelshopper.shoppers  {
+//        print("Shoppers: \(modelshopper.shoppers.count)")
+//        for shopper in modelshopper.shoppers  {
+//
+//            modelshopper.delete(shopper: shopper) { rtnMessage in
+//                returnedMessage = rtnMessage
+//                print(returnedMessage)
+//            }
+//        }
+//        modelshopper.shoppers.removeAll()
+//        print("ShopLists: \(modelshoplist.shoplists.count)")
+//        for shoplist in modelshoplist.shoplists  {
+//
+//            modelshoplist.delete(shoplist: shoplist) { rtnMessage in
+//                returnedMessage = rtnMessage
+//                print(returnedMessage)
+//            }
+//        }
+//        modelshoplist.shoplists.removeAll()
+        for item in modelitem.items  {
 
-            modelshopper.delete(shopper: shopper) { rtnMessage in
+            modelitem.delete(item: item) { rtnMessage in
                 returnedMessage = rtnMessage
                 print(returnedMessage)
             }
         }
-        modelshopper.shoppers.removeAll()
-        print("ShopLists: \(modelshoplist.shoplists.count)")
-        for shoplist in modelshoplist.shoplists  {
-
-            modelshoplist.delete(shoplist: shoplist) { rtnMessage in
-                returnedMessage = rtnMessage
-                print(returnedMessage)
-            }
-        }
-        modelshoplist.shoplists.removeAll()
+        modelitem.items.removeAll()
     }
 } // end of struct
-
+struct PreferencesView_Previews: PreviewProvider {
+    static var previews: some View {
+        PreferencesView()
+            .environmentObject(ModelLocation())
+            .environmentObject(MasterValues())
+            .environmentObject(InStoreTimer())
+            .environmentObject(ModelShopper())
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+    }
+}

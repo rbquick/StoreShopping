@@ -14,7 +14,7 @@ class ModelLocation: ObservableObject {
 
     var cancellables = Set<AnyCancellable>()
 
-    var isTracing: Bool = true
+    var isTracing: Bool = false
     func tracing(function: String) {
         if isTracing {
             print("ModelLocation \(function) ")
@@ -81,7 +81,7 @@ class ModelLocation: ObservableObject {
     func addOrUpdate(location: CKLocationRec, _ completion: @escaping (String) -> ()) -> String {
        tracing(function: "addOrUpdate")
         let message = "Adding location"
-        let index = locations.firstIndex(where: { $0.locationnumber == location.locationnumber })
+        let index = locations.firstIndex(where: { $0.id == location.id })
 
         CloudKitUtility.update(item: location)
             .receive(on: DispatchQueue.main)
@@ -128,5 +128,23 @@ class ModelLocation: ObservableObject {
         tracing(function: "GetNextlistnumber")
         let lastnum = locations.map { $0.locationnumber }.max()!
         return lastnum + 1
+    }
+    func GetLocationByName(for name: String) -> CKLocationRec {
+        let trimmedString = name.trimmingCharacters(in: .whitespaces)
+        print(trimmedString)
+        let index = locations.firstIndex(where: { $0.name.trimmingCharacters(in: .whitespaces) == trimmedString })
+        if index != nil {
+            return locations[index!]
+        } else {
+            return CKLocationRec.unKnown()
+        }
+    }
+    func GetLocationNameByLocationnumber(locationnumber: Int64) -> String {
+        let index = locations.firstIndex(where: { $0.locationnumber == locationnumber })
+        if index != nil {
+            return locations[index!].name
+        } else {
+            return "unKnown"
+        }
     }
 }

@@ -16,6 +16,7 @@ struct DraftLocationForm: View {
 		//      a draft in the case that it represents an existing Location
 	@State var draftLocation: CKLocationRec
     @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitems: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
     @Binding public var red: Double
@@ -24,9 +25,7 @@ struct DraftLocationForm: View {
     @Binding public var opacity: Double
 
     @State private var color = Color.red
-	
-		// trigger for adding a new item at this Location
-	@State private var isAddNewItemSheetPresented = false
+
 		// trigger for confirming deletion of the associated Location (if the
 		// draft represents an existing Location that is not the Unknown Location)
 	@State private var isConfirmDeleteLocationPresented = false
@@ -88,18 +87,18 @@ struct DraftLocationForm: View {
 			
 				// Section 3: Items assigned to this Location, if we are editing a Location
             // FIXME: show items for this locstion
-//			if let associatedLocation = draftLocation.associatedLocation {
-//				Section(header: ItemsListHeader()) {
-//					SimpleItemsList(location: associatedLocation)
-//				}
-//			}
+            if (mastervalues.isChangeLocationSheetPresented ) {
+				Section(header: ItemsListHeader()) {
+					SimpleItemsList(location: draftLocation)
+				}
+			}
 			
 		} // end of Form
 
         .onAppear() {
             color = Color(red: red, green: green, blue: blue, opacity: opacity)
         }
-		.sheet(isPresented: $isAddNewItemSheetPresented) {
+        .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
             Text("add new item screen required")
 //			AddNewItemView(location: draftLocation.associatedLocation)
 		}
@@ -119,7 +118,7 @@ struct DraftLocationForm: View {
 			Text("At this Location: \(locationItemCount) items")
 			Spacer()
 			Button {
-				isAddNewItemSheetPresented = true
+                mastervalues.isAddNewItemSheetPresented = true
 			} label: {
 				Image(systemName: "plus")
 			}
@@ -164,36 +163,41 @@ extension Color {
 // this is a quick way to see a list of items associated
 // with a given location that we're editing.
 // FIXME: implement to see items at this location
-//struct SimpleItemsList: View {
-//
-//	@ObservedObject var location: Location
-//
-//	var body: some View {
-//		ForEach(location.items) { item in
-//			NavigationLink {
-//				ModifyExistingItemView(item: item)
-//			} label: {
-//				HStack {
-//					Text(item.name)
-//					if item.onList {
-//						Spacer()
-//						Image(systemName: "cart")
-//							.foregroundColor(.green)
-//					}
-//				}
-//				.contextMenu {
-//					ItemContextMenu(item: item)
-//				}
-//			}
-//		}
-//	}
-//
-//	@ViewBuilder
-//	func ItemContextMenu(item: Item) -> some View {
-//		Button(action: { item.toggleOnListStatus() }) {
-//			Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
-//			Image(systemName: item.onList ? "purchased" : "cart")
-//		}
-//	}
-//
-//}
+struct SimpleItemsList: View {
+
+	@State var location: CKLocationRec
+    @EnvironmentObject var modelitem: ModelItem
+
+    var body: some View {
+        List {
+            ForEach(modelitem.items) { item in
+                if item.locationnumber == location.locationnumber {
+                    NavigationLink {
+                        ModifyExistingItemView(item: item)
+                    } label: {
+                        HStack {
+                            Text(item.name)
+                            if item.onList {
+                                Spacer()
+                                Image(systemName: "cart")
+                                    .foregroundColor(.green)
+                            }
+                        }
+                        .contextMenu {
+                            ItemContextMenu(item: item)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+	@ViewBuilder
+	func ItemContextMenu(item: CKItemRec) -> some View {
+        Button(action: { modelitem.toggleOnListStatus(item: item) }) {
+			Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
+			Image(systemName: item.onList ? "purchased" : "cart")
+		}
+	}
+
+}

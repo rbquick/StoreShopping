@@ -11,7 +11,7 @@ import SwiftUI
 
 struct RegularMainView: View {
 	
-	@State private var selection: NavigationItem? = .shopListList
+    @State private var selection: NavigationItem? = .shoppingList
 	
 	var sidebarView: some View {
 		List(selection: $selection) {
@@ -48,7 +48,7 @@ struct RegularMainView: View {
 					case .shoppingList:
 						ShoppingListView()
 					case .purchasedList:
-						PurchasedItemsView()
+                    PurchasedItemsView(item: CKItemRec.example1())
                     // rbq added 2023-04-01
                     case .shopListList:
                         ShopListsView()

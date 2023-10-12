@@ -19,7 +19,7 @@ struct UpdateShopListView: View {
     @State var name = ""
     @State var addOrUpdateLiteral = ""
     var body: some View {
-        NavigationStack {
+//        NavigationStack {
             DraftShopListForm(draftShopList: draftShopList, name: $name)
                 .navigationBarTitle(addOrUpdateLiteral)
                 .navigationBarTitleDisplayMode(.inline)
@@ -28,7 +28,7 @@ struct UpdateShopListView: View {
                     ToolbarItem(placement: .cancellationAction, content: cancelButton)
                     ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftShopList.canBeSaved) }
                 }
-        }
+//        }
         .onAppear() {
             name = draftShopList.name
             if mastervalues.isChangeShopListSheetPresented {

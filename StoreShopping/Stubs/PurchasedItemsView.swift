@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct PurchasedItemsView: View {
+    @State var item: CKItemRec
     var body: some View {
-        Text("PurchasedItemsView")
+        Text(item.name)
     }
 }
 
-struct PurchasedItemsView_Previews: PreviewProvider {
-    static var previews: some View {
-        PurchasedItemsView()
-    }
-}
+//struct PurchasedItemsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PurchasedItemsView()
+//    }
+//}

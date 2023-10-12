@@ -47,6 +47,7 @@ struct StoreShoppingApp: App {
     @StateObject var modelshopper = ModelShopper()
     @StateObject var modelshoplist = ModelShopList()
     @StateObject var modellocation = ModelLocation()
+    @StateObject var modelitem = ModelItem()
 	@StateObject var today = Today()
 	@StateObject var inStoreTimer = InStoreTimer()
 	
@@ -77,6 +78,7 @@ struct StoreShoppingApp: App {
                 .environmentObject(modelshopper)
                 .environmentObject(modelshoplist)
                 .environmentObject(modellocation)
+                .environmentObject(modelitem)
 		}
 	}
     // rbq added 2023-03-31

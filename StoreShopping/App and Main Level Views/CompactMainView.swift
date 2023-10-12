@@ -8,7 +8,7 @@ import SwiftUI
 struct CompactMainView: View {
 
     // what screen do you want to show 1st
-    @State private var selection: NavigationItem = .shopListList
+    @State private var selection: NavigationItem = .shoppingList
     @State private var navPath = NavigationPath()
 
     var body: some View {
@@ -19,7 +19,7 @@ struct CompactMainView: View {
             case .shoppingList:
                 ShoppingListView()
             case .purchasedList:
-                PurchasedItemsView()
+                PurchasedItemsView(item: CKItemRec.example1())
             case .locationList:
                 LocationsView()
             case .inStoreTimer:

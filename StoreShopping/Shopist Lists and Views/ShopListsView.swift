@@ -44,9 +44,9 @@ struct ShopListsView: View {
             Divider()
         }
         .navigationBarTitle("Lists Available")
-//        .navigationDestination(for: CKShopListRec.self) { shoplist in
-//           UpdateShopListView(draftShopList: shoplist)
-//        }
+        .navigationDestination(for: CKShopListRec.self) { shoplist in
+           UpdateShopListView(draftShopList: shoplist)
+        }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
             ToolbarItem(placement: .navigationBarLeading, content: changeButton)
