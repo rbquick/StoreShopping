@@ -66,13 +66,13 @@ struct DraftItemForm: View {
 
                 Picker(selection: $listnumber, label: SLFormLabelText(labelText: "List: ")) {
                     ForEach(modelshoplist.shoplists) { list in
-                        Text(list.name).tag(name)
+                        Text("\(list.listnumber): \(list.name)").tag(list.listnumber)
                     }
                 }
 
                 Picker(selection: $locationnumber, label: SLFormLabelText(labelText: "Location: ")) {
                     ForEach(modellocation.locations) { location in
-                        Text(location.name).tag(location)
+                        Text("\(location.locationnumber): \(location.name)").tag(location.locationnumber)
                     }
                 }
 

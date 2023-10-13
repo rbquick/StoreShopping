@@ -97,7 +97,7 @@ struct PreferencesView: View {
                         Button("Refresh All Data") {
                             modelshoplist.getAll(shopper: MyDefaults().myMasterShopperShopper)
                             modelshopper.getAll()
-                            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper)
+                            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
                         }
                         .myCentered()
                     } // end of List

@@ -12,6 +12,7 @@ struct ShopListsView: View {
 
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
 
     // MARK: - @State and @StateObject Properties
@@ -92,6 +93,7 @@ struct ShopListsView: View {
         modelshoplist.MasterShopListName = shoplist.name
         modelshoplist.MasterShopListListnumber = Int(shoplist.listnumber)
         modellocation.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: Int(shoplist.listnumber))
+        modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: Int(shoplist.listnumber))
         print(MyDefaults().myMasterShopListName)
 //        MyDefaults().myMasterShopListListnumber = Int(truncatingIfNeeded: shoplist.listnumber)
     }

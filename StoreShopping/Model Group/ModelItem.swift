@@ -24,7 +24,7 @@ class ModelItem: ObservableObject {
     }
 
     init() {
-        getAll(shopper: MyDefaults().myMasterShopperShopper)
+        getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
     }
 
 
@@ -80,9 +80,10 @@ class ModelItem: ObservableObject {
         }
             .store(in: &cancellables)
     }
-    func getAll(shopper: Int) {
+    func getAll(shopper: Int, listnumber: Int) {
         tracing(function: "getAll")
-        let predicate = NSPredicate(format:"shopper == %@", NSNumber(value: shopper))
+//        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
             .receive(on: DispatchQueue.main)
@@ -106,9 +107,10 @@ class ModelItem: ObservableObject {
     }
     func toggleOnListStatus(item: CKItemRec) {
         print(item.onList)
-        item.record["onList"] = !item.onList
-        addOrUpdate(item: item) { _ in
-            self.tracing(function: "toggleOnListStatus set to \(!item.onList)")
+        let changerec = item.update(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: !item.onList, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name)!
+
+        addOrUpdate(item: changerec) { _ in
+            self.tracing(function: "toggleOnListStatus set to \(item.onList)")
         }
 //        item.record["onList"] = !item.record["onList"]
 //        Self.persistentStore.save()

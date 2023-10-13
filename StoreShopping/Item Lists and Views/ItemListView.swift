@@ -74,7 +74,7 @@ struct ItemListView: View {
         .navigationDestination(for: CKItemRec.self) { item in
 			ModifyExistingItemView(item: item)
 		}
-//		.animation(.default, value: itemSections)
+		.animation(.default, value: itemSections)
 //		.confirmationDialog("Delete \'\(itemToDeleteName)\'?",
 //												isPresented: $isConfirmItemDeletePresented,
 //												titleVisibility: .visible) {

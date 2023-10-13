@@ -11,6 +11,7 @@ struct UpdateShopListView: View {
 
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var mastervalues: MasterValues
+    @EnvironmentObject var modelitem: ModelItem
 
         // a draftLocation is initialized here, holding default values for
         // a new Location.
@@ -71,6 +72,8 @@ func saveButton() -> some View {
             for shoplist in modelshoplist.shoplists {
                 print(shoplist.name)
             }
+            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
+            
         }
     }
 }

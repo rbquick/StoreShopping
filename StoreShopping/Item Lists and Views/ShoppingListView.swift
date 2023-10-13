@@ -141,9 +141,12 @@ struct ShoppingListView: View {
 		// however, we do this based on the values in the `locations` @FetchRequest
 		// property and not the item's properties (e.g., location).
         print("shoppinglistview.itemSection called mastername: \(MyDefaults().myMasterShopListName)")
+//        let cou = modelitem.items.reduce(0) { $0 + Int((($1.listnumber == 3) && ($1.locationnumber == 1)) ? 1 : 0)  }
+        let cou = modelitem.items.reduce(0) { $0 + ($1.onList ? 1 : 0)  }
+        print("items on list: \(cou)")
         let locationItemPairs: [(location: CKLocationRec, items: [CKItemRec])] = modellocation.locations
 			.map({ location in
-                ( location, modelitem.items.filter({ !$0.onList && $0.locationnumber == location.locationnumber }) )
+                ( location, modelitem.items.filter({ $0.onList && $0.locationnumber == location.locationnumber }) )
 			})
 			.filter({ !$0.items.isEmpty })
 			.sorted(by: { $0.location.visitationOrder < $1.location.visitationOrder })
