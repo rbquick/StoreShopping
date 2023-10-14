@@ -56,7 +56,7 @@ class ModelItem: ObservableObject {
 
         return message
     }
-    func countOfItemsOnList(listnumber: Int64, locationnumber: Int64) -> Int {
+    func countOfItemsAtLocation(listnumber: Int64, locationnumber: Int64) -> Int {
         let cou = items.reduce(0) { $0 + Int((($1.listnumber == listnumber) && ($1.locationnumber == locationnumber)) ? 1 : 0)  }
         return cou
     }
@@ -76,10 +76,25 @@ class ModelItem: ObservableObject {
                 }
             } receiveValue: { success in
 #warning("condition this when developing delete verses single delete")
-                self.items.remove(at: index)
+                if !MyDefaults().developmentDeleting {
+                    self.items.remove(at: index)
+                }
         }
             .store(in: &cancellables)
     }
+    func getAll() {
+        tracing(function: "getAll")
+        let predicate = NSPredicate(value: true)
+        let sort = [NSSortDescriptor(key: "name", ascending: true)]
+        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+
+            } receiveValue: { [weak self] returnedItems in
+                self?.items = returnedItems
+            }
+            .store(in: &cancellables)
+        }
     func getAll(shopper: Int, listnumber: Int) {
         tracing(function: "getAll")
 //        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
@@ -100,6 +115,13 @@ class ModelItem: ObservableObject {
             }
             .store(in: &cancellables)
         }
+    //
+    // if the item is in the items array, it is on the data base
+    //
+    func isOnFile(item: CKItemRec) -> Bool {
+        let index = items.firstIndex(where: { $0.id == item.id } )
+        return index != nil
+    }
     func moveAllItemsOffShoppingList() {
         for item in items.filter({ $0.onList }) {
             toggleOnListStatus(item: item)
@@ -107,7 +129,12 @@ class ModelItem: ObservableObject {
     }
     func toggleOnListStatus(item: CKItemRec) {
         print(item.onList)
-        let changerec = item.update(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: !item.onList, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name)!
+        let onlist = !item.onList
+        var dateLastPurchased: Date? = item.dateLastPurchased
+        if !onlist {
+            dateLastPurchased = Date()
+        }
+        let changerec = item.update(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: !item.onList, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: dateLastPurchased)!
 
         addOrUpdate(item: changerec) { _ in
             self.tracing(function: "toggleOnListStatus set to \(item.onList)")

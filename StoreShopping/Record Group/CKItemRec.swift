@@ -32,6 +32,7 @@ struct CKItemRec: Identifiable, Hashable,  CloudKitableProtocol {
     let quantity: Int
     let isAvailable: Bool
     let name: String
+    let dateLastPurchased: Date?
     let record: CKRecord
 
     init?(record: CKRecord) {
@@ -43,9 +44,10 @@ struct CKItemRec: Identifiable, Hashable,  CloudKitableProtocol {
         self.quantity = record["quantity"] as? Int ?? 1
         self.isAvailable = record["isAvailable"] as? Bool ?? true
         self.name = record["name"] as? String ?? "UnKnown"
+        self.dateLastPurchased = record["dateLastPurchased"] as? Date? ?? nil
         self.record = record
     }
-    init?(shopper: Int64, listnumber: Int64, locationnumber: Int64, onList: Bool, quantity: Int, isAvailable: Bool, name: String) {
+    init?(shopper: Int64, listnumber: Int64, locationnumber: Int64, onList: Bool, quantity: Int, isAvailable: Bool, name: String, dateLastPurchased: Date?) {
         let record = CKRecord(recordType: myRecordType.Item.rawValue)
         record["shopper"] = shopper
         record["listnumber"] = listnumber
@@ -54,17 +56,11 @@ struct CKItemRec: Identifiable, Hashable,  CloudKitableProtocol {
         record["quantity"] = quantity
         record["isAvailable"] = isAvailable
         record["name"] = name
+        record["dateLastPurchased"] = dateLastPurchased
         self.init(record: record)
     }
 
-    // the color of its association location
-    // FIXME: this is the old struct within a struct...this location color is in the cklocationrec struct
-    var color: Color {
-        return Color(uiColor: UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5))
-//        location_?.color ?? Color(uiColor: UIColor(displayP3Red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5))
-    }
-
-    func update(shopper: Int64, listnumber: Int64, locationnumber: Int64, onList: Bool, quantity: Int, isAvailable: Bool, name: String) -> CKItemRec? {
+    func update(shopper: Int64, listnumber: Int64, locationnumber: Int64, onList: Bool, quantity: Int, isAvailable: Bool, name: String, dateLastPurchased: Date?) -> CKItemRec? {
         let record = record
         record["shopper"] = shopper
         record["listnumber"] = listnumber
@@ -73,11 +69,12 @@ struct CKItemRec: Identifiable, Hashable,  CloudKitableProtocol {
         record["quantity"] = quantity
         record["isAvailable"] = isAvailable
         record["name"] = name
+        record["dateLastPurchased"] = dateLastPurchased
         return CKItemRec(record: record)!
     }
     var canBeSaved: Bool { name.count > 0 }
 
     static func example1() -> CKItemRec {
-        return CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: false, quantity: 1, isAvailable: true, name: "New Item")!
+        return CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: false, quantity: 1, isAvailable: true, name: "New Item", dateLastPurchased: Date())!
     }
 }

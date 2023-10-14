@@ -66,8 +66,7 @@ struct ShoppingListView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 		}
         .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
-//            AddNewItemView()
-            ModifyExistingItemView(item: CKItemRec.example1())
+            ModifyExistingItemView(item: CKItemRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: 1, onList: true, quantity: 1, isAvailable: true, name: "New Item", dateLastPurchased: nil)!)
 		}
         .onAppear(perform: handleOnAppear)
 		

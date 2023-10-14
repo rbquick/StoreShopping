@@ -48,7 +48,7 @@ struct RegularMainView: View {
 					case .shoppingList:
 						ShoppingListView()
 					case .purchasedList:
-                    PurchasedItemsView(item: CKItemRec.example1())
+                    PurchasedItemsView()
                     // rbq added 2023-04-01
                     case .shopListList:
                         ShopListsView()

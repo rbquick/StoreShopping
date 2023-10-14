@@ -28,7 +28,6 @@ struct LocationsView: View {
                     ForEach(modellocation.locations) { location in
                             LocationRowView(location: location) { setChangeLocation(location: location) }
 					} // end of ForEach
-                    // FIXME: implement this move locaations
 					.onMove(perform: moveLocations)
 				} // end of Section
 			} // end of List
@@ -46,7 +45,8 @@ struct LocationsView: View {
             UpdateLocationView(draftLocation: CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: modellocation.GetNextLocationNumber(), name: "New Location", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!)
 		}
         .sheet(isPresented: $mastervalues.isChangeLocationSheetPresented) {
-            // FIXME:  have to find the locaation that is selected in the list
+            // FIXed:  have to find the location that is selected in the list
+            //          the editLocationRec is set when a location is selected
             UpdateLocationView(draftLocation: editLocationRec)
         }
 		.onAppear { handleOnAppear() }
@@ -60,7 +60,6 @@ struct LocationsView: View {
 		// we make a copy of the current ordering of the locations array (some
 		// type coercion in necessary) and then rewrite all the visitationOrders
 		// after the move (except for the unknown location).
-    // FIXME: implement this move locaations
 	func moveLocations(at offsets: IndexSet, destination: Int) {
 //        print(modellocation.locations[0].name)
         var oldLocations = modellocation.locations.compactMap({ $0 }) as! [CKLocationRec]

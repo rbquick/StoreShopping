@@ -10,7 +10,7 @@ import SwiftUI
 
 struct DraftShopListForm: View {
 
-    @State var draftShopList: CKShopListRec
+    @State var shoplist: CKShopListRec
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
@@ -44,35 +44,34 @@ struct DraftShopListForm: View {
                     }
                     .foregroundColor(Color.red)
                     .myCentered()
-                    .confirmationDialog("Delete \'\(draftShopList.name)\'?", isPresented: $isConfirmDeleteShopListPresented, titleVisibility: .visible) {
+                    .confirmationDialog("Delete \'\(shoplist.name)\'?", isPresented: $isConfirmDeleteShopListPresented, titleVisibility: .visible) {
                         Button("Yes", role: .destructive) {
-                                modelshoplist.delete(shoplist: draftShopList) { returnvalue in
+                                modelshoplist.delete(shoplist: shoplist) { returnvalue in
                                     print("shoplist deleted")
                                 }
                             mastervalues.isChangeShopListSheetPresented = false
                         }
                     } message: {
-                        Text("Are you sure you want tot delete the ShopList named \'\(draftShopList.name)\'? All Locations and items will be removed.  This action cannot be undone.")
+                        Text("Are you sure you want tot delete the ShopList named \'\(shoplist.name)\'? All Locations and items will be removed.  This action cannot be undone.")
                     }
                 }
             } // end of Section 2
 
             // Section 3: Locations assigned to this ShopList, if we are editing a ShopList
 //            if let associatedShopList = draftShopList.associatedShopList {
-//                Section(header: LocationsListHeader()) {
-//                    // FIXME: to be implemented
-//                    Text("shop list not available")
-////                    SimpleLocationsList(shoplist: associatedShopList)
-//                }
+                Section(header: LocationsListHeader()) {
+                    VStack {
+                        SimpleLocationsList(shoplist: shoplist)
+                    }
+                }
 //            }
         } // end of Form
         .onAppear() {
            // name = draftShopList.name
         }
-        // FIXME: to be implemented
-//        .sheet(isPresented: $isAddNewLocationSheetPresented) {
-//            AddNewLocationView(shoplist: draftShopList.associatedShopList)
-//        }
+        .sheet(isPresented: $isAddNewLocationSheetPresented) {
+            UpdateShopListView(draftShopList: CKShopListRec(shopper: shoplist.shopper, listnumber: modelshoplist.GetNextlistnumber(), name: "New List")!)
+        }
     } // end of var body: some View
 
     var shoplistLocationCount: Int {
@@ -85,36 +84,48 @@ struct DraftShopListForm: View {
 
     func LocationsListHeader() -> some View {
         HStack {
-            Text("This Shoplist has \(shoplistLocationCount) Locations")
             Spacer()
-            Button {
-                isAddNewLocationSheetPresented = true
-            } label: {
-                Image(systemName: "plus")
-            }
+            Text("This Shoplist has the following Locations")
+            Spacer()
+
         }
     }
 }
 
 // this is a quick way to see a list of items associated
 // with a given location that we're editing.
-// FIXME: to be implemented
-//struct SimpleLocationsList: View {
-//
-//    @ObservedObject var shoplist: ShopList
-//
-//    var body: some View {
-//        ForEach(shoplist.locations) { location in
-//            NavigationLink {
-//                ModifyExistingLocationView(location: location)
-//            } label: {
-//                HStack {
-//                    Text(location.name)
-//                }
-//            }
-//        }
-//    }
-//}
+struct SimpleLocationsList: View {
+
+    @State var shoplist: CKShopListRec
+    @EnvironmentObject var modellocation: ModelLocation
+
+    @State var holdLoctions =  [CKLocationRec.example1()]
+    // myCount MUST be shown on the view and set when the holdLocations is set
+    //         if this is not done, nothing happens in this view
+    @State var myCount = 0
+    var body: some View {
+
+            Text("There are \(myCount) locations on file")
+
+
+            List {
+                ForEach(holdLoctions) { location in
+                    LocationRowView(location: location) { setChangeLocation(location: location) }
+                }
+            }
+
+        .onAppear() {
+            modellocation.getAllLocationsByListNumber(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { completion in
+                holdLoctions = completion
+                myCount = holdLoctions.count
+                print(completion.count)
+            }
+        }
+    }
+    func setChangeLocation(location: CKLocationRec) {
+
+    }
+}
 
 //struct DraftShopListForm_Previews: PreviewProvider {
 //    static var previews: some View {

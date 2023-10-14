@@ -23,7 +23,9 @@ struct SelectableItemRowView: View {
 	var selected: Bool
 	var sfSymbolName: String
 	var tapAction: () -> ()
-	
+
+    @State var locationColor: Color = Color.red
+
 	var body: some View {
 		HStack {
 			
@@ -41,7 +43,7 @@ struct SelectableItemRowView: View {
 				}
 				Image(systemName: "circle")
 					//					.foregroundColor(Color(item.uiColor))
-					.foregroundColor(item.color)
+                    .foregroundColor(locationColor)
 					.font(.title)
 				if selected {
 					Image(systemName: sfSymbolName)
@@ -52,9 +54,10 @@ struct SelectableItemRowView: View {
 			.animation(.easeInOut, value: selected)
 			.frame(width: 24, height: 24)
 			.onTapGesture(perform: tapAction)
-			
-			item.color
-				.frame(width: 10, height: 36)
+
+            Text(".")
+                .background(locationColor)
+				.frame(width: 15, height: 40)
 			
 				// name and location
 			VStack(alignment: .leading) {
@@ -91,5 +94,8 @@ struct SelectableItemRowView: View {
 				.foregroundColor(Color.blue)
 			
 		} // end of HStack
+        .onAppear() {
+            locationColor = modellocation.getColorByLocation(listnumber: item.listnumber, locationNumber: item.locationnumber)
+        }
 	}
 }

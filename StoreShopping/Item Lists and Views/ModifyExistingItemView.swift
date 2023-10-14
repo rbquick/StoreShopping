@@ -30,6 +30,7 @@ struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var mastervalues: MasterValues
 	
 		// an editable copy of the Item's data -- a "draft," if you will
 	@State var item: CKItemRec
@@ -40,6 +41,10 @@ struct ModifyExistingItemView: View {
     @State var quantity: Int = 1
     @State var isAvailable: Bool = true
     @State var name: String = "New Item"
+    @State var dateLastPurchased: Date? = nil
+
+    @State var alertIsPresented: Bool = false
+    @State var addingNewItem: Bool = false
 	var body: some View {
 			// the dismissAction function provides the DraftItemView with a way to dismiss
 			// us, which is necessary should the item be deleted.  we could write this using
@@ -54,24 +59,40 @@ struct ModifyExistingItemView: View {
 //                    .toolbar {
 //                        ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
 //                    }
-		DraftItemForm(item: item, shopper: $shopper, listnumber: $listnumber, locationnumber: $locationnumber, onList: $onList, quantity: $quantity, isAvailable: $isAvailable, name: $name)
-			.navigationBarTitle("Modify Item")
-			.navigationBarTitleDisplayMode(.inline)
-			.navigationBarBackButtonHidden(true)
-			.toolbar {
-				ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
-                ToolbarItem(placement: .confirmationAction) { saveButton() }
-			}
-            .onAppear() {
-            shopper = item.shopper
-            listnumber = item.listnumber
-            locationnumber = item.locationnumber
-            onList = item.onList
-            quantity = item.quantity
-            isAvailable = item.isAvailable
-            name = item.name
+        VStack {
+                    if mastervalues.isAddNewItemSheetPresented {
+            HStack {
+                customBackButton()
+                Spacer()
+                Text("Adding new Item")
+                Spacer()
+                saveButton()
+            }
+            .padding()
+            Divider()
+                    }
+
+            DraftItemForm(item: item, dismissAction: dismiss.callAsFunction, shopper: $shopper, listnumber: $listnumber, locationnumber: $locationnumber, onList: $onList, quantity: $quantity, isAvailable: $isAvailable, name: $name, dateLastPurchased: $dateLastPurchased)
+                .navigationBarTitle("Modify Item")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
+                    ToolbarItem(placement: .confirmationAction) { saveButton() }
+                }
+                .onAppear() {
+                    shopper = item.shopper
+                    listnumber = item.listnumber
+                    locationnumber = item.locationnumber
+                    onList = item.onList
+                    quantity = item.quantity
+                    isAvailable = item.isAvailable
+                    name = item.name
+                    dateLastPurchased = item.dateLastPurchased
+                    addingNewItem = mastervalues.isAddNewItemSheetPresented
+                }
+                .interactiveDismissDisabled()
         }
-		
 	} // end of var body: some View
 	
 		// i have never liked the idea of using a custom Back button ... it does not
@@ -79,13 +100,15 @@ struct ModifyExistingItemView: View {
 		// in the wrong direction in some languages.
 		// however, i do not know of a way to detect when the user taps the
 		// system-generated Back button.  also see discussion above.
+        // this is also used when showing the .sheet.  The top line of the .sheet
+        //     is built with a back and a save button if you are adding an item
 	func customBackButton() -> some View {
 		Button {
 				// we need to ask if the draft "still" represents an existing Item.  it
 				// certainly did when we opened this View, but if we hit the delete button
 				// and confirmed the deletion, then this draft no longer represents a
 				// real Item and we would not want to put the item back into Core Data.
-            // FIXME: updating on exit? if still there
+            // FIXed: updating on exit? if still there
 //			if draftItem.associatedItem != nil {
 //				Item.updateAndSave(using: draftItem)
 //			}
@@ -106,12 +129,21 @@ struct ModifyExistingItemView: View {
         }
     }
     func change() {
-        guard let changerec = item.update(shopper: shopper, listnumber: listnumber, locationnumber: locationnumber, onList: onList, quantity: quantity, isAvailable: isAvailable, name: name) else { return }
+        guard let changerec = item.update(shopper: shopper, listnumber: listnumber, locationnumber: locationnumber, onList: onList, quantity: quantity, isAvailable: isAvailable, name: name, dateLastPurchased: dateLastPurchased) else { return }
 
         modelitem.addOrUpdate(item: changerec) { completion in
             print(completion)
         }
     }
 	
+}
+struct ModifyExistingItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        ModifyExistingItemView(item: CKItemRec.example1())
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+            .environmentObject(MasterValues())
+    }
 }
 

@@ -79,6 +79,7 @@ struct StoreShoppingApp: App {
                 .environmentObject(modelshoplist)
                 .environmentObject(modellocation)
                 .environmentObject(modelitem)
+                .environmentObject(today)
 		}
 	}
     // rbq added 2023-03-31

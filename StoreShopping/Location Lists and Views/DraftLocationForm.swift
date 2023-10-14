@@ -16,7 +16,7 @@ struct DraftLocationForm: View {
 		//      a draft in the case that it represents an existing Location
 	@State var draftLocation: CKLocationRec
     @EnvironmentObject var modellocation: ModelLocation
-    @EnvironmentObject var modelitems: ModelItem
+    @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
     @Binding public var red: Double
@@ -34,7 +34,8 @@ struct DraftLocationForm: View {
 		// (it's a real location that's not the unknown location)
 	private var locationCanBeDeleted: Bool {
         return true
-        // FIXME: get something here
+        // FIXed: get something here
+        //  might be checks, but anything can be deletd here
 //		guard let associatedLocation = draftLocation.associatedLocation else {
 //			return false
 //		}
@@ -86,7 +87,7 @@ struct DraftLocationForm: View {
 			} // end of Section 2
 			
 				// Section 3: Items assigned to this Location, if we are editing a Location
-            // FIXME: show items for this locstion
+            // FIXed: show items for this locstion
             if (mastervalues.isChangeLocationSheetPresented ) {
 				Section(header: ItemsListHeader()) {
 					SimpleItemsList(location: draftLocation)
@@ -106,11 +107,8 @@ struct DraftLocationForm: View {
 	} // end of var body: some View
 
     var locationItemCount: Int {
-        // FIXME: get item counts
-//		if let location = draftLocation.associatedLocation {
-//			return location.items.count
-//		}
-		return 0
+
+        return modelitem.countOfItemsAtLocation(listnumber: draftLocation.listnumber, locationnumber: draftLocation.locationnumber)
 	}
 
 	func ItemsListHeader() -> some View {
@@ -162,7 +160,7 @@ extension Color {
 }
 // this is a quick way to see a list of items associated
 // with a given location that we're editing.
-// FIXME: implement to see items at this location
+// FIXed: implement to see items at this location
 struct SimpleItemsList: View {
 
 	@State var location: CKLocationRec

@@ -34,7 +34,6 @@ class ModelShopper: ObservableObject {
     func delete(shopper: CKShopperRec, completion: @escaping (String) -> ()) {
         tracing(function: "delete")
         guard let index = shoppers.firstIndex(where: { $0.id == shopper.id }) else { return }
-        // FIXME: implement when connected to db
         CloudKitUtility.delete(item: shopper)
             .receive(on: DispatchQueue.main)
             .sink { c in
@@ -47,7 +46,9 @@ class ModelShopper: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-//                self.shoppers.remove(at: index)
+                if !MyDefaults().developmentDeleting {
+                    self.shoppers.remove(at: index)
+                }
         }
             .store(in: &cancellables)
     }

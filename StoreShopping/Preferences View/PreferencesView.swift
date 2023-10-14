@@ -40,17 +40,11 @@ struct PreferencesView: View {
     @AppStorage(kDisableTimerWhenInBackgroundKey)
     private var suspendTimerWhenInBackground = kDisableTimerWhenInBackgroundDefaultValue
 
-    // rbq added 2023-03-30
-    // this is the @FetchRequest that ties this view to CoreData Locations
     @EnvironmentObject var modelshopper: ModelShopper
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
-    // FIXME: remove these as they get replaced
-    //    @FetchRequest(fetchRequest: Location.allLocationsPreferences())
-    //    private var locations: FetchedResults<Location>
-    //    @FetchRequest(fetchRequest: Item.allItemsPreferences())
-    //    private var items: FetchedResults<Item>
+
     var body: some View {
         Form {
             Section(header: Text("Purchased Items History Mark"),
@@ -72,32 +66,42 @@ struct PreferencesView: View {
 
             if kShowDevTools {
                 Section("Developer Actions") {
+                    Text("Table Counts - Shoppers:\(modelshopper.shoppers.count) ShopLists:\(modelshoplist.shoplists.count) Locations: \(modellocation.locations.count) Items: \(modelitem.items.count)")
                     List {
                         // 1.  load sample data
-                        Button("Load Sample Data") {
-                              loadSampleData()
+                        Button("Load Shoppers Data") {
+                              loadShoppers()
                         }
                         .myCentered()
-//                        .disabled(modelshoplist.shoplists.count > 0)
-
+                        Button("Load ShopLists Data") {
+                              loadShopingLists()
+                        }
+                        .myCentered()
+                        Button("Load Locations Data") {
+                            loadLocations()
+                      }
+                      .myCentered()
+                        Button("Load items Data") {
+                              loadItems()
+                        }
+                        .myCentered()
                         // 2. offload data as JSON
-                        Button("Write database as JSON") {
-                            deleteAllData()
-                            //  writeDatabase()
-                        }
-                        .myCentered()
+//                        Button("Write database as JSON") {
+//                              writeDatabase()
+//                        }
+//                        .myCentered()
                         // rbq added 2023-03-30
                         // 3.  Delete sample data
                         Button("Delete All Data") {
                             deleteAllData()
                         }
                         .myCentered()
-                        .disabled(modelshoplist.shoplists.count == 0)
                         // 4.  refresh the data
                         Button("Refresh All Data") {
-                            modelshoplist.getAll(shopper: MyDefaults().myMasterShopperShopper)
                             modelshopper.getAll()
-                            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
+                            modelshoplist.getAll()
+                            modellocation.getAll()
+                            modelitem.getAll()
                         }
                         .myCentered()
                     } // end of List
@@ -141,6 +145,7 @@ struct PreferencesView: View {
             print("Json file not found")
             return
         }
+        let nilDate: Date? = nil
         let data = try? Data(contentsOf: url)
         do {
             let decoder = JSONDecoder()
@@ -155,6 +160,7 @@ struct PreferencesView: View {
                 myrecord["quantity"] = item.quantity
                 myrecord["isAvailable"] = item.isAvailable
                 myrecord["name"] = item.name
+                myrecord["dateLastPurchased"] = nilDate
                 myrecords.append(myrecord)
                 print(item.name)
             }
@@ -270,32 +276,33 @@ struct PreferencesView: View {
 
     // delete all the items on and off the list before the locations
     func deleteAllData() {
-        //        print("Items On:  \(items.count)")
-        //        for item in items {
-        //            Item.delete(item)
-        //        }
-        //        print("Locations: \(locations.count)")
-        //        for location in locations {
-        //            Location.delete(location)
-        //        }
-//        print("Shoppers: \(modelshopper.shoppers.count)")
-//        for shopper in modelshopper.shoppers  {
-//
-//            modelshopper.delete(shopper: shopper) { rtnMessage in
-//                returnedMessage = rtnMessage
-//                print(returnedMessage)
-//            }
-//        }
-//        modelshopper.shoppers.removeAll()
-//        print("ShopLists: \(modelshoplist.shoplists.count)")
-//        for shoplist in modelshoplist.shoplists  {
-//
-//            modelshoplist.delete(shoplist: shoplist) { rtnMessage in
-//                returnedMessage = rtnMessage
-//                print(returnedMessage)
-//            }
-//        }
-//        modelshoplist.shoplists.removeAll()
+        // this will NOT delete the items for their respected model array
+        // after a delete, do a refresh to do that
+        MyDefaults().developmentDeleting = true
+        print("Shoppers: \(modelshopper.shoppers.count)")
+        for shopper in modelshopper.shoppers  {
+
+            modelshopper.delete(shopper: shopper) { rtnMessage in
+                returnedMessage = rtnMessage
+                print(returnedMessage)
+            }
+        }
+        print("ShopLists: \(modelshoplist.shoplists.count)")
+        for shoplist in modelshoplist.shoplists  {
+
+            modelshoplist.delete(shoplist: shoplist) { rtnMessage in
+                returnedMessage = rtnMessage
+                print(returnedMessage)
+            }
+        }
+        print("Locations: \(modellocation.locations.count)")
+        for location in modellocation.locations  {
+
+            modellocation.delete(location: location) { rtnMessage in
+                returnedMessage = rtnMessage
+                print(returnedMessage)
+            }
+        }
         for item in modelitem.items  {
 
             modelitem.delete(item: item) { rtnMessage in

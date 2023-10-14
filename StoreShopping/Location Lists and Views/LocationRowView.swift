@@ -22,7 +22,6 @@ struct LocationRowView: View {
 	var body: some View {
 		HStack {
 			// color bar at left (new in this code)
-            // FIXME: this color is on the DraftLocation which I am not using
 			location.color
                 .frame(width: 10, height: 36)
 			
@@ -43,7 +42,7 @@ struct LocationRowView: View {
 	} // end of body: some View
 	
 	func subtitle() -> String {
-        return "\(modelitem.countOfItemsOnList(listnumber: location.listnumber, locationnumber: location.locationnumber )) Total items"
+        return "\(modelitem.countOfItemsAtLocation(listnumber: location.listnumber, locationnumber: location.locationnumber )) Total items"
 	}
 	
 }

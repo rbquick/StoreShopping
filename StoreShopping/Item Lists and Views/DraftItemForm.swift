@@ -39,6 +39,7 @@ struct DraftItemForm: View {
     @Binding var quantity: Int
     @Binding var isAvailable: Bool
     @Binding var name: String
+    @Binding var dateLastPurchased: Date?
 
     // this used to implement confirmation alert process for deleting an Item.
     @State private var alertIsPresented = false
@@ -88,18 +89,17 @@ struct DraftItemForm: View {
                     }
                 }
 
-                if name != "New Item" {
+                if dateLastPurchased != nil {
                     HStack(alignment: .firstTextBaseline) {
                         SLFormLabelText(labelText: "Last Purchased: ")
-                        Text("\(Date())")
-                        // FIXME: where does this come from?
+                        Text("\(dateLastPurchased!)")
                     }
                 }
 
             } // end of Section 1
 
             // Section 2. Item Management (Delete), if present
-            if name != "New Item" {
+            if modelitem.isOnFile(item: item)  {
                 Section(header: Text("Shopping Item Management")) {
                     Button("Delete This Shopping Item") {
                         alertIsPresented = true

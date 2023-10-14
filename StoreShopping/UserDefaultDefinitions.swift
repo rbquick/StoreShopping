@@ -56,6 +56,10 @@ class MasterValues: ObservableObject {
 }
 class MyDefaults {
     let defaults = UserDefaults.standard
+    var developmentDeleting: Bool {
+        get { return defaults.bool(forKey: "developmentDeleting") }
+        set { defaults.setValue(newValue, forKey: "developmentDeleting") }
+    }
     var myMasterShopperName: String {
         get { return defaults.string(forKey: "myMasterShopperName") ?? "Sandra" }
         set { defaults.setValue(newValue, forKey: myMasterShopperName) }

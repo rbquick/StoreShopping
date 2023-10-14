@@ -19,7 +19,7 @@ struct CompactMainView: View {
             case .shoppingList:
                 ShoppingListView()
             case .purchasedList:
-                PurchasedItemsView(item: CKItemRec.example1())
+                PurchasedItemsView()
             case .locationList:
                 LocationsView()
             case .inStoreTimer:

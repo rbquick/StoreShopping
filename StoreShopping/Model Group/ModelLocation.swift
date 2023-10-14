@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 import CloudKit
 import Combine
 
@@ -48,23 +49,59 @@ class ModelLocation: ObservableObject {
             }
             .store(in: &cancellables)
         }
+    func getAll() {
+        tracing(function: "getAll")
+        let predicate = NSPredicate(value: true)
+        let sort = [NSSortDescriptor(key: "name", ascending: true)]
+        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Location.rawValue, sortDescriptions: sort)
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
 
+            } receiveValue: { [weak self] returnedItems in
+                self?.locations = returnedItems
+            }
+            .store(in: &cancellables)
+        }
     func getAll(shopper: Int, listnumber: Int) {
         tracing(function: "getAll")
+        getAllLocationsByListNumber(shopper: shopper, listnumber: listnumber) { completion in
+            self.locations = completion
+        }
+//        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+//        let sort = [NSSortDescriptor(key: "visitationOrder", ascending: true)]
+//        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Location.rawValue, sortDescriptions: sort)
+//            .receive(on: DispatchQueue.main)
+//            .sink { c in
+//                switch c {
+//                case .finished:
+//                    self.tracing(function: "getAll .finished")
+//                case .failure(let error):
+//                    self.tracing(function: "getAll error = \(error.localizedDescription)")
+//                }
+//
+//            } receiveValue: { [weak self] returnedItems in
+//                self?.locations = returnedItems
+//            }
+//            .store(in: &cancellables)
+        }
+    func getAllLocationsByListNumber(shopper: Int, listnumber: Int, _ completion: @escaping ([CKLocationRec]) -> ()) {
+        tracing(function: "getLocationsByListNumber")
         let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let sort = [NSSortDescriptor(key: "visitationOrder", ascending: true)]
+        var myLocations = [CKLocationRec]()
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Location.rawValue, sortDescriptions: sort)
             .receive(on: DispatchQueue.main)
             .sink { c in
                 switch c {
                 case .finished:
                     self.tracing(function: "getAll .finished")
+                    completion(myLocations)
                 case .failure(let error):
                     self.tracing(function: "getAll error = \(error.localizedDescription)")
                 }
 
             } receiveValue: { [weak self] returnedItems in
-                self?.locations = returnedItems
+                myLocations = returnedItems
             }
             .store(in: &cancellables)
         }
@@ -120,9 +157,18 @@ class ModelLocation: ObservableObject {
                 }
             } receiveValue: { success in
 #warning("condition this when developing delete verses single delete")
-                self.locations.remove(at: index)
+                if !MyDefaults().developmentDeleting {
+                    self.locations.remove(at: index)
+                }
         }
             .store(in: &cancellables)
+    }
+    func getColorByLocation(listnumber: Int64, locationNumber: Int64) -> Color {
+        let index = locations.firstIndex(where: { $0.listnumber == listnumber && $0.locationnumber == locationNumber })
+        if index == nil {
+            return Color.red
+        }
+        return locations[index!].color
     }
     func GetNextLocationNumber() -> Int64 {
         tracing(function: "GetNextlistnumber")

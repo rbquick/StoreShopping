@@ -54,7 +54,8 @@ struct ItemListView: View {
 	@State private var itemsChecked = [CKItemRec]()
 		
 	var body: some View {
-		List(itemSections) { section in
+        
+        List(itemSections) { section in
 			Section(header: sectionHeader(section: section)) {
 				ForEach(section.items) { item in
 					NavigationLink(value: item) {
@@ -70,22 +71,23 @@ struct ItemListView: View {
 				//} // end of ForEach
 		}  // end of List ... phew!
 		.listStyle(InsetGroupedListStyle())
-        // FIXME: navigation and delete button to fix
         .navigationDestination(for: CKItemRec.self) { item in
 			ModifyExistingItemView(item: item)
 		}
 		.animation(.default, value: itemSections)
-//		.confirmationDialog("Delete \'\(itemToDeleteName)\'?",
-//												isPresented: $isConfirmItemDeletePresented,
-//												titleVisibility: .visible) {
-//			Button("Yes", role: .destructive) {
-//				if let itemToDelete { // it should be non-nil if called!
-//					withAnimation { modelitem.delete(itemToDelete) }
-//				}
-//			}
-//		} message: {
-//			Text("Are you sure you want to delete the Item named \'\(itemToDeleteName)\'? This action cannot be undone.")
-//		}
+		.confirmationDialog("Delete \'\(itemToDeleteName)\'?",
+												isPresented: $isConfirmItemDeletePresented,
+												titleVisibility: .visible) {
+			Button("Yes", role: .destructive) {
+				if let itemToDelete { // it should be non-nil if called!
+                    withAnimation { modelitem.delete(item: itemToDelete) { completion in
+                        print("item deleted \(itemToDelete.name)")
+                    } }
+				}
+			}
+		} message: {
+			Text("Are you sure you want to delete the Item named \'\(itemToDeleteName)\'? This action cannot be undone.")
+		}
 			
 	} // end of body: some View
 	

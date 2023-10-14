@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct AddNewItemView: View {
+    @State var suggestedName: String
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(suggestedName)
     }
 }
 
 struct AddNewItemView_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewItemView()
+        AddNewItemView(suggestedName: "new item")
     }
 }

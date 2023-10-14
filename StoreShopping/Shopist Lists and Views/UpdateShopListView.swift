@@ -10,8 +10,8 @@ import SwiftUI
 struct UpdateShopListView: View {
 
     @EnvironmentObject var modelshoplist: ModelShopList
-    @EnvironmentObject var mastervalues: MasterValues
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var mastervalues: MasterValues
 
         // a draftLocation is initialized here, holding default values for
         // a new Location.
@@ -20,16 +20,16 @@ struct UpdateShopListView: View {
     @State var name = ""
     @State var addOrUpdateLiteral = ""
     var body: some View {
-//        NavigationStack {
-            DraftShopListForm(draftShopList: draftShopList, name: $name)
+        NavigationStack {
+            DraftShopListForm(shoplist: draftShopList, name: $name)
                 .navigationBarTitle(addOrUpdateLiteral)
                 .navigationBarTitleDisplayMode(.inline)
-                //.navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(true)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction, content: cancelButton)
                     ToolbarItem(placement: .confirmationAction) { saveButton().disabled(!draftShopList.canBeSaved) }
                 }
-//        }
+        }
         .onAppear() {
             name = draftShopList.name
             if mastervalues.isChangeShopListSheetPresented {
@@ -72,14 +72,18 @@ func saveButton() -> some View {
             for shoplist in modelshoplist.shoplists {
                 print(shoplist.name)
             }
-            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
+//            modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
             
         }
     }
 }
 
 struct UpdateShopListView_Previews: PreviewProvider {
+    @State var draftShopList: CKShopListRec
     static var previews: some View {
         UpdateShopListView(draftShopList: CKShopListRec(shopper: 1, listnumber: 1, name: "Costco")!)
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelItem())
+            .environmentObject(MasterValues())
     }
 }

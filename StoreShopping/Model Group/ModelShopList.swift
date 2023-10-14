@@ -102,10 +102,25 @@ class ModelShopList: ObservableObject {
                 }
             } receiveValue: { success in
 #warning("condition this when developing delete verses single delete")
-                self.shoplists.remove(at: index)
+                if !MyDefaults().developmentDeleting {
+                    self.shoplists.remove(at: index)
+                }
         }
             .store(in: &cancellables)
     }
+    func getAll() {
+        tracing(function: "getAll")
+        let predicate = NSPredicate(value: true)
+        let sort = [NSSortDescriptor(key: "name", ascending: true)]
+        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.ShopList.rawValue, sortDescriptions: sort)
+            .receive(on: DispatchQueue.main)
+            .sink { _ in
+
+            } receiveValue: { [weak self] returnedItems in
+                self?.shoplists = returnedItems
+            }
+            .store(in: &cancellables)
+        }
     func getAll(shopper: Int) {
         tracing(function: "getAll")
         let predicate = NSPredicate(format:"shopper == %@", NSNumber(value: shopper))
@@ -125,6 +140,8 @@ class ModelShopList: ObservableObject {
             }
             .store(in: &cancellables)
         }
+    // FIXME: this has to be from the DB since someone else could be adding one
+    //          fix all the models!!!
     func GetNextlistnumber() -> Int64 {
         tracing(function: "GetNextlistnumber")
         let lastnum = shoplists.map { $0.listnumber }.max()!
