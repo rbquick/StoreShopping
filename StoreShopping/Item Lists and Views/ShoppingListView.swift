@@ -14,6 +14,7 @@ struct ShoppingListView: View {
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
+    @EnvironmentObject var modelitemsection: ModelItemSection
 		// MARK: - @State and @AppStorage Properties
 	
 		// trigger to confirm moving all items off the shopping list
@@ -45,7 +46,7 @@ struct ShoppingListView: View {
             if modelitem.items.count == 0 {
 				EmptyListView(listName: "Shopping")
 			} else {
-				ItemListView(itemSections: itemSections,
+                ItemListView(itemSections: modelitemsection.itemSections,
 										 sfSymbolName: "purchased",
 										 multiSectionDisplay: $multiSectionDisplay)
 			}
@@ -61,7 +62,7 @@ struct ShoppingListView: View {
 			
 		} // end of VStack
         // rbq changed 2023-03-31 put the shoplist name instead of "Shopping"
-        .navigationBarTitle("\(MyDefaults().myMasterShopListName) List")
+        .navigationBarTitle("\(MyDefaults().myMasterShopListName) \(modelitemsection.currentSection)")
 		.toolbar {
 			ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 		}
@@ -115,68 +116,18 @@ struct ShoppingListView: View {
 	// MARK: - Helper Functions
     func handleOnAppear() {
         print("ShoppingListView.onappear \(MyDefaults().myMasterShopListName)")
+        modelitemsection.currentSection = "List"
+//        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
     }
 	
-	private var itemSections: [ItemSection] {
-		// the code in this section has been restructured in SL16 so that the
-		// view becomes responsive to any change in the order of Locations
-		// that might take place in the Locations tab.
-		// the key element is that we must use the  `locations` @FetchRequest
-		// definition in this code to determine the visitation order of items
-		// so that sectioning is done correctly.  if we relied solely on an item's
-		// visitationOrder property, SwiftUI would never update this view based
-		// on a change made in the Locations tab. (changing a visitation order
-		// in SL15 and earlier sent an objectWillChange() message to all associated
-		// Items, which will update any view that holds one of those objects as an
-		// @ObservedObject, but it won't trigger a @FetchRequest -- i.e., SL15
-		// did not handle this at all).
-		
-		// note that for a little more clarity, i have removed the use of a dictionary
-		// to group items on the list by location ... for SL16, let's keep it simple.
-		
-		// the first step is to construct pairs of the form (location: Location, items: [Item]) for
-		// items on the shopping list, where we match each location with its items on the list.
-		// (locations with no items on the list will be ignored, and we sort by visitationOrder).
-		// however, we do this based on the values in the `locations` @FetchRequest
-		// property and not the item's properties (e.g., location).
-        print("shoppinglistview.itemSection called mastername: \(MyDefaults().myMasterShopListName)")
-//        let cou = modelitem.items.reduce(0) { $0 + Int((($1.listnumber == 3) && ($1.locationnumber == 1)) ? 1 : 0)  }
-        let cou = modelitem.items.reduce(0) { $0 + ($1.onList ? 1 : 0)  }
-        print("items on list: \(cou)")
-        let locationItemPairs: [(location: CKLocationRec, items: [CKItemRec])] = modellocation.locations
-			.map({ location in
-                ( location, modelitem.items.filter({ $0.onList && $0.locationnumber == location.locationnumber }) )
-			})
-			.filter({ !$0.items.isEmpty })
-			.sorted(by: { $0.location.visitationOrder < $1.location.visitationOrder })
-
-			// if we have nothing on the list, there's nothing for ItemListView to show
-        guard modelitem.items.count > 0 else { return [] }
-
-		// now restructure from (Location, [Item]) to [ItemSection].
-		// for a single section, just lump all the items of all the pairs
-		// into a single list with flatMap.
-		if !multiSectionDisplay {
-			return [ItemSection(index: 1,
-                                title: "Items Remaining: \(modelitem.items.count)",
-                                items: locationItemPairs.flatMap{( $0.items )} .sorted(by: {$0.name < $1.name}))
-			]
-		}
-		// for multiple sections, we mostly have what we need, but must add an indexing
-		// (by agreement with ItemListView), so we'll handle that using .enumerated
-		return locationItemPairs.enumerated().map({ (index, pair) in
-			ItemSection(index: index + 1, title: pair.location.name, items: pair.items)
-		})
-
-	} // end of var itemSections: [ItemSection]
-		
+	
 		// MARK: - Sharing support
 	
 	private func shareContent() -> String {
 			// we share a straight-forward text description of the
 			// shopping list.  note: in SL16, we'll leverage the itemSections variable (!)
 		var message = "Items on your Shopping List: \n"
-		for section in itemSections {
+        for section in modelitemsection.itemSections {
 			message += "\n\(section.title)"
 			if !multiSectionDisplay {
 				message += ", \(section.items.count) item(s)"

@@ -42,7 +42,7 @@ struct LocationsView: View {
 			ToolbarItem(placement: .navigationBarLeading) { EditButton() }
 		}
         .sheet(isPresented: $mastervalues.isAddNewLocationSheetPresented) {
-            UpdateLocationView(draftLocation: CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: modellocation.GetNextLocationNumber(), name: "New Location", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!)
+            UpdateLocationView(draftLocation: CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: 9999, name: "New Location", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!)
 		}
         .sheet(isPresented: $mastervalues.isChangeLocationSheetPresented) {
             // FIXed:  have to find the location that is selected in the list

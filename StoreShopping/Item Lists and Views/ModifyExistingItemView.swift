@@ -80,18 +80,19 @@ struct ModifyExistingItemView: View {
                     ToolbarItem(placement: .navigationBarLeading, content: customBackButton)
                     ToolbarItem(placement: .confirmationAction) { saveButton() }
                 }
-                .onAppear() {
-                    shopper = item.shopper
-                    listnumber = item.listnumber
-                    locationnumber = item.locationnumber
-                    onList = item.onList
-                    quantity = item.quantity
-                    isAvailable = item.isAvailable
-                    name = item.name
-                    dateLastPurchased = item.dateLastPurchased
-                    addingNewItem = mastervalues.isAddNewItemSheetPresented
-                }
+
                 .interactiveDismissDisabled()
+        }
+        .onAppear() {
+            shopper = item.shopper
+            listnumber = item.listnumber
+            locationnumber = item.locationnumber
+            onList = item.onList
+            quantity = item.quantity
+            isAvailable = item.isAvailable
+            name = item.name
+            dateLastPurchased = item.dateLastPurchased
+            addingNewItem = mastervalues.isAddNewItemSheetPresented
         }
 	} // end of var body: some View
 	
@@ -129,7 +130,13 @@ struct ModifyExistingItemView: View {
         }
     }
     func change() {
-        guard let changerec = item.update(shopper: shopper, listnumber: listnumber, locationnumber: locationnumber, onList: onList, quantity: quantity, isAvailable: isAvailable, name: name, dateLastPurchased: dateLastPurchased) else { return }
+            guard var changerec = item.update(shopper: shopper, listnumber: listnumber, locationnumber: locationnumber, onList: onList, quantity: quantity, isAvailable: isAvailable, name: name, dateLastPurchased: dateLastPurchased) else { return }
+        if item.listnumber == listnumber {
+            changerec = CKItemRec(shopper: shopper, listnumber: listnumber, locationnumber: locationnumber, onList: onList, quantity: quantity, isAvailable: isAvailable, name: name, dateLastPurchased: dateLastPurchased)!
+            modelitem.delete(item: item) { completion in
+                print("item moved to a different list, completion is: \(completion)")
+            }
+        }
 
         modelitem.addOrUpdate(item: changerec) { completion in
             print(completion)

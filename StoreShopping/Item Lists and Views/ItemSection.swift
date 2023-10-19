@@ -41,7 +41,7 @@ one thing that's specific to this app ... i've added an index value for each sec
 
 struct ItemSection: Identifiable, Hashable {
 	var id: Int { hashValue }  // so, this will work with ForEach, as if using id: \.self 
-	let index: Int  // 1 for section 1, 2 for section 2, ...
-	let title: String
-	let items: [CKItemRec]
+	var index: Int  // 1 for section 1, 2 for section 2, ...
+	var title: String
+	var items: [CKItemRec]
 }

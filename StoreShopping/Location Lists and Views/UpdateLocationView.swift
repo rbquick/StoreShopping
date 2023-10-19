@@ -21,6 +21,8 @@ struct UpdateLocationView: View {
     @State var opacity = 0.5
     @State var addOrUpdateLiteral = ""
 
+    @State var locationnumber: Int64 = 0
+
 
     var body: some View {
         NavigationStack {
@@ -34,6 +36,12 @@ struct UpdateLocationView: View {
                 }
         }
         .onAppear() {
+            locationnumber = draftLocation.locationnumber
+            if locationnumber == 9999 {
+                modellocation.GetNextLocationNumber() { nextnumber in
+                    locationnumber = nextnumber
+                }
+            }
             name = draftLocation.name
             red = draftLocation.red
             green = draftLocation.green
@@ -65,7 +73,7 @@ struct UpdateLocationView: View {
         }
     }
     func change() {
-        guard let changeRec = draftLocation.update(shopper: draftLocation.shopper, listnumber: draftLocation.listnumber, locationnumber: draftLocation.locationnumber, name: name, visitationOrder: draftLocation.visitationOrder, red: red, green: green, blue: blue, opacity: opacity) else { return }
+        guard let changeRec = draftLocation.update(shopper: draftLocation.shopper, listnumber: draftLocation.listnumber, locationnumber: locationnumber, name: name, visitationOrder: draftLocation.visitationOrder, red: red, green: green, blue: blue, opacity: opacity) else { return }
         modellocation.addOrUpdate(location: changeRec) { rtnMessage in
             returnedMessage = rtnMessage
             print(returnedMessage)

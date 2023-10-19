@@ -285,7 +285,6 @@ extension CloudKitUtility {
         }
     }
 
-    // FIXME: this publicDB will come out of my Model once I am all done
     static private func add(operation: CKDatabaseOperation) {
         // TODO: why not this
         Model().publicDB.add(operation)

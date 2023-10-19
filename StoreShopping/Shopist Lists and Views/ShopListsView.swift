@@ -50,7 +50,7 @@ struct ShopListsView: View {
             ToolbarItem(placement: .navigationBarLeading, content: changeButton)
         }
         .sheet(isPresented: $mastervalues.isAddNewShopListSheetPresented) {
-            UpdateShopListView(draftShopList: CKShopListRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: modelshoplist.GetNextlistnumber(), name: "newList")!)
+            UpdateShopListView(draftShopList: CKShopListRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 9999, name: "newList")!)
         }
         .sheet(isPresented: $mastervalues.isChangeShopListSheetPresented) {
             UpdateShopListView(draftShopList: modelshoplist.getMaster())

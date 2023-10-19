@@ -127,6 +127,6 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
         return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 1, name: "example1", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
     static func unKnown() -> CKLocationRec {
-        return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 99, locationnumber: 1, name: "unKnown", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+        return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 3, locationnumber: 1, name: "unKnown", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
 }

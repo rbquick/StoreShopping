@@ -20,7 +20,6 @@ struct MainView: View {
                 // and it behaves better than before.
             RegularMainView()
         }
-
 //            .onAppear(perform: myOnAppear)
 	}
     func myOnAppear() {

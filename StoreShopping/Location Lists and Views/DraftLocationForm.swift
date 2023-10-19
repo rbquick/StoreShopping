@@ -192,7 +192,12 @@ struct SimpleItemsList: View {
 
 	@ViewBuilder
 	func ItemContextMenu(item: CKItemRec) -> some View {
-        Button(action: { modelitem.toggleOnListStatus(item: item) }) {
+        Button(action: {
+            modelitem.toggleOnListStatus(item: item) { completion in
+                print("moved to somewhere")
+            }
+
+        }) {
 			Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
 			Image(systemName: item.onList ? "purchased" : "cart")
 		}

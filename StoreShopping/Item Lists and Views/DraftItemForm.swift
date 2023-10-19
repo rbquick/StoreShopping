@@ -31,6 +31,7 @@ struct DraftItemForm: View {
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var modelitemsection: ModelItemSection
 
     @Binding var shopper: Int64
     @Binding var listnumber: Int64
@@ -43,6 +44,9 @@ struct DraftItemForm: View {
 
     // this used to implement confirmation alert process for deleting an Item.
     @State private var alertIsPresented = false
+    @State private var initialized = false
+
+    @State var mylocations = [CKLocationRec]()
 
     // MARK: - Computed Variables
 
@@ -72,7 +76,7 @@ struct DraftItemForm: View {
                 }
 
                 Picker(selection: $locationnumber, label: SLFormLabelText(labelText: "Location: ")) {
-                    ForEach(modellocation.locations) { location in
+                    ForEach(mylocations) { location in
                         Text("\(location.locationnumber): \(location.name)").tag(location.locationnumber)
                     }
                 }
@@ -112,8 +116,9 @@ struct DraftItemForm: View {
                         Button("Yes", role: .destructive) {
                             modelitem.delete(item: item) { completion in
                                 print(completion)
+                                modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+                                dismissAction?()
                             }
-                            dismissAction?()
 
                         }
                     } message: {
@@ -125,8 +130,28 @@ struct DraftItemForm: View {
             } // end of if ...
 
         } // end of Form
+        .onChange(of: listnumber) { newValue in
+            print("onchange listnumber:\(listnumber) location:\(locationnumber)")
+            if initialized {
+                modellocation.getAllLocationsByListNumber(shopper: Int(shopper), listnumber: Int(listnumber)) { completion in
+                    mylocations = completion
+                    locationnumber = mylocations[0].locationnumber
+                    print("onchange listnumber:\(listnumber) location:\(locationnumber) complete ")
+                }
+            }
+        }
+        .onAppear() {
+            print("onappear listnumber:\(listnumber) location:\(locationnumber)")
+            modellocation.getAllLocationsByListNumber(shopper: Int(shopper), listnumber: Int(listnumber)) { completion in
+                mylocations = completion
+                initialized = true
+                print("onappear listnumber:\(listnumber) location:\(locationnumber) complete")
+            }
+        }
+        .onDisappear() {
+            initialized = false
+        }
 
     } // end of var body: some View
-
 
 }

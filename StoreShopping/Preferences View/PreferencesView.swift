@@ -116,6 +116,9 @@ struct PreferencesView: View {
                 } // end of Section
                             } // end of if kShowDevTools
             } // end of Form
+        .onAppear() {
+            MyDefaults().developmentDeleting = false
+        }
                 .navigationBarTitle("Preferences")
                 .alert("Data Added", isPresented: $confirmDataHasBeenAdded) {
                     Button("OK", role: .none) { }

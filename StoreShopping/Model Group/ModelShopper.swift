@@ -14,11 +14,11 @@ class ModelShopper: ObservableObject {
 
     var cancellables = Set<AnyCancellable>()
 
-    var isTracing: Bool = false
+    var isTracing: Bool = true
     func tracing(function: String) {
         if isTracing {
-            print("ModelCourse \(function) ")
-            Logger.log("ModelCourse \(function)")
+            print("ModelShopper \(function) ")
+            Logger.log("ModelShopper \(function)")
         }
     }
     init() {
@@ -52,6 +52,8 @@ class ModelShopper: ObservableObject {
         }
             .store(in: &cancellables)
     }
+    // this get EVERYTHING...only use this in the development phase when loading data
+    // this getAll only exists since as of 2023-10-18, i'm not using these shoppers
     func getAll() {
         tracing(function: "ModelShopper.getAll")
         let predicate = NSPredicate(value: true)

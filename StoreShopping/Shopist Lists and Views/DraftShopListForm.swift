@@ -69,18 +69,7 @@ struct DraftShopListForm: View {
         .onAppear() {
            // name = draftShopList.name
         }
-        .sheet(isPresented: $isAddNewLocationSheetPresented) {
-            UpdateShopListView(draftShopList: CKShopListRec(shopper: shoplist.shopper, listnumber: modelshoplist.GetNextlistnumber(), name: "New List")!)
-        }
     } // end of var body: some View
-
-    var shoplistLocationCount: Int {
-        // FIXME: to be implemented
-//        if let shoplist = draftShopList.associatedShopList {
-//            return shoplist.locations.count
-//        }
-        return 0
-    }
 
     func LocationsListHeader() -> some View {
         HStack {

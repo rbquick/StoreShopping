@@ -19,6 +19,7 @@ struct UpdateShopListView: View {
     @State var returnedMessage: String = ""
     @State var name = ""
     @State var addOrUpdateLiteral = ""
+    @State var listnumber: Int64 = 1
     var body: some View {
         NavigationStack {
             DraftShopListForm(shoplist: draftShopList, name: $name)
@@ -31,6 +32,12 @@ struct UpdateShopListView: View {
                 }
         }
         .onAppear() {
+            listnumber = draftShopList.listnumber
+            if listnumber == 9999 {
+                modelshoplist.GetNextlistnumber() { nextnumber in
+                    listnumber = nextnumber
+                }
+            }
             name = draftShopList.name
             if mastervalues.isChangeShopListSheetPresented {
                 addOrUpdateLiteral = "Changing List "
@@ -61,8 +68,8 @@ func saveButton() -> some View {
     }
 }
     func change() {
-        
-        guard let changeRec = draftShopList.update(shopper: draftShopList.shopper, listnumber: draftShopList.listnumber, name: name) else { return }
+
+        guard let changeRec = draftShopList.update(shopper: draftShopList.shopper, listnumber: listnumber, name: name) else { return }
 
         modelshoplist.addOrUpdate(shoplist: changeRec) { rtnMessage in
             returnedMessage = rtnMessage

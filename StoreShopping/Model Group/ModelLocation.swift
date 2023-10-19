@@ -49,6 +49,7 @@ class ModelLocation: ObservableObject {
             }
             .store(in: &cancellables)
         }
+    // this get EVERYTHING...only use this in the development phase when loading data
     func getAll() {
         tracing(function: "getAll")
         let predicate = NSPredicate(value: true)
@@ -170,10 +171,28 @@ class ModelLocation: ObservableObject {
         }
         return locations[index!].color
     }
-    func GetNextLocationNumber() -> Int64 {
-        tracing(function: "GetNextlistnumber")
-        let lastnum = locations.map { $0.locationnumber }.max()!
-        return lastnum + 1
+    func GetNextLocationNumber(completion: @escaping (Int64) -> ()) {
+        tracing(function: "GetNextLocationNumber")
+        var lastLocationNumber = [CKLocationRec]()
+        let shopper = MyDefaults().myMasterShopperShopper
+        let listnumber = MyDefaults().myMasterShopListListnumber
+        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+        let sort = [NSSortDescriptor(key: "locationnumber", ascending: false)]
+        CloudKitUtility.fetchOne(predicate: predicate, recordType: myRecordType.Location.rawValue, sortDescriptions: sort, resultsLimit: 1)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.tracing(function: "GetNextLocationNumber returned \(lastLocationNumber.count)")
+                if lastLocationNumber.count == 0 {
+                   // self?.nextGameID = 0
+                    completion(1)
+                } else {
+                   // self?.nextGameID = lastGames[0].GameID + 1
+                    completion(lastLocationNumber[0].locationnumber + 1)
+                }
+            } receiveValue: { returnedItems in
+                lastLocationNumber = returnedItems
+            }
+            .store(in: &cancellables)
     }
     func GetLocationByName(for name: String) -> CKLocationRec {
         let trimmedString = name.trimmingCharacters(in: .whitespaces)

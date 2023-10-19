@@ -13,6 +13,7 @@ import SwiftUI
 class ModelItem: ObservableObject {
     @Published var items = [CKItemRec]()
 
+
     var cancellables = Set<AnyCancellable>()
 
     var isTracing: Bool = true
@@ -69,7 +70,7 @@ class ModelItem: ObservableObject {
                 switch c {
                 case .finished:
                     self.tracing(function: "delete .finished")
-                    completion("location deleted")
+                    completion("Item deleted")
                 case .failure(let error):
                     self.tracing(function: "delete error = \(error.localizedDescription)")
                     completion("delete error = \(error.localizedDescription)")
@@ -82,6 +83,7 @@ class ModelItem: ObservableObject {
         }
             .store(in: &cancellables)
     }
+    // this get EVERYTHING...only use this in the development phase when loading data
     func getAll() {
         tracing(function: "getAll")
         let predicate = NSPredicate(value: true)
@@ -124,10 +126,12 @@ class ModelItem: ObservableObject {
     }
     func moveAllItemsOffShoppingList() {
         for item in items.filter({ $0.onList }) {
-            toggleOnListStatus(item: item)
+            toggleOnListStatus(item: item) { completion in
+                print("moveAllItemsOffShoppingList")
+            }
         }
     }
-    func toggleOnListStatus(item: CKItemRec) {
+    func toggleOnListStatus(item: CKItemRec, _ completion: @escaping (String) -> ()) -> String {
         print(item.onList)
         let onlist = !item.onList
         var dateLastPurchased: Date? = item.dateLastPurchased
@@ -138,7 +142,9 @@ class ModelItem: ObservableObject {
 
         addOrUpdate(item: changerec) { _ in
             self.tracing(function: "toggleOnListStatus set to \(item.onList)")
+            completion("toggleOnListStatus set to \(item.onList)")
         }
+        return "toggleOnListStatus returned"
 //        item.record["onList"] = !item.record["onList"]
 //        Self.persistentStore.save()
     }

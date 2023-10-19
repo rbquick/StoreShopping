@@ -30,7 +30,9 @@ struct ItemListView: View {
 		// the symbol to show for an Item that is tapped
 	var sfSymbolName: String
 
+    @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var modelitemsection: ModelItemSection
 
 	// controls for opening a confirmation dialog to delete some Item:
 	// a Bool to trigger the dialog, plus a reference to the Item to be
@@ -53,43 +55,50 @@ struct ItemListView: View {
 		// completes -- and that deletion will again change this array and redraw.
 	@State private var itemsChecked = [CKItemRec]()
 		
-	var body: some View {
+    var body: some View {
         
-        List(itemSections) { section in
-			Section(header: sectionHeader(section: section)) {
-				ForEach(section.items) { item in
-					NavigationLink(value: item) {
-						SelectableItemRowView(item: item,
-                            selected: itemsChecked.contains(item),
-                            sfSymbolName: sfSymbolName) { handleItemTapped(item) }
-					}
-					.contextMenu {
-						ItemContextMenu(item: item)
-					} // end of contextMenu
-				} // end of ForEach
-			} // end of Section
-				//} // end of ForEach
-		}  // end of List ... phew!
-		.listStyle(InsetGroupedListStyle())
+        List(modelitemsection.itemSections) { section in
+            Section(header: sectionHeader(section: section)) {
+                ForEach(section.items) { item in
+                    NavigationLink(value: item) {
+                        SelectableItemRowView(item: item,
+                                              selected: itemsChecked.contains(item),
+                                              sfSymbolName: sfSymbolName) { handleItemTapped(item) }
+                    }
+                    .contextMenu {
+                        ItemContextMenu(item: item)
+                    } // end of contextMenu
+                } // end of ForEach
+            } // end of Section
+            //} // end of ForEach
+        }  // end of List ... phew!
+        .onAppear() {
+            modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+        }
+        .listStyle(InsetGroupedListStyle())
         .navigationDestination(for: CKItemRec.self) { item in
-			ModifyExistingItemView(item: item)
-		}
-		.animation(.default, value: itemSections)
-		.confirmationDialog("Delete \'\(itemToDeleteName)\'?",
-												isPresented: $isConfirmItemDeletePresented,
-												titleVisibility: .visible) {
-			Button("Yes", role: .destructive) {
-				if let itemToDelete { // it should be non-nil if called!
+            ModifyExistingItemView(item: item)
+        }
+        .animation(.default, value: modelitemsection.itemSections)
+        .confirmationDialog("Delete \'\(itemToDeleteName)\'?",
+                            isPresented: $isConfirmItemDeletePresented,
+                            titleVisibility: .visible) {
+            Button("Yes", role: .destructive) {
+                if let itemToDelete { // it should be non-nil if called!
                     withAnimation { modelitem.delete(item: itemToDelete) { completion in
+                        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
                         print("item deleted \(itemToDelete.name)")
-                    } }
-				}
-			}
-		} message: {
-			Text("Are you sure you want to delete the Item named \'\(itemToDeleteName)\'? This action cannot be undone.")
-		}
-			
-	} // end of body: some View
+                    }
+
+                    }
+
+                }
+            }
+        } message: {
+            Text("Are you sure you want to delete the Item named \'\(itemToDeleteName)\'? This action cannot be undone.")
+        }
+
+    } // end of body: some View
 	
 	// MARK: - Subviews
 	
@@ -117,7 +126,12 @@ struct ItemListView: View {
 	
 	@ViewBuilder
 	func ItemContextMenu(item: CKItemRec) -> some View {
-        Button(action: { modelitem.toggleOnListStatus(item: item) }) {
+        Button(action: {
+            modelitem.toggleOnListStatus(item: item) { completion in
+                print("moved item with context menu")
+            }
+
+        }) {
 				Text(item.onList ? "Move to Purchased" : "Move to ShoppingList")
 				Image(systemName: item.onList ? "purchased" : "cart")
 			}
@@ -147,8 +161,11 @@ struct ItemListView: View {
 				// and we queue the actual removal long enough to allow animation to finish
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
 				withAnimation {
-                    modelitem.toggleOnListStatus(item: item)
-					itemsChecked.removeAll(where: { $0 == item })
+                    modelitem.toggleOnListStatus(item: item) { completion in
+                        print(completion)
+                        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+                    }
+                    itemsChecked.removeAll(where: { $0 == item })
 				}
 			}
 		}

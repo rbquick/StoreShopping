@@ -140,11 +140,27 @@ class ModelShopList: ObservableObject {
             }
             .store(in: &cancellables)
         }
-    // FIXME: this has to be from the DB since someone else could be adding one
-    //          fix all the models!!!
-    func GetNextlistnumber() -> Int64 {
+
+    func GetNextlistnumber(completion: @escaping (Int64) -> ())  {
         tracing(function: "GetNextlistnumber")
-        let lastnum = shoplists.map { $0.listnumber }.max()!
-        return lastnum + 1
+        var lastListNumber = [CKShopListRec]()
+        let shopper = MyDefaults().myMasterShopperShopper
+        let predicate = NSPredicate(format:"shopper == %@", NSNumber(value: shopper))
+        let sort = [NSSortDescriptor(key: "listnumber", ascending: false)]
+        CloudKitUtility.fetchOne(predicate: predicate, recordType: myRecordType.ShopList.rawValue, sortDescriptions: sort, resultsLimit: 1)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.tracing(function: "GetNextGameID returned \(lastListNumber.count)")
+                if lastListNumber.count == 0 {
+                   // self?.nextGameID = 0
+                    completion(1)
+                } else {
+                   // self?.nextGameID = lastGames[0].GameID + 1
+                    completion(lastListNumber[0].listnumber + 1)
+                }
+            } receiveValue: { returnedItems in
+                lastListNumber = returnedItems
+            }
+            .store(in: &cancellables)
     }
 }
