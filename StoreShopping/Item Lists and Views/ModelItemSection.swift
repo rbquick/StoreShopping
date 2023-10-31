@@ -12,7 +12,7 @@ import ClockKit
 class ModelItemSection: ObservableObject {
     @Published var itemSections = [ItemSection]()
     @Published var currentSection = "List"
-    var multiSectionDisplay = true
+    @Published var multiSectionDisplay = true
     init() {
         setItemSection(locations: sampleLocations, items: sampleItems)
     }

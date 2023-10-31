@@ -111,14 +111,16 @@ struct ItemListView: View {
 				Spacer()
 				
 				SectionHeaderButton(selected: multiSectionDisplay == false, systemName: "list.bullet") {
-					multiSectionDisplay = false
+                    modelitemsection.multiSectionDisplay = false
+                    modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
 				}
 				
 				Rectangle()
 					.frame(width: 1, height: 20)
 				
 				SectionHeaderButton(selected: multiSectionDisplay == true, systemName: "list.bullet.indent") {
-					multiSectionDisplay = true
+                    modelitemsection.multiSectionDisplay = true
+                    modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
 				}
 			} // end of if ...
 		} // end of HStack

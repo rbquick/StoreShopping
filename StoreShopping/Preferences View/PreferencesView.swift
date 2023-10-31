@@ -39,7 +39,8 @@ struct PreferencesView: View {
     // user default.  true ==> turn of timer (counting) when in the background.
     @AppStorage(kDisableTimerWhenInBackgroundKey)
     private var suspendTimerWhenInBackground = kDisableTimerWhenInBackgroundDefaultValue
-
+    let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
+    @State var version = "Unknown"
     @EnvironmentObject var modelshopper: ModelShopper
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
@@ -63,7 +64,11 @@ struct PreferencesView: View {
                     Text("Suspend when in background")
                 }
             }
+            Section(header: Text("Version of App"),
+                    footer: Text("")) {
+                Text("version is \(version)")
 
+            }
             if kShowDevTools {
                 Section("Developer Actions") {
                     Text("Table Counts - Shoppers:\(modelshopper.shoppers.count) ShopLists:\(modelshoplist.shoplists.count) Locations: \(modellocation.locations.count) Items: \(modelitem.items.count)")
@@ -118,6 +123,7 @@ struct PreferencesView: View {
             } // end of Form
         .onAppear() {
             MyDefaults().developmentDeleting = false
+            version = nsObject as! String
         }
                 .navigationBarTitle("Preferences")
                 .alert("Data Added", isPresented: $confirmDataHasBeenAdded) {

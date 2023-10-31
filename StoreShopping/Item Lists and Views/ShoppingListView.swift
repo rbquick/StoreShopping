@@ -43,7 +43,7 @@ struct ShoppingListView: View {
  of the sectioning, so we push it off to a specialized subview.
  ---------- */
 			
-            if modelitem.items.count == 0 {
+            if modelitemsection.itemSections.count == 0 {
 				EmptyListView(listName: "Shopping")
 			} else {
                 ItemListView(itemSections: modelitemsection.itemSections,
@@ -55,7 +55,7 @@ struct ShoppingListView: View {
  and for non-empty lists, we have a few buttons at the bottom for bulk operations
  ---------- */
 			
-            if modelitem.items.count > 0 {
+            if modelitemsection.itemSections.count > 0 {
 				Divider()
 				ShoppingListBottomButtons()
 			} //end of if items.count > 0
