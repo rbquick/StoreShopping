@@ -13,10 +13,12 @@ struct ShopListRowView: View {
     var shoplist: CKShopListRec
 
     @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitem: ModelItem
 
     var tapAction: () -> ()
 
     @State var myCount = 0
+    @State var myOnlistCount = 0
 
     var body: some View {
         HStack {
@@ -46,12 +48,13 @@ struct ShopListRowView: View {
             .frame(width: 24, height: 24)
             .onTapGesture(perform: tapAction)
             VStack(alignment: .leading) {
-                Text(shoplist.name)
-                    .font(.headline)
-                Text("\(shoplist.listnumber)")
-                    .font(.headline)
-                Text(subtitle())
-                    .font(.caption)
+                HStack {
+                    Text(shoplist.name)
+                        .font(.headline)
+                
+                    Text(itemsOnList())
+                        .font(.subheadline)
+                }
             }
             // we do not show the location index in SL16
 //            if !location.isUnknownLocation {
@@ -60,7 +63,12 @@ struct ShopListRowView: View {
 //            }
         } // end of HStack
     } // end of body: some View
-
+    func itemsOnList() -> String {
+        modelitem.getACountOnList(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
+            myOnlistCount = count
+        }
+        return ("Items on shopping list: \(myOnlistCount)")
+    }
     func subtitle() -> String {
 
         modellocation.getACount(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
@@ -69,11 +77,14 @@ struct ShopListRowView: View {
         return "\(myCount) Locations"
 
     }
+
 }
 
-//struct ShopListRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShopListRowView(shoplist: CKShopListRec.example1(), tapAction: () -> ())
-//            .environmentObject(ModelLocation())
-//    }
-//}
+struct ShopListRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        ShopListRowView(shoplist: CKShopListRec.example1(), tapAction: {})
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+    }
+
+}

@@ -11,13 +11,13 @@ import ClockKit
 
 class ModelItemSection: ObservableObject {
     @Published var itemSections = [ItemSection]()
-    @Published var currentSection = "List"
+    @Published var currentSection = "Selection"
     @Published var multiSectionDisplay = true
     init() {
         setItemSection(locations: sampleLocations, items: sampleItems)
     }
 
-    var sampleItems = [CKItemRec.example1()]
+    var sampleItems = [CKItemRec.example1(), CKItemRec.example2()]
     var sampleLocations = [CKLocationRec.example1()]
 
     func setItemSection(locations: [CKLocationRec], items: [CKItemRec]) {
@@ -39,6 +39,7 @@ class ModelItemSection: ObservableObject {
 
             // if we have nothing on the list, there's nothing for ItemListView to show
         if items.count == 0  { itemSections = [ItemSection]() }
+        let nrItemsOnList = items.reduce(0) { $1.onList == true ? $0 + 1 : $0 }
 
         // now restructure from (Location, [Item]) to [ItemSection].
         // for a single section, just lump all the items of all the pairs
@@ -47,14 +48,14 @@ class ModelItemSection: ObservableObject {
         var itemsectionformated = [ItemSection]()
         if !multiSectionDisplay {
             itemsectionformated = [ItemSection(index: 1,
-                                title: "Items Remaining: \(items.count)",
+                                title: "Items Remaining: \(nrItemsOnList)",
                                 items: locationItemPairs.flatMap{( $0.items )} .sorted(by: {$0.name < $1.name}))
             ]
         } else {
             // for multiple sections, we mostly have what we need, but must add an indexing
             // (by agreement with ItemListView), so we'll handle that using .enumerated
             itemsectionformated =  locationItemPairs.enumerated().map({ (index, pair) in
-                ItemSection(index: index + 1, title: pair.location.name, items: pair.items)
+                ItemSection(index: index + 1, title: "\(pair.items.count) Items on  \(pair.location.name)", items: pair.items)
             })
         }
         itemSections = itemsectionformated

@@ -75,6 +75,9 @@ struct CKItemRec: Identifiable, Hashable,  CloudKitableProtocol {
     var canBeSaved: Bool { name.count > 0 }
 
     static func example1() -> CKItemRec {
-        return CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: false, quantity: 1, isAvailable: true, name: "New Item", dateLastPurchased: Date())!
+        return CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: false, quantity: 1, isAvailable: true, name: "1st Example", dateLastPurchased: Date())!
+    }
+    static func example2() -> CKItemRec {
+        return CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: false, quantity: 1, isAvailable: true, name: "2nd Example", dateLastPurchased: Date())!
     }
 }

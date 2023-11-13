@@ -12,6 +12,7 @@ import SwiftUI
 
 class ModelItem: ObservableObject {
     @Published var items = [CKItemRec]()
+    @Published var itemsFinishedCount = 0
 
 
     var cancellables = Set<AnyCancellable>()
@@ -85,7 +86,7 @@ class ModelItem: ObservableObject {
     }
     // this get EVERYTHING...only use this in the development phase when loading data
     func getAll() {
-        tracing(function: "getAll")
+        tracing(function: "getAll()")
         let predicate = NSPredicate(value: true)
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
@@ -98,7 +99,7 @@ class ModelItem: ObservableObject {
             .store(in: &cancellables)
         }
     func getAll(shopper: Int, listnumber: Int) {
-        tracing(function: "getAll")
+        tracing(function: "getAll(shopper: \(shopper), listnumber: \(listnumber))")
 //        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
@@ -108,12 +109,36 @@ class ModelItem: ObservableObject {
                 switch c {
                 case .finished:
                     self.tracing(function: "getAll .finished")
+                    self.itemsFinishedCount = self.items.count
                 case .failure(let error):
                     self.tracing(function: "getAll error = \(error.localizedDescription)")
                 }
 
             } receiveValue: { [weak self] returnedItems in
                 self?.items = returnedItems
+            }
+            .store(in: &cancellables)
+        }
+    func getACountOnList(shopper: Int, listnumber: Int, _ competion: @escaping (Int) -> ()) {
+        tracing(function: "getACount shopper: \(shopper) listnumber: \(listnumber)")
+        var myRecs = [CKItemRec]()
+        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+//        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+        let sort = [NSSortDescriptor(key: "name", ascending: true)]
+        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
+            .receive(on: DispatchQueue.main)
+            .sink { c in
+                switch c {
+                case .finished:
+                    self.tracing(function: "getACount .finished")
+//                    modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 }
+                    competion(myRecs.reduce(0) { $1.onList == true ? $0 + 1 : $0 })
+                case .failure(let error):
+                    self.tracing(function: "getACount error = \(error.localizedDescription)")
+                }
+
+            } receiveValue: { [weak self] returnedItems in
+                myRecs = returnedItems
             }
             .store(in: &cancellables)
         }

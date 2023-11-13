@@ -39,7 +39,7 @@ struct PurchasedItemsView: View {
 
 
 		// items currently checked, on their way to the shopping list
-	@State private var itemsChecked = [CKItemRec]()
+//	@State private var itemsChecked = [CKItemRec]()
 	
 		// number of days in the past for the first section when using sections
 	@AppStorage(kPurchasedMostRecentlyKey)
@@ -77,6 +77,7 @@ struct PurchasedItemsView: View {
         .searchable(text: $modelitemsection.searchText)
         .onSubmit(of: .search) {
             modelitemsection.mysearchText = modelitemsection.searchText
+            modelitemsection.searchText = ""
             mastervalues.isAddNewItemSheetPresented = true
         }
         // have to do this whereas before, it was being done by simply accessing the variable
@@ -91,7 +92,7 @@ struct PurchasedItemsView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
 		}
         .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
-            ModifyExistingItemView(item: CKItemRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: 1, onList: true, quantity: 1, isAvailable: true, name: modelitemsection.mysearchText, dateLastPurchased: nil)!)
+            ModifyExistingItemView(item: CKItemRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: modellocation.locations[0].locationnumber, onList: true, quantity: 1, isAvailable: true, name: modelitemsection.mysearchText, dateLastPurchased: nil)!)
 //			AddNewItemView(suggestedName: mysearchText)
 		}
 	} // end of var body: some View
@@ -101,6 +102,7 @@ struct PurchasedItemsView: View {
 		// makes a simple "+" to add a new item.  yapping on the button triggers a sheet to add a new item.
 	func addNewButton() -> some View {
 		NavBarImageButton("plus") {
+            modelitemsection.mysearchText = "New Item"
             mastervalues.isAddNewItemSheetPresented = true
 		}
 	}
@@ -108,6 +110,7 @@ struct PurchasedItemsView: View {
 		// MARK: - Helper Functions
 	
 	func handleOnAppear() {
+        print("PurchasedItemsView.onappear modelitem.items.count is \(modelitem.items.count)")
         modelitemsection.searchText = "" // clear searchText, get a clean screen
         myshoplist = MyDefaults().myMasterShopperName
         modelitemsection.currentSection = "Selection"

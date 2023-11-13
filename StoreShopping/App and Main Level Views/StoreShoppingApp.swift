@@ -56,23 +56,23 @@ struct StoreShoppingApp: App {
                 .environmentObject(modellocation)
                 .environmentObject(modelitem)
                 .environmentObject(modelitemsection)
-                .onChange(of: scenePhase) { newPhase in
-                    if modelitem.items.count > 0 {
-                        if newPhase == .active {
-                            print("Active")
-                            // refresh all the tables on active
-                            // use the items array since it will have the proper
-                            //   shopper / list for the refresh
-                            modelshoplist.getAll(shopper: Int(modelitem.items[0].shopper))
-                            modellocation.getAll(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber))
-                            modelitem.getAll(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber))
-                        } else if newPhase == .inactive {
-                            print("Inactive")
-                        } else if newPhase == .background {
-                            print("Background")
-                        }
-                    }
-                }
+//                .onChange(of: scenePhase) { newPhase in
+//                    if modelitem.items.count > 0 {
+//                        if newPhase == .active {
+//                            print("Active")
+//                            // refresh all the tables on active
+//                            // use the items array since it will have the proper
+//                            //   shopper / list for the refresh
+//                            modelshoplist.getAll(shopper: Int(modelitem.items[0].shopper))
+//                            modellocation.getAll(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber))
+//                            modelitem.getAll(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber))
+//                        } else if newPhase == .inactive {
+//                            print("Inactive")
+//                        } else if newPhase == .background {
+//                            print("Background")
+//                        }
+//                    }
+//                }
 		}
 	}
     // rbq added 2023-03-31

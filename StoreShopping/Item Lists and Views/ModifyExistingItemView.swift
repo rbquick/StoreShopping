@@ -30,6 +30,8 @@ struct ModifyExistingItemView: View {
 	
 	@Environment(\.dismiss) private var dismiss: DismissAction
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitemsection: ModelItemSection
     @EnvironmentObject var mastervalues: MasterValues
 	
 		// an editable copy of the Item's data -- a "draft," if you will
@@ -139,6 +141,7 @@ struct ModifyExistingItemView: View {
         }
 
         modelitem.addOrUpdate(item: changerec) { completion in
+            modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
             print(completion)
         }
     }

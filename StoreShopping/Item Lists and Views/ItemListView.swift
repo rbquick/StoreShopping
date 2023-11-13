@@ -110,7 +110,7 @@ struct ItemListView: View {
 			if section.index == 1 {
 				Spacer()
 				
-				SectionHeaderButton(selected: multiSectionDisplay == false, systemName: "list.bullet") {
+                SectionHeaderButton(selected: modelitemsection.multiSectionDisplay == false, systemName: "list.bullet") {
                     modelitemsection.multiSectionDisplay = false
                     modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
 				}
@@ -118,7 +118,7 @@ struct ItemListView: View {
 				Rectangle()
 					.frame(width: 1, height: 20)
 				
-				SectionHeaderButton(selected: multiSectionDisplay == true, systemName: "list.bullet.indent") {
+                SectionHeaderButton(selected: modelitemsection.multiSectionDisplay == true, systemName: "list.bullet.indent") {
                     modelitemsection.multiSectionDisplay = true
                     modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
 				}
@@ -175,3 +175,12 @@ struct ItemListView: View {
 		
 }
 
+struct ItemListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ItemListView(itemSections: ModelItemSection().itemSections, sfSymbolName: "purchased", multiSectionDisplay: .constant(false))
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+            .environmentObject(MasterValues())
+            .environmentObject(ModelItemSection())
+    }
+}

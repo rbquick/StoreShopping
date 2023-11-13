@@ -36,7 +36,7 @@ struct ShopListsView: View {
                 Section(header: Text("Shopping Lists: \(modelshoplist.shoplists.count) with the master list being \(modelshoplist.MasterShopListName)")) {
                     ForEach(modelshoplist.shoplists) { shoplist in
 //                        NavigationLink(value: shoplist) {
-                            ShopListRowView(shoplist: shoplist) { setmasterShopList(shoplist: shoplist) }
+                            ShopListRowView(shoplist: shoplist) { tapAction(shoplist: shoplist) }
 //                        }
                     }
                 }
@@ -56,6 +56,10 @@ struct ShopListsView: View {
             UpdateShopListView(draftShopList: modelshoplist.getMaster())
         }
         .onAppear { handleOnAppear() }
+    }
+    func tapAction(shoplist: CKShopListRec) {
+        setmasterShopList(shoplist: shoplist)
+        modelitem.getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: Int(shoplist.listnumber))
     }
     func handleOnAppear() {
 

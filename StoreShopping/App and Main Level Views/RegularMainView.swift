@@ -45,10 +45,10 @@ struct RegularMainView: View {
 		} detail: {
 			NavigationStack {
 				switch selection {
-					case .shoppingList:
-						ShoppingListView()
-					case .purchasedList:
+                    case .purchasedList:
                     PurchasedItemsView()
+                case .shoppingList:
+                    ShoppingListView()
                     // rbq added 2023-04-01
                     case .shopListList:
                         ShopListsView()

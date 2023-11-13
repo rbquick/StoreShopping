@@ -26,6 +26,7 @@ struct ShoppingListView: View {
 	@AppStorage(kShoppingListIsMultiSectionKey)
 	private var multiSectionDisplay: Bool = kShoppingListIsMultiSectionDefaultValue
 
+    @State private var myshoplist = ""
 		// MARK: - BODY
 
 	var body: some View {
@@ -43,8 +44,8 @@ struct ShoppingListView: View {
  of the sectioning, so we push it off to a specialized subview.
  ---------- */
 			
-            if modelitemsection.itemSections.count == 0 {
-				EmptyListView(listName: "Shopping")
+            if 0 == modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 } {
+                EmptyListView(listName: "Shopping\(modelitem.itemsFinishedCount)")
 			} else {
                 ItemListView(itemSections: modelitemsection.itemSections,
 										 sfSymbolName: "purchased",
@@ -67,7 +68,7 @@ struct ShoppingListView: View {
 			ToolbarItem(placement: .navigationBarTrailing, content: trailingButtons)
 		}
         .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
-            ModifyExistingItemView(item: CKItemRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: 1, onList: true, quantity: 1, isAvailable: true, name: "New Item", dateLastPurchased: nil)!)
+            ModifyExistingItemView(item: CKItemRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: Int64(MyDefaults().myMasterShopListListnumber), locationnumber: modellocation.locations[0].locationnumber, onList: true, quantity: 1, isAvailable: true, name: "New Item", dateLastPurchased: nil)!)
 		}
         .onAppear(perform: handleOnAppear)
 		
@@ -116,6 +117,8 @@ struct ShoppingListView: View {
 	// MARK: - Helper Functions
     func handleOnAppear() {
         print("ShoppingListView.onappear \(MyDefaults().myMasterShopListName)")
+        print("ShoppingListViel.onappear modelitem.items.count is \(modelitem.items.count)")
+        myshoplist = MyDefaults().myMasterShopperName
         modelitemsection.currentSection = "List"
 //        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
     }
