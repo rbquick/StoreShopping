@@ -63,10 +63,17 @@ struct RegularMainView: View {
 				}
 			}
 		}
+        .onAppear(perform: myOnAppear)
 		.navigationSplitViewStyle(.balanced)
 			// note: this modifier comes from Stewart Lynch.  see NavAppearanceModifier.swift
 		.navigationAppearance(backgroundColor: .systemGray6,
 													foregroundColor: .systemBlue,
 													tintColor: .systemBlue)
 	}
+    func myOnAppear() {
+        if let storedSelection = UserDefaults.standard.value(forKey: "SelectedNavigationItem") as? Int,
+           let retrievedSelection = NavigationItem(rawValue: storedSelection) {
+            selection = retrievedSelection
+        }
+    }
 }

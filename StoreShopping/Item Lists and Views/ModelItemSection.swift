@@ -64,7 +64,8 @@ class ModelItemSection: ObservableObject {
     // the usual @State variables to handle the Search field
 @Published var searchText: String = ""
 @Published var mysearchText: String = ""
-    var historyMarker =  3
+    @AppStorage(kPurchasedMostRecentlyKey)
+    private var historyMarker = kPurchasedMostRecentlyDefaultValue
 
     private func setPurchasedSection(locations: [CKLocationRec], items: [CKItemRec]) {
         print("setPurchasedSection locations:\(locations.count) Items:\(items.count)")

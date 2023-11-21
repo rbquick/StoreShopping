@@ -28,6 +28,7 @@ struct CompactMainView: View {
                 PreferencesView()
             }
         }
+
         Spacer()
         Text("Selected Tag: \(selection.rawValue)")
             .foregroundColor(.clear)
@@ -55,10 +56,15 @@ struct CompactMainView: View {
         .frame(height: 40)
 
         .onAppear(perform: myOnAppear)
+        
 
     } // end of var body: some View
     func myOnAppear() {
         navPath.removeLast(navPath.count)
+        if let storedSelection = UserDefaults.standard.value(forKey: "SelectedNavigationItem") as? Int,
+           let retrievedSelection = NavigationItem(rawValue: storedSelection) {
+            selection = retrievedSelection
+        }
     }
 }
 

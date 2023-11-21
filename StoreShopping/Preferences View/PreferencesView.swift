@@ -28,7 +28,7 @@ struct PreferencesView: View {
     @State private var locationsAdded: Int = 0
     @State private var itemsAdded: Int = 0
     @State private var returnedMessage: String = ""
-
+    @State private var selectedItem: NavigationItem = .shoppingList
 
 
 
@@ -56,6 +56,19 @@ struct PreferencesView: View {
                         Text("\(historyMarker)")
                     }
                 }
+            }
+            Section(header: Text("Select the initial opening screen"),
+                    footer: Text("This will be the 1st screen you see when opening the application")) {
+                Picker("Select an item", selection: $selectedItem) {
+                            ForEach(NavigationItem.allCases, id: \.self) { item in
+                                Text(item.description)
+                                    .tag(item)
+                            }
+                        }
+                    .pickerStyle(DefaultPickerStyle())
+                    .onChange(of: selectedItem) { newValue in
+                        saveInitialView(newValue)
+                    }
             }
 
             Section(header: Text("Timer Preference"),
@@ -124,6 +137,10 @@ struct PreferencesView: View {
         .onAppear() {
             MyDefaults().developmentDeleting = false
             version = nsObject as! String
+            if let storedSelection = UserDefaults.standard.value(forKey: "SelectedNavigationItem") as? Int,
+               let retrievedSelection = NavigationItem(rawValue: storedSelection) {
+                selectedItem = retrievedSelection
+            }
         }
                 .navigationBarTitle("Preferences")
                 .alert("Data Added", isPresented: $confirmDataHasBeenAdded) {
@@ -132,6 +149,12 @@ struct PreferencesView: View {
                     Text("Sample data for the app (\(shoplistsAdded) shopping lists \(locationsAdded) locations and \(itemsAdded) shopping items) have been added.")
                 }
         } // end of var body: some View
+
+    func saveInitialView(_ selectedItem: NavigationItem) {
+        // Perform your saving logic here, e.g., saving to UserDefaults or a database
+        // Example:
+        UserDefaults.standard.set(selectedItem.rawValue, forKey: "SelectedNavigationItem")
+    }
 
             func loadSampleData() {
                 let currentShopListCount = modelshoplist.shoplists.count // rbq added 2023-03-31

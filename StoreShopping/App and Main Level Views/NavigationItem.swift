@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-enum NavigationItem: Int {
+enum NavigationItem: Int, CaseIterable {
     case shoppingList
     case purchasedList
     case shopListList           // rbq added 2023-04-01
@@ -18,5 +18,21 @@ enum NavigationItem: Int {
     case preferences
     var tag: Int {
         return self.rawValue
+    }
+    var description: String {
+        switch self {
+        case .shoppingList:
+            return "Shopping List"
+        case .purchasedList:
+            return "Purchased List"
+        case .shopListList:
+            return "Lists Available"
+        case .locationList:
+            return "Location List"
+        case .inStoreTimer:
+            return "In-Store Timer"
+        case .preferences:
+            return "Preferences"
+        }
     }
 }
