@@ -72,6 +72,10 @@ struct ItemListView: View {
             } // end of Section
             //} // end of ForEach
         }  // end of List ... phew!
+        .refreshable {
+            modelitem.getAll()
+            modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+        }
         .onAppear() {
             modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
         }

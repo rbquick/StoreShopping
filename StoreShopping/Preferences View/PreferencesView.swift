@@ -8,7 +8,7 @@
 
 import SwiftUI
 import CloudKit
-
+import Combine
 struct PreferencesView: View {
 
     // this view is a restructured version of the older DevToolTab to now handle
@@ -79,7 +79,7 @@ struct PreferencesView: View {
             }
             Section(header: Text("Version of App"),
                     footer: Text("")) {
-                Text("version is \(version)")
+                Text("version is \(version)  for user: \(modelshopper.icloudname)")
 
             }
             if kShowDevTools {
@@ -141,6 +141,8 @@ struct PreferencesView: View {
                let retrievedSelection = NavigationItem(rawValue: storedSelection) {
                 selectedItem = retrievedSelection
             }
+
+
         }
                 .navigationBarTitle("Preferences")
                 .alert("Data Added", isPresented: $confirmDataHasBeenAdded) {

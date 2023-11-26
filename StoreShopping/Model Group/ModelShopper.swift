@@ -11,6 +11,9 @@ import Combine
 
 class ModelShopper: ObservableObject {
     @Published var shoppers = [CKShopperRec]()
+    @Published var icloudname = ""
+    @Published var icloudPermission = false
+    @Published var error = ""
 
     var cancellables = Set<AnyCancellable>()
 
@@ -24,7 +27,41 @@ class ModelShopper: ObservableObject {
     init() {
         tracing(function: "init")
         getAll()
+
+        CloudKitUtility.requestApplicationPermission()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished:
+                    self?.mydiscoverUserIdentity()
+                case .failure(let error):
+                    self?.error = error.localizedDescription
+                    print(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] value in
+                self?.icloudPermission = value
+            }
+                .store(in: &cancellables)
+
+
+
 //        previewData()
+    }
+    func mydiscoverUserIdentity() {
+        CloudKitUtility.discoverUserIdentity()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] completion in
+                switch completion {
+                case .finished:
+                    break
+                case .failure(let error):
+                    self?.error = error.localizedDescription
+                    print(error.localizedDescription)
+                }
+            } receiveValue: { [weak self] value in
+                self?.icloudname = value
+            }
+                .store(in: &cancellables)
     }
     func previewData() {
         shoppers.removeAll()

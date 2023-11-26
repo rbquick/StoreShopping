@@ -45,7 +45,9 @@ struct ShoppingListView: View {
  ---------- */
 			
             if 0 == modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 } {
-                EmptyListView(listName: "Shopping\(modelitem.itemsFinishedCount)")
+                EmptyListView(listName:
+                                "Shopping")
+//                                "Shopping\(modelitem.itemsFinishedCount)")
 			} else {
                 ItemListView(itemSections: modelitemsection.itemSections,
 										 sfSymbolName: "purchased",
@@ -56,7 +58,7 @@ struct ShoppingListView: View {
  and for non-empty lists, we have a few buttons at the bottom for bulk operations
  ---------- */
 			
-            if modelitemsection.itemSections.count > 0 {
+            if 0 != modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 } {
 				Divider()
 				ShoppingListBottomButtons()
 			} //end of if items.count > 0
@@ -144,3 +146,12 @@ struct ShoppingListView: View {
 	}
 	
 } // end of ShoppingListBottomButtons
+struct ShoppingListView_Previews: PreviewProvider {
+    static var previews: some View {
+        ShoppingListView()
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+            .environmentObject(MasterValues())
+            .environmentObject(ModelItemSection())
+    }
+}

@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import CloudKit
 
+// this Codable is ONLY for importing data and not used elsewhere in the app
 struct ShopperCodable: Codable, Identifiable {
     enum CodingKeys: CodingKey {
         case shopper

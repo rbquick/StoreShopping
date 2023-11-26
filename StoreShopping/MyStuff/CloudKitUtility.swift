@@ -22,6 +22,9 @@ class CloudKitUtility {
 
     @Published var isSignedIntoIcloud: Bool = false
     @Published var error: String = ""
+    @Published var givenName: String = ""
+    @Published var familyName: String = ""
+
     var cancellables = Set<AnyCancellable>()
 //    let container: CKContainer
 //    let publicDB: CKDatabase
@@ -143,10 +146,13 @@ class CloudKitUtility {
             }
         }
     }
-    
-    static private func discoverUserIdentity(id: CKRecord.ID, completion: @escaping (Result<String, Error>) -> ()) {
+    // i would like to change this from a static private to just a private so i can put the names within it
+     static private func discoverUserIdentity(id: CKRecord.ID, completion: @escaping (Result<String, Error>) -> ()) {
         CKContainer.default().discoverUserIdentity(withUserRecordID: id) { returnedIdentity, returnedError in
             if let name = returnedIdentity?.nameComponents?.givenName {
+                // this would be where you would put those names
+//                self.givenName = name
+//                self.familyName = returnedIdentity?.nameComponents?.familyName ?? ""
                 completion(.success(name))
             } else {
                 completion(.failure(CloudKitError.iCloudCouldNotDiscoverUser))

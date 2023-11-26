@@ -13,7 +13,6 @@
 		710BDFEE2AC862A30036F339 /* CKShopListRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFED2AC862A30036F339 /* CKShopListRec.swift */; };
 		710BDFF02AC864770036F339 /* MyRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFEF2AC864770036F339 /* MyRecordTypes.swift */; };
 		710BDFF22AC86A790036F339 /* ModelShopList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF12AC86A790036F339 /* ModelShopList.swift */; };
-		710BDFF42AC86E3B0036F339 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF32AC86E3B0036F339 /* Logger.swift */; };
 		710BDFF62AC874A70036F339 /* ShopListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF52AC874A70036F339 /* ShopListRowView.swift */; };
 		710BDFF82AC8775E0036F339 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF72AC8775E0036F339 /* Model.swift */; };
 		710BDFFB2AC8A65F0036F339 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFFA2AC8A65F0036F339 /* PreferencesView.swift */; };
@@ -44,6 +43,7 @@
 		71A204472AD5648000B05A55 /* NavBarImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A204462AD5648000B05A55 /* NavBarImageButton.swift */; };
 		71C2BE332AD93FDC0015619B /* PurchasedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2BE322AD93FDC0015619B /* PurchasedItemsView.swift */; };
 		71C2BE352AD943C20015619B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2BE342AD943C20015619B /* String+Extensions.swift */; };
+		71C3FEBC2B0FC9E100AB0CA6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */; };
 		71C7233D2AD1D0E300881694 /* CKItemRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C7233C2AD1D0E300881694 /* CKItemRec.swift */; };
 		71C7233F2AD1DD2800881694 /* items.json in Resources */ = {isa = PBXBuildFile; fileRef = 71C7233E2AD1DD2800881694 /* items.json */; };
 		71C723412AD207AF00881694 /* ModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C723402AD207AF00881694 /* ModelItem.swift */; };
@@ -69,7 +69,6 @@
 		710BDFED2AC862A30036F339 /* CKShopListRec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKShopListRec.swift; sourceTree = "<group>"; };
 		710BDFEF2AC864770036F339 /* MyRecordTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRecordTypes.swift; sourceTree = "<group>"; };
 		710BDFF12AC86A790036F339 /* ModelShopList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelShopList.swift; sourceTree = "<group>"; };
-		710BDFF32AC86E3B0036F339 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		710BDFF52AC874A70036F339 /* ShopListRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopListRowView.swift; sourceTree = "<group>"; };
 		710BDFF72AC8775E0036F339 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		710BDFFA2AC8A65F0036F339 /* PreferencesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		71A204462AD5648000B05A55 /* NavBarImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarImageButton.swift; sourceTree = "<group>"; };
 		71C2BE322AD93FDC0015619B /* PurchasedItemsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchasedItemsView.swift; sourceTree = "<group>"; };
 		71C2BE342AD943C20015619B /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		71C7233C2AD1D0E300881694 /* CKItemRec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CKItemRec.swift; sourceTree = "<group>"; };
 		71C7233E2AD1DD2800881694 /* items.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = items.json; sourceTree = "<group>"; };
 		71C723402AD207AF00881694 /* ModelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelItem.swift; sourceTree = "<group>"; };
@@ -143,6 +143,7 @@
 		710BDFE52AC82CFE0036F339 /* Model Group */ = {
 			isa = PBXGroup;
 			children = (
+				71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */,
 				710BDFF72AC8775E0036F339 /* Model.swift */,
 				710BDFF12AC86A790036F339 /* ModelShopList.swift */,
 				71CA430D2ACADB6500E5457A /* ModelShopper.swift */,
@@ -170,7 +171,6 @@
 				71A204462AD5648000B05A55 /* NavBarImageButton.swift */,
 				710BE0012AC980670036F339 /* View+Extensions.swift */,
 				71C2BE342AD943C20015619B /* String+Extensions.swift */,
-				710BDFF32AC86E3B0036F339 /* Logger.swift */,
 				710BDFE82AC82EEB0036F339 /* CloudKitUtility.swift */,
 			);
 			path = MyStuff;
@@ -384,7 +384,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7113EFAD2ACC223F00EA143B /* DraftShopListForm.swift in Sources */,
-				710BDFF42AC86E3B0036F339 /* Logger.swift in Sources */,
 				71CED15A2AC7663800F5E4E9 /* CompactMainView.swift in Sources */,
 				710BDFE42AC827740036F339 /* ShopListsView.swift in Sources */,
 				71A2043B2AD550FD00B05A55 /* ItemListView.swift in Sources */,
@@ -393,6 +392,7 @@
 				719609992ACF4A65008706EE /* ModelLocation.swift in Sources */,
 				71CED15B2AC7663800F5E4E9 /* NavigationItem.swift in Sources */,
 				71627F482AD61CF400E3EF8B /* DraftItemForm.swift in Sources */,
+				71C3FEBC2B0FC9E100AB0CA6 /* Logger.swift in Sources */,
 				71CED1732AC76D1F00F5E4E9 /* TimerView.swift in Sources */,
 				71CED1752AC76E0700F5E4E9 /* UserDefaultDefinitions.swift in Sources */,
 				710BDFF62AC874A70036F339 /* ShopListRowView.swift in Sources */,
