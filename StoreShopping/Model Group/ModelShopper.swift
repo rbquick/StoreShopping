@@ -67,7 +67,43 @@ class ModelShopper: ObservableObject {
         shoppers.removeAll()
         shoppers.append(CKShopperRec.example1())
     }
+    func validName(name: String) -> Bool {
+        let index = shoppers.firstIndex(where: { $0.name == name })
+        return index != nil 
+    }
+    func getShopper(name: String) -> CKShopperRec {
+        let index = shoppers.firstIndex(where: { $0.name == name })
+        if index != nil {
+            return shoppers[index!]
+        } else {
+            return CKShopperRec.UNKNOWN_SHOPPER!
+        }
 
+    }
+    func addOrUpdate(shopper: CKShopperRec, _ completion: @escaping (String) -> ()) {
+       tracing(function: "addOrUpdate")
+        let index = shoppers.firstIndex(where: { $0.id == shopper.id })
+
+        CloudKitUtility.update(item: shopper)
+            .receive(on: DispatchQueue.main)
+            .sink { c in
+                switch c {
+                case .finished:
+                    self.tracing(function: "add .finished")
+                    completion("Shopper added")
+                case .failure(let error):
+                    self.tracing(function: "add error = \(error.localizedDescription)")
+                }
+            } receiveValue: { [weak self] returnedItems in
+                if index != nil {
+                    self?.shoppers[index ?? 0] = shopper
+                } else {
+                    self?.shoppers.append(shopper)
+                }
+            }
+            .store(in: &cancellables)
+
+    }
     func delete(shopper: CKShopperRec, completion: @escaping (String) -> ()) {
         tracing(function: "delete")
         guard let index = shoppers.firstIndex(where: { $0.id == shopper.id }) else { return }

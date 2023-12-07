@@ -41,6 +41,7 @@ struct PreferencesView: View {
     private var suspendTimerWhenInBackground = kDisableTimerWhenInBackgroundDefaultValue
     let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
     @State var version = "Unknown"
+    @EnvironmentObject var modelauthview: AuthViewModel
     @EnvironmentObject var modelshopper: ModelShopper
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
@@ -79,8 +80,23 @@ struct PreferencesView: View {
             }
             Section(header: Text("Version of App"),
                     footer: Text("")) {
-                Text("version is \(version)  for user: \(modelshopper.icloudname)")
-
+            HStack{
+                Text("version is \(version) ")
+                VStack {
+                    Text("for user:   \(modelauthview.currentUser == nil ? "" : modelauthview.currentUser!.name) #\(modelauthview.currentUser == nil ? 0 : modelauthview.currentUser!.shopper)")
+                    Text("for icloud: \(modelshopper.icloudname)")
+                }
+                .font(.subheadline)
+            }
+                HStack {
+                    Spacer()
+                    Button("Logout") {
+                        modelauthview.currentUser = nil
+                        modelauthview.userSession = nil
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
+                }
             }
             if kShowDevTools {
                 Section("Developer Actions") {
@@ -357,5 +373,6 @@ struct PreferencesView_Previews: PreviewProvider {
             .environmentObject(ModelShopList())
             .environmentObject(ModelLocation())
             .environmentObject(ModelItem())
+            .environmentObject(AuthViewModel())
     }
 }

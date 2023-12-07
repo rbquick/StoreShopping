@@ -19,13 +19,16 @@ and out of the background.
 struct StoreShoppingApp: App {
 	
 //	@StateObject var persistentStore: PersistentStore
+    // since adding the login, the AuthViewModel HAS to be first to initialize
+    // it is setting things that are required on the initial screen presentation
+    @StateObject var authviewModel = AuthViewModel()
     @StateObject var mastervalues = MasterValues()
     @StateObject var modelshopper = ModelShopper()
     @StateObject var modelshoplist = ModelShopList()
     @StateObject var modellocation = ModelLocation()
     @StateObject var modelitem = ModelItem()
     @StateObject var modelitemsection = ModelItemSection()
-	@StateObject var inStoreTimer = InStoreTimer()
+    @StateObject var inStoreTimer = InStoreTimer()
 
     @Environment(\.scenePhase) var scenePhase
 	let resignActivePublisher =
@@ -48,14 +51,19 @@ struct StoreShoppingApp: App {
 	
 	var body: some Scene {
 		WindowGroup {
-			MainView()
-                .environmentObject(inStoreTimer)
-                .environmentObject(mastervalues)
-                .environmentObject(modelshopper)
-                .environmentObject(modelshoplist)
-                .environmentObject(modellocation)
-                .environmentObject(modelitem)
-                .environmentObject(modelitemsection)
+            Group {
+                    MainView()
+                    .environmentObject(authviewModel)
+                    .environmentObject(inStoreTimer)
+                    .environmentObject(mastervalues)
+                    .environmentObject(modelshopper)
+                    .environmentObject(modelshoplist)
+                    .environmentObject(modellocation)
+                    .environmentObject(modelitem)
+                    .environmentObject(modelitemsection)
+                
+            }
+
 //                .onChange(of: scenePhase) { newPhase in
 //                    if modelitem.items.count > 0 {
 //                        if newPhase == .active {

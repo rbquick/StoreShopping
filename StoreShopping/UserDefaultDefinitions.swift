@@ -79,13 +79,48 @@ class MyDefaults {
         set { defaults.setValue(newValue, forKey: kMasterShopListNameKey) }
     }
     var myMasterShopperShopper: Int {
-        get { let thisdefault = defaults.integer(forKey: "myMasterShopperShopper")
-            if thisdefault == 0 {
-                return 1
-            } else {
-                return thisdefault
-            }
+        get {
+            let thisdefault = aShopperRec
+            return Int(thisdefault.shopper)
         }
-        set { defaults.setValue(newValue, forKey: "myMasterShopperShopper") }
+        set {
+            var ShopperRec = aShopperRec
+            ShopperRec.shopper = Int64(newValue)
+            aShopperRec = ShopperRec
+        }
+
+//        get { let thisdefault = defaults.integer(forKey: "myMasterShopperShopper")
+//            if thisdefault == 0 {
+//                return 1
+//            } else {
+//                return thisdefault
+//            }
+//        }
+//        set { defaults.setValue(newValue, forKey: "myMasterShopperShopper") }
+    }
+    func removemyMasterShopperShopper() {
+        defaults.removeObject(forKey: kMasterShopperKey)
+    }
+    var aShopperRec: ShopperCodable {
+        get {
+            guard let savedData = defaults.data(forKey: kMasterShopperKey) else  {
+                print("error from guard aUser get")
+                return ShopperCodable.UNKNOWN_SHOPPER
+            }
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode(ShopperCodable.self, from: savedData) {
+                return decoded
+            }
+            print("error from decoded aUser get")
+            return ShopperCodable.UNKNOWN_SHOPPER
+        }
+        set {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(newValue) {
+                let UserJson = encoded
+                defaults.setValue(UserJson, forKey: kMasterShopperKey)
+            }
+
+        }
     }
 }

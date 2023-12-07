@@ -39,9 +39,15 @@ class ModelShopList: ObservableObject {
     init() {
         MasterShopListName = MyDefaults().myMasterShopListName
         MasterShopListListnumber = MyDefaults().myMasterShopListListnumber
-        getAll(shopper: MyDefaults().myMasterShopperShopper)
+        createShoplists()
+
         tracing(function: "init")
 //        previewData()
+    }
+    func createShoplists() {
+
+        shoplists.removeAll()
+        getAll(shopper: MyDefaults().myMasterShopperShopper)
     }
     func previewData() {
         shoplists.removeAll()
@@ -59,7 +65,7 @@ class ModelShopList: ObservableObject {
         let index = shoplists.firstIndex(where: { $0.shopper == shopper && $0.listnumber == listnumber })
         return index != nil
     }
-    func addOrUpdate(shoplist: CKShopListRec, _ completion: @escaping (String) -> ()) -> String {
+    func addOrUpdate(shoplist: CKShopListRec, _ completion: @escaping (String) -> ()) {
        tracing(function: "addOrUpdate")
         let message = "Adding shoplist"
         print(shoplist.id)
@@ -84,7 +90,6 @@ class ModelShopList: ObservableObject {
             }
             .store(in: &cancellables)
 
-        return message
     }
     func delete(shoplist: CKShopListRec, completion: @escaping (String) -> ()) {
         tracing(function: "delete")
@@ -101,12 +106,16 @@ class ModelShopList: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-#warning("condition this when developing delete verses single delete")
+#warning("RBQ:condition this when developing delete verses single delete")
                 if !MyDefaults().developmentDeleting {
                     self.shoplists.remove(at: index)
                 }
         }
             .store(in: &cancellables)
+    }
+    func getShopListName(listnumber: Int64) -> String {
+        guard let index = shoplists.firstIndex(where: { $0.listnumber == listnumber }) else { return "Unknown"}
+        return shoplists[index].name
     }
     func getAll() {
         tracing(function: "getAll")

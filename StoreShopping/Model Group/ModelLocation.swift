@@ -15,7 +15,7 @@ class ModelLocation: ObservableObject {
 
     var cancellables = Set<AnyCancellable>()
 
-    var isTracing: Bool = false
+    var isTracing: Bool = true
     func tracing(function: String) {
         if isTracing {
             print("ModelLocation \(function) ")
@@ -24,9 +24,12 @@ class ModelLocation: ObservableObject {
     }
 
     init() {
+        createLocations()
+    }
+    func createLocations() {
+        locations.removeAll()
         getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
     }
-
 
     func getACount(shopper: Int, listnumber: Int, _ competion: @escaping (Int) -> ()) {
         tracing(function: "getACount")
@@ -44,7 +47,7 @@ class ModelLocation: ObservableObject {
                     self.tracing(function: "getACount error = \(error.localizedDescription)")
                 }
 
-            } receiveValue: { [weak self] returnedItems in
+            } receiveValue: { returnedItems in
                 myRecs = returnedItems
             }
             .store(in: &cancellables)
@@ -101,7 +104,7 @@ class ModelLocation: ObservableObject {
                     self.tracing(function: "getAll error = \(error.localizedDescription)")
                 }
 
-            } receiveValue: { [weak self] returnedItems in
+            } receiveValue: { returnedItems in
                 myLocations = returnedItems
             }
             .store(in: &cancellables)
@@ -116,7 +119,7 @@ class ModelLocation: ObservableObject {
             position += 1
         }
     }
-    func addOrUpdate(location: CKLocationRec, _ completion: @escaping (String) -> ()) -> String {
+    func addOrUpdate(location: CKLocationRec, _ completion: @escaping (String) -> ()) {
        tracing(function: "addOrUpdate")
         let message = "Adding location"
         let index = locations.firstIndex(where: { $0.id == location.id })
@@ -140,7 +143,6 @@ class ModelLocation: ObservableObject {
             }
             .store(in: &cancellables)
 
-        return message
     }
     func delete(location: CKLocationRec, completion: @escaping (String) -> ()) {
         tracing(function: "delete")
@@ -157,7 +159,7 @@ class ModelLocation: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-#warning("condition this when developing delete verses single delete")
+#warning("RBQ:condition this when developing delete verses single delete")
                 if !MyDefaults().developmentDeleting {
                     self.locations.remove(at: index)
                 }

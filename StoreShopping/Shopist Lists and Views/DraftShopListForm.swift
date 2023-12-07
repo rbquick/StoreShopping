@@ -7,16 +7,20 @@
 //
 
 import SwiftUI
+import CloudKit
 
 struct DraftShopListForm: View {
 
     @State var shoplist: CKShopListRec
     @EnvironmentObject var modelshoplist: ModelShopList
+    @EnvironmentObject var modellocation: ModelLocation
+    @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
+    @Binding public var copyFromLocations: Bool
+    @Binding public var copyFromItems: Bool
+    @Binding public var copyFromListNumber: Int64
 
-    // trigger for adding a new item at this Location
-    @State private var isAddNewLocationSheetPresented = false
     // trigger for confirming deletion of the associated Location (if the
     // draft represents an existing Location that is not the Unknown Location)
     @State private var isConfirmDeleteShopListPresented = false
@@ -24,7 +28,11 @@ struct DraftShopListForm: View {
     // definition of whether we can offer a deletion option in this view
     // (it's a real location that's not the unknown shoplist)
     // rbq 2023-04-01 don't really care if this is unknown
+    // rbq 2023-12-06 this is not being setup for deletion
     var shoplistCanBeDeleted: Bool = true
+
+
+
 
     var body: some View {
         Form {
@@ -34,6 +42,35 @@ struct DraftShopListForm: View {
                     TextField("Shop List name", text: $name)
                 }
             } // end of Section 1
+
+            if mastervalues.isAddNewShopListSheetPresented {
+                Section(header: Text("New List Locations and Items")) {
+                    VStack(spacing: 30) {
+                        HStack {
+                            SLFormLabelText(labelText: copyFromLocations ? "Select a location" : "Copy Locations from list?")
+
+                            if copyFromLocations {
+                                Picker(selection: $copyFromListNumber, label: SLFormLabelText(labelText: "")) {
+                                    ForEach(modelshoplist.shoplists) { list in
+                                        Text("\(list.listnumber): \(list.name)").tag(list.listnumber)
+                                    }
+                                }
+                            }
+                            Toggle(isOn: $copyFromLocations) {
+//                                Text("")
+                            }
+                        }
+                        if copyFromLocations {
+                            HStack {
+                                SLFormLabelText(labelText: "Items: ")
+                                Toggle(isOn: $copyFromItems) {
+                                    Text(copyFromItems ? "Items will be copied" : "NO Items will be copied")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             // Section 2:
 
@@ -46,9 +83,19 @@ struct DraftShopListForm: View {
                     .myCentered()
                     .confirmationDialog("Delete \'\(shoplist.name)\'?", isPresented: $isConfirmDeleteShopListPresented, titleVisibility: .visible) {
                         Button("Yes", role: .destructive) {
-                                modelshoplist.delete(shoplist: shoplist) { returnvalue in
-                                    print("shoplist deleted")
+                            modelshoplist.delete(shoplist: shoplist) { returnvalue in
+                                print("shoplist deleted")
+                                var myLocations = [CKRecord.ID]()
+                                for location in modellocation.locations {
+                                    myLocations.append(location.record.recordID)
                                 }
+                                CloudKitUtility.deleteAllRecords(myLocations)
+                                var myItems = [CKRecord.ID]()
+                                for item in modelitem.items {
+                                    myItems.append(item.record.recordID)
+                                }
+                                CloudKitUtility.deleteAllRecords(myItems)
+                            }
                             mastervalues.isChangeShopListSheetPresented = false
                         }
                     } message: {
@@ -58,13 +105,13 @@ struct DraftShopListForm: View {
             } // end of Section 2
 
             // Section 3: Locations assigned to this ShopList, if we are editing a ShopList
-//            if let associatedShopList = draftShopList.associatedShopList {
+            if mastervalues.isChangeLocationSheetPresented {
                 Section(header: LocationsListHeader()) {
                     VStack {
                         SimpleLocationsList(shoplist: shoplist)
                     }
                 }
-//            }
+            }
         } // end of Form
         .onAppear() {
            // name = draftShopList.name
@@ -81,43 +128,18 @@ struct DraftShopListForm: View {
     }
 }
 
-// this is a quick way to see a list of items associated
-// with a given location that we're editing.
-struct SimpleLocationsList: View {
 
-    @State var shoplist: CKShopListRec
-    @EnvironmentObject var modellocation: ModelLocation
-
-    @State var holdLoctions =  [CKLocationRec.example1()]
-    // myCount MUST be shown on the view and set when the holdLocations is set
-    //         if this is not done, nothing happens in this view
-    @State var myCount = 0
-    var body: some View {
-
-            Text("There are \(myCount) locations on file")
-
-
-            List {
-                ForEach(holdLoctions) { location in
-                    LocationRowView(location: location) { setChangeLocation(location: location) }
-                }
-            }
-
-        .onAppear() {
-            modellocation.getAllLocationsByListNumber(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { completion in
-                holdLoctions = completion
-                myCount = holdLoctions.count
-                print(completion.count)
-            }
-        }
-    }
-    func setChangeLocation(location: CKLocationRec) {
-
+struct DraftShopListForm_Previews: PreviewProvider {
+    static var previews: some View {
+        DraftShopListForm(shoplist: CKShopListRec.example1(), name: .constant("new"), copyFromLocations: .constant(false), copyFromItems: .constant(false), copyFromListNumber: .constant(1))
+//            .environmentObject(MasterValues())
+            .environmentObject({ () -> MasterValues in
+                let envObj = MasterValues()
+                envObj.isAddNewShopListSheetPresented = true
+                return envObj
+            }() )
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
     }
 }
-
-//struct DraftShopListForm_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DraftShopListForm()
-//    }
-//}

@@ -26,11 +26,15 @@ class ModelItem: ObservableObject {
     }
 
     init() {
+        createItems()
+    }
+    func createItems() {
+        items.removeAll()
         getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
     }
 
 
-    func addOrUpdate(item: CKItemRec, _ completion: @escaping (String) -> ()) -> String {
+    func addOrUpdate(item: CKItemRec, _ completion: @escaping (String) -> ()) {
        tracing(function: "addOrUpdate")
         let index = items.firstIndex(where: { $0.id == item.id } )
         var message = "Adding item"
@@ -56,7 +60,6 @@ class ModelItem: ObservableObject {
             }
             .store(in: &cancellables)
 
-        return message
     }
     func countOfItemsAtLocation(listnumber: Int64, locationnumber: Int64) -> Int {
         let cou = items.reduce(0) { $0 + Int((($1.listnumber == listnumber) && ($1.locationnumber == locationnumber)) ? 1 : 0)  }
@@ -77,7 +80,7 @@ class ModelItem: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-#warning("condition this when developing delete verses single delete")
+#warning("RBQ:condition this when developing delete verses single delete")
                 if !MyDefaults().developmentDeleting {
                     self.items.remove(at: index)
                 }
@@ -99,23 +102,31 @@ class ModelItem: ObservableObject {
             .store(in: &cancellables)
         }
     func getAll(shopper: Int, listnumber: Int) {
-        tracing(function: "getAll(shopper: \(shopper), listnumber: \(listnumber))")
+        tracing(function: "getAll")
+        getAllItemsByListnumber(shopper: shopper, listnumber: listnumber) { completion in
+            self.items = completion
+        }
+    }
+    func getAllItemsByListnumber(shopper: Int, listnumber: Int, _ completion: @escaping ([CKItemRec]) -> ()) {
+        tracing(function: "getAllItemByListnumber(shopper: \(shopper), listnumber: \(listnumber))")
 //        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
+        var myItems = [CKItemRec]()
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
             .receive(on: DispatchQueue.main)
             .sink { c in
                 switch c {
                 case .finished:
                     self.tracing(function: "getAll .finished")
-                    self.itemsFinishedCount = self.items.count
+                    self.itemsFinishedCount = myItems.count
+                    completion(myItems)
                 case .failure(let error):
                     self.tracing(function: "getAll error = \(error.localizedDescription)")
                 }
 
-            } receiveValue: { [weak self] returnedItems in
-                self?.items = returnedItems
+            } receiveValue: { returnedItems in
+                myItems = returnedItems
             }
             .store(in: &cancellables)
         }
@@ -137,7 +148,7 @@ class ModelItem: ObservableObject {
                     self.tracing(function: "getACount error = \(error.localizedDescription)")
                 }
 
-            } receiveValue: { [weak self] returnedItems in
+            } receiveValue: { returnedItems in
                 myRecs = returnedItems
             }
             .store(in: &cancellables)
@@ -152,12 +163,12 @@ class ModelItem: ObservableObject {
     func moveAllItemsOffShoppingList() {
         for item in items.filter({ $0.onList }) {
             toggleOnListStatus(item: item) { completion in
-                print("moveAllItemsOffShoppingList")
+                print("moveAllItemsOffShoppingList \(completion)")
             }
         }
     }
-    func toggleOnListStatus(item: CKItemRec, _ completion: @escaping (String) -> ()) -> String {
-        print(item.onList)
+    func toggleOnListStatus(item: CKItemRec, _ completion: @escaping (String) -> ())  {
+        tracing(function: "StringtoggleOnListStatus item status: \(item.onList)")
         let onlist = !item.onList
         var dateLastPurchased: Date? = item.dateLastPurchased
         if !onlist {
@@ -169,7 +180,7 @@ class ModelItem: ObservableObject {
             self.tracing(function: "toggleOnListStatus set to \(item.onList)")
             completion("toggleOnListStatus set to \(item.onList)")
         }
-        return "toggleOnListStatus returned"
+//        return "toggleOnListStatus returned"
 //        item.record["onList"] = !item.record["onList"]
 //        Self.persistentStore.save()
     }

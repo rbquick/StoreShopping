@@ -25,6 +25,14 @@ struct ShopperCodable: Codable, Identifiable {
         shopper = shoplist.shopper
         name = shoplist.name
     }
+    init(ashopper: Int64, aname: String) {
+        shopper = ashopper
+        name = aname
+    }
+}
+extension ShopperCodable {
+    static var MOCK_SHOPPER = ShopperCodable(ashopper: 1, aname: "MOCK SHOPPER")
+    static var UNKNOWN_SHOPPER = ShopperCodable(ashopper: 1, aname: "UNKNOWN_SHOPPER")
 }
 
 struct CKShopperRec: Identifiable, Hashable, CloudKitableProtocol {
@@ -37,11 +45,11 @@ struct CKShopperRec: Identifiable, Hashable, CloudKitableProtocol {
     init?(record: CKRecord) {
         self.id = record.recordID
         self.shopper = record["shopper"] as? Int64 ?? 99
-        self.name = record["name"] as? String ?? kMasterShopListNameDefaultValue
+        self.name = record["name"] as? String ?? "UnKnown"
         self.record = record
     }
     init?(shopper: Int64, name: String) {
-        let record = CKRecord(recordType: myRecordType.ShopList.rawValue)
+        let record = CKRecord(recordType: myRecordType.Shopper.rawValue)
         record["shopper"] = shopper
         record["name"] = name
         self.init(record: record)
@@ -49,5 +57,10 @@ struct CKShopperRec: Identifiable, Hashable, CloudKitableProtocol {
     static func example1() -> CKShopperRec {
         return CKShopperRec(shopper: 1, name: kMasterShopListNameDefaultValue)!
     }
+}
+
+extension CKShopperRec {
+    static var MOCK_SHOPPER = CKShopperRec(shopper: 1, name: "MOCK SHOPPER")
+    static var UNKNOWN_SHOPPER = CKShopperRec(shopper: 1, name: "UNKNOWN_SHOPPER")
 }
 

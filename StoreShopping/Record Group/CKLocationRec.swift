@@ -80,6 +80,26 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
         record["opacity"] = opacity
         self.init(record: record)
     }
+
+    enum StructNames: String, CaseIterable {
+        case shopper = "shopper"
+        case listnumber = "listnumber"
+        case locationnumber = "locationnumber"
+        case name = "name"
+        case visitationOrder = "visitationOrder"
+        case red = "red"
+        case green = "green"
+        case blue = "blue"
+        case opacity = "opacity"
+    }
+    let fieldNames = StructNames.allCases.map { $0.rawValue }
+    var csvHeadingLine:String {
+        return csvHeading(fieldNames: fieldNames)
+    }
+
+
+
+
     // simplified test of "is the unknown location"
     var isUnknownLocation: Bool { visitationOrder == kUnknownLocationVisitationOrder }
 
@@ -124,7 +144,7 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
     var canBeSaved: Bool { name.count > 0 }
 
     static func example1() -> CKLocationRec {
-        return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 1, name: "example1", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+        return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 1, name: "xxexample1", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
     static func unKnown() -> CKLocationRec {
         return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 3, locationnumber: 1, name: "unKnown", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
