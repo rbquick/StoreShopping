@@ -73,8 +73,11 @@ struct ItemListView: View {
             //} // end of ForEach
         }  // end of List ... phew!
         .refreshable {
-            modelitem.getAll()
-            modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+            modelitem.getAllItemsByListnumber(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber)) { items in
+                modelitem.items = items
+                modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+            }
+
         }
         .onAppear() {
             modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
@@ -84,9 +87,8 @@ struct ItemListView: View {
             ModifyExistingItemView(item: item)
         }
         .animation(.default, value: modelitemsection.itemSections)
-        .confirmationDialog("Delete \'\(itemToDeleteName)\'?",
-                            isPresented: $isConfirmItemDeletePresented,
-                            titleVisibility: .visible) {
+        .alert("Delete \'\(itemToDeleteName)\'?",
+                            isPresented: $isConfirmItemDeletePresented) {
             Button("Yes", role: .destructive) {
                 if let itemToDelete { // it should be non-nil if called!
                     withAnimation { modelitem.delete(item: itemToDelete) { completion in

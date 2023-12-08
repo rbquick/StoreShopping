@@ -99,7 +99,10 @@ struct UpdateShopListView: View {
 
         modelshoplist.addOrUpdate(shoplist: changeRec) { rtnMessage in
             returnedMessage = rtnMessage
-            setmasterShopList(shoplist: changeRec)
+            // do NOT set a new master shoplist here.  the locations and items are not set up yet
+            // so they will all be empty until a new location (like this one) is selected
+            // thus my solution to not using async await
+//            setmasterShopList(shoplist: changeRec)
 
             if copyFromLocations {
                 modellocation.getAllLocationsByListNumber(shopper: Int(changeRec.shopper), listnumber: Int(copyFromListNumber)) { fromLocations in
@@ -113,7 +116,7 @@ struct UpdateShopListView: View {
                         modelitem.getAllItemsByListnumber(shopper: Int(changeRec.shopper), listnumber: Int(copyFromListNumber)) { fromItems in
                             var toItems = [CKRecord]()
                             for item in fromItems {
-                                let newItem = CKItemRec(shopper: changeRec.shopper, listnumber: changeRec.listnumber, locationnumber: item.locationnumber, onList: item.onList, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: nil)
+                                let newItem = CKItemRec(shopper: changeRec.shopper, listnumber: changeRec.listnumber, locationnumber: item.locationnumber, onList: false, quantity: item.quantity, isAvailable: true, name: item.name, dateLastPurchased: nil)
                                 toItems.append(newItem!.record)
                             }
                             CloudKitUtility.saveAllRecords(toItems)

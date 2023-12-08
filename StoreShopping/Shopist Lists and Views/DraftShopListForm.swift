@@ -15,6 +15,7 @@ struct DraftShopListForm: View {
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var modelitemsection: ModelItemSection
     @EnvironmentObject var mastervalues: MasterValues
     @Binding public var name: String
     @Binding public var copyFromLocations: Bool
@@ -74,14 +75,14 @@ struct DraftShopListForm: View {
 
             // Section 2:
 
-            if shoplistCanBeDeleted && mastervalues.isChangeShopListSheetPresented {
+            if modelshoplist.shoplists.count > 1 && mastervalues.isChangeShopListSheetPresented {
                 Section(header: Text("ShopList Management")) {
                     Button("Delete This ShopList") {
                         isConfirmDeleteShopListPresented = true // trigger confirmation dialog
                     }
                     .foregroundColor(Color.red)
                     .myCentered()
-                    .confirmationDialog("Delete \'\(shoplist.name)\'?", isPresented: $isConfirmDeleteShopListPresented, titleVisibility: .visible) {
+                    .alert("Delete \'\(shoplist.name)\'?", isPresented: $isConfirmDeleteShopListPresented) {
                         Button("Yes", role: .destructive) {
                             modelshoplist.delete(shoplist: shoplist) { returnvalue in
                                 print("shoplist deleted")
@@ -95,6 +96,15 @@ struct DraftShopListForm: View {
                                     myItems.append(item.record.recordID)
                                 }
                                 CloudKitUtility.deleteAllRecords(myItems)
+                                MyDefaults().myMasterShopListListnumber = Int(modelshoplist.shoplists[0].listnumber)
+                                MyDefaults().myMasterShopListName = modelshoplist.shoplists[0].name
+                                modellocation.getAllLocationsByListNumber(shopper: MyDefaults().myMasterShopperShopper, listnumber: Int(modelshoplist.shoplists[0].listnumber)) { locations in
+                                    modellocation.locations = locations
+                                    modelitem.getAllItemsByListnumber(shopper: MyDefaults().myMasterShopperShopper, listnumber: Int(modelshoplist.shoplists[0].listnumber)) { items in
+                                        modelitem.items = items
+                                        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+                                    }
+                                }
                             }
                             mastervalues.isChangeShopListSheetPresented = false
                         }
@@ -105,7 +115,7 @@ struct DraftShopListForm: View {
             } // end of Section 2
 
             // Section 3: Locations assigned to this ShopList, if we are editing a ShopList
-            if mastervalues.isChangeLocationSheetPresented {
+            if mastervalues.isChangeShopListSheetPresented {
                 Section(header: LocationsListHeader()) {
                     VStack {
                         SimpleLocationsList(shoplist: shoplist)

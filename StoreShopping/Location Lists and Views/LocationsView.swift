@@ -12,6 +12,7 @@ struct LocationsView: View {
 
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var mastervalues: MasterValues
+    @Environment(\.editMode) private var editMode
 
 		// MARK: - @State and @StateObject Properties
 
@@ -50,6 +51,7 @@ struct LocationsView: View {
             UpdateLocationView(draftLocation: editLocationRec)
         }
 		.onAppear { handleOnAppear() }
+        .onDisappear { editMode?.wrappedValue = .inactive}
 		
 	} // end of var body: some View
                     func setChangeLocation(location: CKLocationRec) {

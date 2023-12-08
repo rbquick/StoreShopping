@@ -102,7 +102,7 @@ class ModelItem: ObservableObject {
             .store(in: &cancellables)
         }
     func getAll(shopper: Int, listnumber: Int) {
-        tracing(function: "getAll")
+        tracing(function: "getAll(shopper:\(shopper), listnumber:\(listnumber)")
         getAllItemsByListnumber(shopper: shopper, listnumber: listnumber) { completion in
             self.items = completion
         }
@@ -118,11 +118,11 @@ class ModelItem: ObservableObject {
             .sink { c in
                 switch c {
                 case .finished:
-                    self.tracing(function: "getAll .finished")
+                    self.tracing(function: "getAllItemsByListnumber .finished")
                     self.itemsFinishedCount = myItems.count
                     completion(myItems)
                 case .failure(let error):
-                    self.tracing(function: "getAll error = \(error.localizedDescription)")
+                    self.tracing(function: "getAllItemsByListnumber error = \(error.localizedDescription)")
                 }
 
             } receiveValue: { returnedItems in
@@ -131,7 +131,7 @@ class ModelItem: ObservableObject {
             .store(in: &cancellables)
         }
     func getACountOnList(shopper: Int, listnumber: Int, _ competion: @escaping (Int) -> ()) {
-        tracing(function: "getACount shopper: \(shopper) listnumber: \(listnumber)")
+        tracing(function: "getACountOnList shopper: \(shopper) listnumber: \(listnumber)")
         var myRecs = [CKItemRec]()
         let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
 //        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
@@ -141,11 +141,11 @@ class ModelItem: ObservableObject {
             .sink { c in
                 switch c {
                 case .finished:
-                    self.tracing(function: "getACount .finished")
+                    self.tracing(function: "getACountOnList .finished")
 //                    modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 }
                     competion(myRecs.reduce(0) { $1.onList == true ? $0 + 1 : $0 })
                 case .failure(let error):
-                    self.tracing(function: "getACount error = \(error.localizedDescription)")
+                    self.tracing(function: "getACountOnList error = \(error.localizedDescription)")
                 }
 
             } receiveValue: { returnedItems in

@@ -28,7 +28,8 @@ struct LocationRowView: View {
 			VStack(alignment: .leading) {
 				Text(location.name)
 					.font(.headline)
-                Text("List: \(location.listnumber) Location: \(location.locationnumber)")
+                // put this line in if you are having a problem in developmen
+//                Text("List: \(location.listnumber) Location: \(location.locationnumber)")
 				Text(subtitle())
 					.font(.caption)
 			}

@@ -24,6 +24,8 @@ struct DraftLocationForm: View {
     @Binding public var blue: Double
     @Binding public var opacity: Double
 
+    @State private var copyToLocationNumber: Int64 = 0
+
     @State private var color = Color.red
 
 		// trigger for confirming deletion of the associated Location (if the
@@ -58,30 +60,53 @@ struct DraftLocationForm: View {
                 mygetcolor()
             }
 				// Section 2: Delete button, if the data is associated with an existing Location
-			if locationCanBeDeleted {
+            if mastervalues.isChangeLocationSheetPresented {
 				Section(header: Text("Location Management")) {
-					Button("Delete This Location")  {
-						isConfirmDeleteLocationPresented = true // trigger confirmation dialog
-					}
-					.foregroundColor(Color.red)
-					.myCentered()
-					.confirmationDialog("Delete \'\(draftLocation.name)\'?",
-															isPresented: $isConfirmDeleteLocationPresented,
-															titleVisibility: .visible) {
-						Button("Yes", role: .destructive) {
-                            modellocation.delete(location: draftLocation) { returnvalue in
-                                print(returnvalue)
+                    HStack {
+                        SLFormLabelText(labelText: "Items will be moved to \(modellocation.GetLocationNameByLocationnumber(locationnumber: copyToLocationNumber))")
+
+                            Picker(selection: $copyToLocationNumber, label: SLFormLabelText(labelText: "")) {
+                                ForEach(modellocation.locations) { location in
+                                    if location.locationnumber != draftLocation.locationnumber {
+                                        Text("\(location.name)").tag(location.locationnumber)
+                                    }
+                                }
                             }
-                            mastervalues.isChangeLocationSheetPresented = false
-                            // FIXME: delete record
-//							if let location = draftLocation.associatedLocation {
-//								Location.delete(location)
-//								dismissAction?()
-//							}
-						}
-					} message: {
-						Text("Are you sure you want to delete the Location named \'\(draftLocation.name)\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
-					}
+
+                    }
+
+					HStack {
+                        Button("Delete This Location")  {
+                            isConfirmDeleteLocationPresented = true // trigger confirmation dialog
+                        }
+                        .foregroundColor(Color.red)
+                        .myCentered()
+                        .alert("Delete \'\(draftLocation.name)\'?",
+                                                                isPresented: $isConfirmDeleteLocationPresented) {
+                            Button("Yes", role: .destructive) {
+
+                                    for item in modelitem.items {
+                                        if item.locationnumber == draftLocation.locationnumber {
+                                            let chgRec = item.update(shopper: item.shopper, listnumber: item.listnumber, locationnumber: copyToLocationNumber, onList: item.onList, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: item.dateLastPurchased)
+                                            modelitem.addOrUpdate(item: chgRec!) { completion in
+                                                print("item moved from location:\(item.locationnumber) to \(copyToLocationNumber)")
+                                            }
+                                        }
+                                    }
+                                modellocation.delete(location: draftLocation) { returnvalue in
+                                                                    print(returnvalue)
+                                    mastervalues.isChangeLocationSheetPresented = false
+                                }
+                                // FIXME: delete record
+    //                            if let location = draftLocation.associatedLocation {
+    //                                Location.delete(location)
+    //                                dismissAction?()
+    //                            }
+                            }
+                        } message: {
+                            Text("Are you sure you want to delete the Location named \'\(modellocation.GetLocationNameByLocationnumber(locationnumber: copyToLocationNumber))\'? All items at this location will be moved to the Unknown Location.  This action cannot be undone.")
+                        }
+                    }
 
 				}
 			} // end of Section 2
@@ -98,6 +123,10 @@ struct DraftLocationForm: View {
 
         .onAppear() {
             color = Color(red: red, green: green, blue: blue, opacity: opacity)
+            copyToLocationNumber = modellocation.locations.count > 0 ? modellocation.locations[0].locationnumber : 0
+            if copyToLocationNumber == draftLocation.locationnumber {
+                copyToLocationNumber = modellocation.locations[1].locationnumber
+            }
         }
         .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
             Text("add new item screen required")

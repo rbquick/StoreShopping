@@ -96,9 +96,8 @@ struct ShoppingListView: View {
 			Button("Move All Off List") {
 				confirmMoveAllOffListIsPresented = true
 			}
-			.confirmationDialog("Move All Off List?",
-													isPresented: $confirmMoveAllOffListIsPresented,
-													titleVisibility: .visible) {
+			.alert("Move All Off List?",
+													isPresented: $confirmMoveAllOffListIsPresented) {
 				Button("Yes", role: .destructive,
 							 action: modelitem.moveAllItemsOffShoppingList)
 			}

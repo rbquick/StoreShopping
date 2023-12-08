@@ -47,8 +47,18 @@ struct UpdateLocationView: View {
             green = draftLocation.green
             blue = draftLocation.blue
             opacity = draftLocation.opacity
+            print("mastervalues.isChangeLocationSheetPresented:\(mastervalues.isChangeLocationSheetPresented)")
+            print("mastervalues.isAddNewLocationSheetPresented:\(mastervalues.isAddNewLocationSheetPresented)")
             if mastervalues.isChangeLocationSheetPresented {
                 addOrUpdateLiteral = "Changing Location "
+                if modellocation.locations.count == 1 {
+                    modellocation.GetNextLocationNumber { number in
+                        let newRec = CKLocationRec(shopper: draftLocation.shopper, listnumber: draftLocation.listnumber, locationnumber: number, name: "UnKnown", visitationOrder: 2, red: draftLocation.red, green: draftLocation.green, blue: draftLocation.blue, opacity: draftLocation.opacity)!
+                        modellocation.addOrUpdate(location: newRec) { complete in
+                            print("added UnKnown location")
+                        }
+                    }
+                }
             } else {
                 addOrUpdateLiteral = "Add New Location"
             }

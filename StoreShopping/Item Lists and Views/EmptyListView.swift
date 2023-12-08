@@ -29,8 +29,10 @@ struct EmptyListView: View {
                 }
             }
             .refreshable {
-                modelitem.getAll()
+                if modelitem.items.count < 0 {
+                    modelitem.getAll(shopper: Int(modelitem.items[0].shopper), listnumber: Int(modelitem.items[0].listnumber))
                 modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+                }
             }
 	}
 }

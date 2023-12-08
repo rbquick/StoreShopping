@@ -110,9 +110,8 @@ struct DraftItemForm: View {
                     }
                     .foregroundColor(Color.red)
                     .myCentered()
-                    .confirmationDialog("Delete \'\(name)\'?",
-                                        isPresented: $alertIsPresented,
-                                        titleVisibility: .visible) {
+                    .alert("Delete \'\(name)\'?",
+                                        isPresented: $alertIsPresented) {
                         Button("Yes", role: .destructive) {
                             modelitem.delete(item: item) { completion in
                                 print(completion)
