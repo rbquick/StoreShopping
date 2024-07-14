@@ -92,10 +92,7 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
         case blue = "blue"
         case opacity = "opacity"
     }
-    let fieldNames = StructNames.allCases.map { $0.rawValue }
-    var csvHeadingLine:String {
-        return csvHeading(fieldNames: fieldNames)
-    }
+
 
 
 
@@ -144,12 +141,12 @@ struct CKLocationRec: Identifiable, Hashable, CloudKitableProtocol {
     var canBeSaved: Bool { name.count > 0 }
 
     static func example1() -> CKLocationRec {
-        return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 1, locationnumber: 1, name: "example1", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+        return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 1, name: "Loc 1", visitationOrder: 2, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
     static func unKnown() -> CKLocationRec {
-        return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 3, locationnumber: 1, name: "unKnown", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+        return CKLocationRec(shopper: 1, listnumber: 1, locationnumber: 2, name: "Loc 2", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
     static func mustHave2() -> CKLocationRec {
-        return CKLocationRec(shopper: Int64(MyDefaults().myMasterShopperShopper), listnumber: 3, locationnumber: 1, name: "mustHave2", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+        return CKLocationRec(shopper: 1, listnumber: 3, locationnumber: 3, name: "Loc 3", visitationOrder: 1, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
     }
 }
