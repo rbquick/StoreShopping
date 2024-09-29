@@ -4,13 +4,15 @@
 //
 
 import SwiftUI
+import UIKit
 
 // the RegularMainView is a two-column NavigationSplitView, where
 // the first column has the same role that the TabView has in the
 // CompactMainView.
 
 struct RegularMainView: View {
-	
+    @EnvironmentObject var mastervalues: MasterValues
+    @StateObject var watchConnector = WatchConnector()
     @State private var selection: NavigationItem? = .shoppingList
 	
 	var sidebarView: some View {
@@ -28,7 +30,12 @@ struct RegularMainView: View {
 			
 			Label("Locations", systemImage: "map")
 				.tag(NavigationItem.locationList)
-			
+            if UIDevice.isIPhone {
+                if mastervalues.isWatchAvailable {
+                    Label("Watch", systemImage: "applewatch.and.arrow.forward")
+                        .tag(NavigationItem.watch)
+                }
+            }
 			Label("Stopwatch", systemImage: "stopwatch")
 				.tag(NavigationItem.inStoreTimer)
 			
@@ -54,6 +61,8 @@ struct RegularMainView: View {
                         ShopListsView()
 					case .locationList:
 						LocationsView()
+                    case .watch:
+                        WatchConnectorView()
 					case .inStoreTimer:
 						TimerView()
 					case .preferences:
@@ -74,6 +83,14 @@ struct RegularMainView: View {
         if let storedSelection = UserDefaults.standard.value(forKey: "SelectedNavigationItem") as? Int,
            let retrievedSelection = NavigationItem(rawValue: storedSelection) {
             selection = retrievedSelection
+        }
+        activateWatch()
+    }
+    func activateWatch() {
+        if watchConnector.session.isReachable {
+            mastervalues.isWatchAvailable = true
+        } else {
+            mastervalues.isWatchAvailable = false
         }
     }
 }

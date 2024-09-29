@@ -11,7 +11,6 @@
 		710BDFE92AC82EEB0036F339 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFE82AC82EEB0036F339 /* CloudKitUtility.swift */; };
 		710BDFEB2AC85F260036F339 /* shoplists.json in Resources */ = {isa = PBXBuildFile; fileRef = 710BDFEA2AC85F260036F339 /* shoplists.json */; };
 		710BDFEE2AC862A30036F339 /* CKShopListRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFED2AC862A30036F339 /* CKShopListRec.swift */; };
-		710BDFF02AC864770036F339 /* MyRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFEF2AC864770036F339 /* MyRecordTypes.swift */; };
 		710BDFF22AC86A790036F339 /* ModelShopList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF12AC86A790036F339 /* ModelShopList.swift */; };
 		710BDFF62AC874A70036F339 /* ShopListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF52AC874A70036F339 /* ShopListRowView.swift */; };
 		710BDFF82AC8775E0036F339 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF72AC8775E0036F339 /* Model.swift */; };
@@ -48,6 +47,26 @@
 		71A204432AD562D200B05A55 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A204422AD562D200B05A55 /* EmptyListView.swift */; };
 		71A204452AD5640C00B05A55 /* AddNewItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A204442AD5640C00B05A55 /* AddNewItemView.swift */; };
 		71A204472AD5648000B05A55 /* NavBarImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A204462AD5648000B05A55 /* NavBarImageButton.swift */; };
+		71B3FD4E2C4417EC00A8FB50 /* ShoppingWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD4D2C4417EC00A8FB50 /* ShoppingWatchApp.swift */; };
+		71B3FD522C4417ED00A8FB50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71B3FD512C4417ED00A8FB50 /* Assets.xcassets */; };
+		71B3FD552C4417ED00A8FB50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71B3FD542C4417ED00A8FB50 /* Preview Assets.xcassets */; };
+		71B3FD582C4417ED00A8FB50 /* ShoppingWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 71B3FD4B2C4417EC00A8FB50 /* ShoppingWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		71B3FD612C441AA100A8FB50 /* WatchConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD602C441AA100A8FB50 /* WatchConnector.swift */; };
+		71B3FD632C441E8B00A8FB50 /* WatchToiOSConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD622C441E8B00A8FB50 /* WatchToiOSConnector.swift */; };
+		71B3FD642C441F5E00A8FB50 /* ModelLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719609982ACF4A65008706EE /* ModelLocation.swift */; };
+		71B3FD652C441F6500A8FB50 /* ModelItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C723402AD207AF00881694 /* ModelItem.swift */; };
+		71B3FD662C441F8900A8FB50 /* CKItemRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C7233C2AD1D0E300881694 /* CKItemRec.swift */; };
+		71B3FD672C441F8F00A8FB50 /* CKLocationRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719E60352ACEC5D7002409F4 /* CKLocationRec.swift */; };
+		71B3FD692C442A5200A8FB50 /* WatchConnectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD5E2C441A9700A8FB50 /* WatchConnectorView.swift */; };
+		71B3FD6B2C442BC500A8FB50 /* WatchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD6A2C442BC500A8FB50 /* WatchContentView.swift */; };
+		71B3FD6C2C442D7500A8FB50 /* CloudKitUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFE82AC82EEB0036F339 /* CloudKitUtility.swift */; };
+		71B3FD6D2C442D9400A8FB50 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */; };
+		71B3FD6E2C442FBA00A8FB50 /* UserDefaultDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1742AC76E0700F5E4E9 /* UserDefaultDefinitions.swift */; };
+		71B3FD6F2C44308700A8FB50 /* CKShopperRec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA430A2ACAD5C800E5457A /* CKShopperRec.swift */; };
+		71B3FD702C4431BB00A8FB50 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFF72AC8775E0036F339 /* Model.swift */; };
+		71B3FD732C45424100A8FB50 /* MyRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFEF2AC864770036F339 /* MyRecordTypes.swift */; };
+		71B3FD742C45424100A8FB50 /* MyRecordTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BDFEF2AC864770036F339 /* MyRecordTypes.swift */; };
+		71B3FD762C4546BB00A8FB50 /* UIDevice.extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B3FD752C4546BB00A8FB50 /* UIDevice.extention.swift */; };
 		71C2BE332AD93FDC0015619B /* PurchasedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2BE322AD93FDC0015619B /* PurchasedItemsView.swift */; };
 		71C2BE352AD943C20015619B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C2BE342AD943C20015619B /* String+Extensions.swift */; };
 		71C3FEBC2B0FC9E100AB0CA6 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */; };
@@ -67,6 +86,30 @@
 		71CED1732AC76D1F00F5E4E9 /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1712AC76D1F00F5E4E9 /* TimerView.swift */; };
 		71CED1752AC76E0700F5E4E9 /* UserDefaultDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CED1742AC76E0700F5E4E9 /* UserDefaultDefinitions.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		71B3FD562C4417ED00A8FB50 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 716BF5232AC6D643009197F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 71B3FD4A2C4417EC00A8FB50;
+			remoteInfo = "ShoppingWatch Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		71B3FD592C4417ED00A8FB50 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				71B3FD582C4417ED00A8FB50 /* ShoppingWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		710BDFE32AC827740036F339 /* ShopListsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopListsView.swift; sourceTree = "<group>"; };
@@ -112,6 +155,15 @@
 		71A204422AD562D200B05A55 /* EmptyListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		71A204442AD5640C00B05A55 /* AddNewItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewItemView.swift; sourceTree = "<group>"; };
 		71A204462AD5648000B05A55 /* NavBarImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarImageButton.swift; sourceTree = "<group>"; };
+		71B3FD4B2C4417EC00A8FB50 /* ShoppingWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ShoppingWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		71B3FD4D2C4417EC00A8FB50 /* ShoppingWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingWatchApp.swift; sourceTree = "<group>"; };
+		71B3FD512C4417ED00A8FB50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		71B3FD542C4417ED00A8FB50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		71B3FD5E2C441A9700A8FB50 /* WatchConnectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchConnectorView.swift; sourceTree = "<group>"; };
+		71B3FD602C441AA100A8FB50 /* WatchConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchConnector.swift; sourceTree = "<group>"; };
+		71B3FD622C441E8B00A8FB50 /* WatchToiOSConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchToiOSConnector.swift; sourceTree = "<group>"; };
+		71B3FD6A2C442BC500A8FB50 /* WatchContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchContentView.swift; sourceTree = "<group>"; };
+		71B3FD752C4546BB00A8FB50 /* UIDevice.extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.extention.swift; sourceTree = "<group>"; };
 		71C2BE322AD93FDC0015619B /* PurchasedItemsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchasedItemsView.swift; sourceTree = "<group>"; };
 		71C2BE342AD943C20015619B /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		71C3FEBB2B0FC9E100AB0CA6 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -134,6 +186,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		716BF5282AC6D643009197F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71B3FD482C4417EC00A8FB50 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -188,6 +247,7 @@
 				710BE0012AC980670036F339 /* View+Extensions.swift */,
 				71C2BE342AD943C20015619B /* String+Extensions.swift */,
 				710BDFE82AC82EEB0036F339 /* CloudKitUtility.swift */,
+				71B3FD752C4546BB00A8FB50 /* UIDevice.extention.swift */,
 			);
 			path = MyStuff;
 			sourceTree = "<group>";
@@ -254,6 +314,7 @@
 		716BF5222AC6D643009197F6 = {
 			isa = PBXGroup;
 			children = (
+				71B3FD4C2C4417EC00A8FB50 /* ShoppingWatch Watch App */,
 				716BF52C2AC6D643009197F6 /* Products */,
 				716BF52D2AC6D643009197F6 /* StoreShopping */,
 			);
@@ -263,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				716BF52B2AC6D643009197F6 /* StoreShopping.app */,
+				71B3FD4B2C4417EC00A8FB50 /* ShoppingWatch Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -270,6 +332,7 @@
 		716BF52D2AC6D643009197F6 /* StoreShopping */ = {
 			isa = PBXGroup;
 			children = (
+				71B3FD5D2C441A7C00A8FB50 /* WatchInterfacing */,
 				710CC7982B1394E400DF08EF /* Core */,
 				71B2CED32AD2B4FF006B52E3 /* Item Lists and Views */,
 				7196099A2ACF4DAC008706EE /* Location Lists and Views */,
@@ -332,6 +395,35 @@
 			path = "Item Lists and Views";
 			sourceTree = "<group>";
 		};
+		71B3FD4C2C4417EC00A8FB50 /* ShoppingWatch Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				71B3FD4D2C4417EC00A8FB50 /* ShoppingWatchApp.swift */,
+				71B3FD6A2C442BC500A8FB50 /* WatchContentView.swift */,
+				71B3FD622C441E8B00A8FB50 /* WatchToiOSConnector.swift */,
+				71B3FD512C4417ED00A8FB50 /* Assets.xcassets */,
+				71B3FD532C4417ED00A8FB50 /* Preview Content */,
+			);
+			path = "ShoppingWatch Watch App";
+			sourceTree = "<group>";
+		};
+		71B3FD532C4417ED00A8FB50 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				71B3FD542C4417ED00A8FB50 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		71B3FD5D2C441A7C00A8FB50 /* WatchInterfacing */ = {
+			isa = PBXGroup;
+			children = (
+				71B3FD602C441AA100A8FB50 /* WatchConnector.swift */,
+				71B3FD5E2C441A9700A8FB50 /* WatchConnectorView.swift */,
+			);
+			path = WatchInterfacing;
+			sourceTree = "<group>";
+		};
 		71CED1542AC765F100F5E4E9 /* App and Main Level Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -380,14 +472,33 @@
 				716BF5272AC6D643009197F6 /* Sources */,
 				716BF5282AC6D643009197F6 /* Frameworks */,
 				716BF5292AC6D643009197F6 /* Resources */,
+				71B3FD592C4417ED00A8FB50 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				71B3FD572C4417ED00A8FB50 /* PBXTargetDependency */,
+			);
+			name = StoreShopping;
+			productName = StoreShopping;
+			productReference = 716BF52B2AC6D643009197F6 /* StoreShopping.app */;
+			productType = "com.apple.product-type.application";
+		};
+		71B3FD4A2C4417EC00A8FB50 /* ShoppingWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71B3FD5C2C4417ED00A8FB50 /* Build configuration list for PBXNativeTarget "ShoppingWatch Watch App" */;
+			buildPhases = (
+				71B3FD472C4417EC00A8FB50 /* Sources */,
+				71B3FD482C4417EC00A8FB50 /* Frameworks */,
+				71B3FD492C4417EC00A8FB50 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = StoreShopping;
-			productName = StoreShopping;
-			productReference = 716BF52B2AC6D643009197F6 /* StoreShopping.app */;
+			name = "ShoppingWatch Watch App";
+			productName = "ShoppingWatch Watch App";
+			productReference = 71B3FD4B2C4417EC00A8FB50 /* ShoppingWatch Watch App.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -397,11 +508,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1420;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					716BF52A2AC6D643009197F6 = {
 						CreatedOnToolsVersion = 14.2;
+					};
+					71B3FD4A2C4417EC00A8FB50 = {
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -419,6 +533,7 @@
 			projectRoot = "";
 			targets = (
 				716BF52A2AC6D643009197F6 /* StoreShopping */,
+				71B3FD4A2C4417EC00A8FB50 /* ShoppingWatch Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -437,6 +552,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		71B3FD492C4417EC00A8FB50 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71B3FD552C4417ED00A8FB50 /* Preview Assets.xcassets in Resources */,
+				71B3FD522C4417ED00A8FB50 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -445,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7113EFAD2ACC223F00EA143B /* DraftShopListForm.swift in Sources */,
+				71B3FD612C441AA100A8FB50 /* WatchConnector.swift in Sources */,
 				71CED15A2AC7663800F5E4E9 /* CompactMainView.swift in Sources */,
 				710CC7A42B1394E400DF08EF /* ContentView.swift in Sources */,
 				710CC7A92B13CE2200DF08EF /* MyTextField.swift in Sources */,
@@ -468,6 +593,7 @@
 				71A204412AD55F4800B05A55 /* SectionHeaderButton.swift in Sources */,
 				71A204392AD54F5000B05A55 /* ShoppingListView.swift in Sources */,
 				71CED15C2AC7663800F5E4E9 /* MainView.swift in Sources */,
+				71B3FD692C442A5200A8FB50 /* WatchConnectorView.swift in Sources */,
 				71CED16E2AC76A5B00F5E4E9 /* NavBarAppearanceModifier.swift in Sources */,
 				712F8D3E2ADF215600F59393 /* ModelItemSection.swift in Sources */,
 				710BDFE92AC82EEB0036F339 /* CloudKitUtility.swift in Sources */,
@@ -475,7 +601,6 @@
 				7196099E2ACF5348008706EE /* LocationRowView.swift in Sources */,
 				71C723412AD207AF00881694 /* ModelItem.swift in Sources */,
 				71CED15E2AC7663800F5E4E9 /* RegularMainView.swift in Sources */,
-				710BDFF02AC864770036F339 /* MyRecordTypes.swift in Sources */,
 				710BDFFD2AC8A8DC0036F339 /* SLFormLabelText.swift in Sources */,
 				710BDFEE2AC862A30036F339 /* CKShopListRec.swift in Sources */,
 				710BDFF82AC8775E0036F339 /* Model.swift in Sources */,
@@ -484,9 +609,11 @@
 				719E60362ACEC5D7002409F4 /* CKLocationRec.swift in Sources */,
 				713EA42C2AD0B53300DC1411 /* UpdateLocationView.swift in Sources */,
 				71C7233D2AD1D0E300881694 /* CKItemRec.swift in Sources */,
+				71B3FD732C45424100A8FB50 /* MyRecordTypes.swift in Sources */,
 				710CC7A62B1394E400DF08EF /* LoginView.swift in Sources */,
 				71A204432AD562D200B05A55 /* EmptyListView.swift in Sources */,
 				7196099C2ACF4DD4008706EE /* LocationsView.swift in Sources */,
+				71B3FD762C4546BB00A8FB50 /* UIDevice.extention.swift in Sources */,
 				710CC7A72B1394E400DF08EF /* AuthViewModel.swift in Sources */,
 				71CA430E2ACADB6500E5457A /* ModelShopper.swift in Sources */,
 				713EA42E2AD0B6B600DC1411 /* DraftLocationForm.swift in Sources */,
@@ -500,7 +627,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		71B3FD472C4417EC00A8FB50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				71B3FD6F2C44308700A8FB50 /* CKShopperRec.swift in Sources */,
+				71B3FD742C45424100A8FB50 /* MyRecordTypes.swift in Sources */,
+				71B3FD642C441F5E00A8FB50 /* ModelLocation.swift in Sources */,
+				71B3FD652C441F6500A8FB50 /* ModelItem.swift in Sources */,
+				71B3FD702C4431BB00A8FB50 /* Model.swift in Sources */,
+				71B3FD6B2C442BC500A8FB50 /* WatchContentView.swift in Sources */,
+				71B3FD6C2C442D7500A8FB50 /* CloudKitUtility.swift in Sources */,
+				71B3FD6D2C442D9400A8FB50 /* Logger.swift in Sources */,
+				71B3FD6E2C442FBA00A8FB50 /* UserDefaultDefinitions.swift in Sources */,
+				71B3FD672C441F8F00A8FB50 /* CKLocationRec.swift in Sources */,
+				71B3FD662C441F8900A8FB50 /* CKItemRec.swift in Sources */,
+				71B3FD632C441E8B00A8FB50 /* WatchToiOSConnector.swift in Sources */,
+				71B3FD4E2C4417EC00A8FB50 /* ShoppingWatchApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		71B3FD572C4417ED00A8FB50 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 71B3FD4A2C4417EC00A8FB50 /* ShoppingWatch Watch App */;
+			targetProxy = 71B3FD562C4417ED00A8FB50 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		716BF5372AC6D645009197F6 /* Debug */ = {
@@ -620,6 +775,7 @@
 		716BF53A2AC6D645009197F6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StoreShopping/StoreShopping.entitlements;
@@ -638,7 +794,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -653,6 +809,7 @@
 		716BF53B2AC6D645009197F6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = StoreShopping/StoreShopping.entitlements;
@@ -671,7 +828,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.6.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -680,6 +837,75 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		71B3FD5A2C4417ED00A8FB50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ShoppingWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 37U896T65Y;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ShoppingWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.codewithbrian.StoreShopping;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		71B3FD5B2C4417ED00A8FB50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ShoppingWatch Watch App/Preview Content\"";
+				DEVELOPMENT_TEAM = 37U896T65Y;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ShoppingWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.codewithbrian.StoreShopping;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
 			};
 			name = Release;
 		};
@@ -700,6 +926,15 @@
 			buildConfigurations = (
 				716BF53A2AC6D645009197F6 /* Debug */,
 				716BF53B2AC6D645009197F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		71B3FD5C2C4417ED00A8FB50 /* Build configuration list for PBXNativeTarget "ShoppingWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				71B3FD5A2C4417ED00A8FB50 /* Debug */,
+				71B3FD5B2C4417ED00A8FB50 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

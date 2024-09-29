@@ -14,6 +14,7 @@ enum NavigationItem: Int, CaseIterable {
     case purchasedList
     case shopListList           // rbq added 2023-04-01
     case locationList
+    case watch
     case inStoreTimer
     case preferences
     var tag: Int {
@@ -29,6 +30,8 @@ enum NavigationItem: Int, CaseIterable {
             return "Lists Available"
         case .locationList:
             return "Location List"
+        case .watch:
+            return "Watch"
         case .inStoreTimer:
             return "In-Store Timer"
         case .preferences:

@@ -15,6 +15,7 @@ let kPurchasedMostRecentlyKey = "kPurchasedMostRecentlyKey"
 let kDisableTimerWhenInBackgroundKey = "kDisableTimerWhenInBackgroundKey"
 let kMasterShopperKey = "kMasterShopperKey"
 let kMasterShopListNameKey = "kMasterShopListNameKey"
+let ktransferUserInfoKey = "ktransferUserInfoKey"
 
 // @AppStorage default values
 // FIXME: check that all of these are being used
@@ -24,6 +25,7 @@ let kPurchasedMostRecentlyDefaultValue = 3
 let kDisableTimerWhenInBackgroundDefaultValue = false
 let kMasterShopListListnumberDefaultValue = 1
 let kMasterShopListNameDefaultValue = "Costco"
+let ktransferUserInfoDefaultValue = false
 
 
 
@@ -47,6 +49,9 @@ class MasterValues: ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    @Published var isWatchAvailable: Bool = false
+    
     init() {
         isAddNewShopListSheetPresented = false
         isChangeShopListSheetPresented = false

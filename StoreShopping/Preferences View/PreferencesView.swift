@@ -39,6 +39,10 @@ struct PreferencesView: View {
     // user default.  true ==> turn of timer (counting) when in the background.
     @AppStorage(kDisableTimerWhenInBackgroundKey)
     private var suspendTimerWhenInBackground = kDisableTimerWhenInBackgroundDefaultValue
+    // user default. what to use when sending data to/from the watch
+    @AppStorage(ktransferUserInfoKey)
+    private var usetransferUserInfo = ktransferUserInfoDefaultValue
+    
     let nsObject: AnyObject? = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as AnyObject
     @State var version = "Unknown"
     @EnvironmentObject var modelauthview: AuthViewModel
@@ -78,6 +82,14 @@ struct PreferencesView: View {
                     Text("Suspend when in background")
                 }
             }
+            
+            Section(header: Text("Watch tranmission Preference"),
+                    footer: Text("Turn this on to use the transferUserInfo, the preferred usage")) {
+                Toggle(isOn: $usetransferUserInfo) {
+                    Text("Use \(usetransferUserInfo ? "transferUserInfo"  :  "sendMessage") for transfer")
+                }
+            }
+            
             Section(header: Text("Version of App"),
                     footer: Text("")) {
             HStack{

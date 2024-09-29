@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct ShoppingWatch_Watch_AppApp: App {
+    @StateObject var modelitem = ModelItem()
+    @StateObject var modelLocation = ModelLocation()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WatchContentView()
+                .environmentObject(modelitem)
+                .environmentObject(modelLocation)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  WatchContentView.swift
 //  WatchandIphone Watch App
 //
 //  Created by Brian Quick on 2024-07-07.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct WatchContentView: View {
     @StateObject var watchToiOSConnector = WatchToiOSConnector()
     @EnvironmentObject var modelItem: ModelItem
     @EnvironmentObject var modelLocation: ModelLocation
@@ -73,14 +73,14 @@ struct ContentView: View {
                 
         watchToiOSConnector.sendItemToiOS(item: item)
         if let index = modelItem.items.firstIndex(where: {$0.name == item.name }) {
-            modelItem.items[index].onList = false
+            modelItem.setOnListStatus(item: modelItem.items[index], onlist: false )
             modelItem.groupItemsByLocation()
         }
 
     }
     func restoreItems() {
         for i in 0..<modelItem.items.count {
-            modelItem.items[i].onList = true
+            modelItem.setOnListStatus(item: modelItem.items[i], onlist: true )
         }
         modelItem.groupItemsByLocation()
     }
@@ -93,7 +93,7 @@ struct ContentView: View {
 #Preview {
     var modelitem = ModelItem()
     var modelLocation = ModelLocation()
-    return ContentView()
+    return WatchContentView()
         .environmentObject(modelitem)
         .environmentObject(modelLocation)
 }

@@ -12,10 +12,12 @@ import SwiftUI
 
 class ModelItem: ObservableObject {
     @Published var items = [CKItemRec]()
+    @Published var groupedItems = [Int64: [CKItemRec]]()    // grouped items for the watch view
     @Published var itemsFinishedCount = 0
 
 
     var cancellables = Set<AnyCancellable>()
+    let initializeWatch = "initializeWatch"
 
     var isTracing: Bool = true
     func tracing(function: String) {
@@ -26,14 +28,20 @@ class ModelItem: ObservableObject {
     }
 
     init() {
+        #if os(iOS)
         createItems()
+        #endif
     }
     func createItems() {
         items.removeAll()
         getAll(shopper: MyDefaults().myMasterShopperShopper, listnumber: MyDefaults().myMasterShopListListnumber)
     }
-
-
+    
+    // count the items in the list that have been selected for the watch display
+    var onListItemCount: Int {
+        return items.filter { $0.onList }.count
+    }
+    
     func addOrUpdate(item: CKItemRec, _ completion: @escaping (String) -> ()) {
        tracing(function: "addOrUpdate")
         let index = items.firstIndex(where: { $0.id == item.id } )
@@ -167,6 +175,36 @@ class ModelItem: ObservableObject {
             }
         }
     }
+    // The only difference between set and toggle is the .onlist is set to false.
+    // this should only be used on the receive data from the watch
+    // since there is no UI at this time, setting it to not be on the list should cause no problems
+    //  if you are in ios, update the actual item in the table and the database.
+    // if you are on the watch, only change the table of items since that is really the database for the watch
+    // use the name to find the record since that is the only thing identifying it on the watch
+
+    func setOnListStatus(item: CKItemRec, onlist: Bool) {
+        let onlist = !item.onList
+        var dateLastPurchased: Date? = item.dateLastPurchased
+        if !onlist {
+            dateLastPurchased = Date()
+        }
+        var thisOS = ""
+#if !os(iOS)
+        thisOS = "WatchOS"
+    guard let index = items.firstIndex(where: { $0.name == item.name } ) else { return }
+    let changerec = CKItemRec(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: onlist, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: item.dateLastPurchased)!
+        items[index] = changerec
+#endif
+
+#if os(iOS)
+        thisOS = "iOS"
+        let changerec = item.update(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: onlist, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: dateLastPurchased)!
+        addOrUpdate(item: changerec) { _ in
+            self.tracing(function: "\(thisOS) toggleOnListStatus set to \(item.onList)")
+        }
+#endif
+
+    }
     func toggleOnListStatus(item: CKItemRec, _ completion: @escaping (String) -> ())  {
         tracing(function: "StringtoggleOnListStatus item status: \(item.onList)")
         let onlist = !item.onList
@@ -195,5 +233,11 @@ class ModelItem: ObservableObject {
         addOrUpdate(item: item) { _ in
             self.tracing(function: "toggleAvailableStatus set to \(!item.isAvailable)")
         }
+    }
+    // grouping for the watch view
+    func groupItemsByLocation() {
+        groupedItems = Dictionary(grouping: items.filter { $0.onList }, by: { $0.listnumber })
+
+        tracing(function: "groupItemsByLocation")
     }
 }

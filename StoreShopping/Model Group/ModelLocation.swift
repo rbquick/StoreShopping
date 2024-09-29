@@ -24,7 +24,9 @@ class ModelLocation: ObservableObject {
     }
 
     init() {
+        #if os(iOS)
         createLocations()
+        #endif
     }
     func createLocations() {
         locations.removeAll()
@@ -206,8 +208,31 @@ class ModelLocation: ObservableObject {
             return CKLocationRec.unKnown()
         }
     }
+    func AddLocationToLocations(listnumber: Int, locationnumber: Int64, name: String) {
+        let index = locations.firstIndex(where: { $0.locationnumber == locationnumber })
+        if index == nil {
+            let aRec = CKLocationRec(shopper: 1, listnumber: Int64(listnumber), locationnumber: locationnumber, name: name, visitationOrder: listnumber, red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5)!
+            locations.append(aRec)
+        }
+    }
+    func GetvisitationOrderByLocationnumber(locationnumber: Int64) -> Int {
+        let index = locations.firstIndex(where: { $0.locationnumber == locationnumber })
+        if index != nil {
+            return locations[index!].visitationOrder
+        } else {
+            return 1
+        }
+    }
     func GetLocationNameByLocationnumber(locationnumber: Int64) -> String {
         let index = locations.firstIndex(where: { $0.locationnumber == locationnumber })
+        if index != nil {
+            return locations[index!].name
+        } else {
+            return "unKnown"
+        }
+    }
+    func GetLocationNameByListNumber(listnumber: Int64) -> String {
+        let index = locations.firstIndex(where: { $0.listnumber == listnumber })
         if index != nil {
             return locations[index!].name
         } else {
