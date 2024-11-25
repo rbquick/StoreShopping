@@ -91,3 +91,14 @@ struct CompactMainView: View {
     }
 }
 
+struct CompactMainView_Previews: PreviewProvider {
+    static var previews: some View {
+        CompactMainView()
+            .environmentObject(MasterValues())
+            .environmentObject(ModelItem())
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItemSection())
+            
+    }
+}

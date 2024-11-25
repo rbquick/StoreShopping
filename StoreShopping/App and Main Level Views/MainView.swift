@@ -31,5 +31,15 @@ struct MainView: View {
         navPath.removeLast(navPath.count)
     }
 }
-
+struct MainView_Previews: PreviewProvider {
+    static var previews: some View {
+        MainView()
+            .environmentObject(AuthViewModel())
+            .environmentObject(ModelItem())
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItemSection())
+            
+    }
+}
 

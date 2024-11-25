@@ -100,8 +100,12 @@ struct ShopListsView: View {
 
 }
 
-//struct ShopListsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShopListsView()
-//    }
-//}
+struct ShopListsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ShopListsView()
+            .environmentObject(ModelShopList())
+            .environmentObject(ModelLocation())
+            .environmentObject(ModelItem())
+            .environmentObject(MasterValues())
+    }
+}

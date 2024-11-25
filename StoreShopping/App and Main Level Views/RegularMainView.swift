@@ -31,13 +31,13 @@ struct RegularMainView: View {
 			Label("Locations", systemImage: "map")
 				.tag(NavigationItem.locationList)
             if UIDevice.isIPhone {
-                if mastervalues.isWatchAvailable {
+//                if mastervalues.isWatchAvailable {
                     Label("Watch", systemImage: "applewatch.and.arrow.forward")
                         .tag(NavigationItem.watch)
-                }
+//                }
             }
-			Label("Stopwatch", systemImage: "stopwatch")
-				.tag(NavigationItem.inStoreTimer)
+//			Label("Stopwatch", systemImage: "stopwatch")
+//				.tag(NavigationItem.inStoreTimer)
 			
 			Label("Preferences", systemImage: "gear")
 				.tag(NavigationItem.preferences)
