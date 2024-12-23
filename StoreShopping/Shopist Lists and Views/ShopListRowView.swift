@@ -64,10 +64,13 @@ struct ShopListRowView: View {
         } // end of HStack
     } // end of body: some View
     func itemsOnList() -> String {
-        modelitem.getACountOnList(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
-            myOnlistCount = count
+//        modelitem.getACountOnList(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
+//            myOnlistCount = count
+//        }
+        DispatchQueue.main.async {
+            myOnlistCount = modelitem.getACountOnList( listnumber: Int(shoplist.listnumber))
         }
-        return ("Items on shopping list: \(myOnlistCount)")
+        return (myOnlistCount > 0 ? "Items on shopping list: \(myOnlistCount)" : "")
     }
     func subtitle() -> String {
 

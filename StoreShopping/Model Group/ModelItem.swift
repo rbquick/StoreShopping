@@ -138,29 +138,40 @@ class ModelItem: ObservableObject {
             }
             .store(in: &cancellables)
         }
-    func getACountOnList(shopper: Int, listnumber: Int, _ competion: @escaping (Int) -> ()) {
-        tracing(function: "getACountOnList shopper: \(shopper) listnumber: \(listnumber)")
-        var myRecs = [CKItemRec]()
-        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
-//        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
-        let sort = [NSSortDescriptor(key: "name", ascending: true)]
-        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
-            .receive(on: DispatchQueue.main)
-            .sink { c in
-                switch c {
-                case .finished:
-                    self.tracing(function: "getACountOnList .finished")
-//                    modelitem.items.reduce(0) { $1.onList == true ? $0 + 1 : $0 }
-                    competion(myRecs.reduce(0) { $1.onList == true ? $0 + 1 : $0 })
-                case .failure(let error):
-                    self.tracing(function: "getACountOnList error = \(error.localizedDescription)")
-                }
-
-            } receiveValue: { returnedItems in
-                myRecs = returnedItems
+    func getACountOnList(listnumber: Int) -> Int {
+        tracing(function: "getACountOnList  listnumber: \(listnumber)")
+        // return a count of items where the items.listnumber equals listnumber and onList is true
+        var myCount = 0
+        for item in items {
+            if item.listnumber == listnumber && item.onList {
+                myCount += 1
             }
-            .store(in: &cancellables)
         }
+        return myCount
+//        return items.reduce(0) { $0 + ($1.listnumber == listnumber && $1.onList == 1 ? 1 : 0) }
+            
+    }
+//    func getACountOnList(shopper: Int, listnumber: Int, _ competion: @escaping (Int) -> ()) {
+//        tracing(function: "getACountOnList shopper: \(shopper) listnumber: \(listnumber)")
+//        var myRecs = [CKItemRec]()
+//        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@", NSNumber(value: shopper), NSNumber(value: listnumber))
+//        let sort = [NSSortDescriptor(key: "name", ascending: true)]
+//        CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.Item.rawValue, sortDescriptions: sort)
+//            .receive(on: DispatchQueue.main)
+//            .sink { c in
+//                switch c {
+//                case .finished:
+//                    self.tracing(function: "getACountOnList .finished")
+//                    competion(myRecs.reduce(0) { $1.onList == true ? $0 + 1 : $0 })
+//                case .failure(let error):
+//                    self.tracing(function: "getACountOnList error = \(error.localizedDescription)")
+//                }
+//
+//            } receiveValue: { returnedItems in
+//                myRecs = returnedItems
+//            }
+//            .store(in: &cancellables)
+//        }
     //
     // if the item is in the items array, it is on the data base
     //
