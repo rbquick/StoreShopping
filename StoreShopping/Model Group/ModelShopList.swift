@@ -11,6 +11,7 @@ import Combine
 
 class ModelShopList: ObservableObject {
     @Published var shoplists = [CKShopListRec]()
+    @Published var getAllResultsMsg: String = ""
 
     @Published var MasterShopListName: String {
         willSet {
@@ -29,7 +30,7 @@ class ModelShopList: ObservableObject {
 
     var cancellables = Set<AnyCancellable>()
 
-    var isTracing: Bool = false
+    var isTracing: Bool = true
     func tracing(function: String) {
         if isTracing {
             print("ModelShopList \(function) ")
@@ -131,21 +132,30 @@ class ModelShopList: ObservableObject {
             .store(in: &cancellables)
         }
     func getAll(shopper: Int) {
-        tracing(function: "getAll")
+        tracing(function: "getAll shopper: \(shopper)")
+        shoplists.removeAll()   // empty the lists so you can report an error in nothing comes back from fetchAll
         let predicate = NSPredicate(format:"shopper == %@", NSNumber(value: shopper))
         let sort = [NSSortDescriptor(key: "name", ascending: true)]
         CloudKitUtility.fetchAll(predicate: predicate, recordType: myRecordType.ShopList.rawValue, sortDescriptions: sort)
+            .timeout(.seconds(5), scheduler: DispatchQueue.main) // Set your desired timeout duration here
             .receive(on: DispatchQueue.main)
             .sink { c in
                 switch c {
                 case .finished:
                     self.tracing(function: "getAll .finished")
+                    // allow the caller to report an error to retry
+                    self.getAllResultsMsg = self.shoplists.count == 0 ? "Error:Pull down to refresh" :  "Lists Available"
                 case .failure(let error):
-                    self.tracing(function: "getAll error = \(error.localizedDescription)")
+                        if let urlError = error as? URLError {
+                             self.tracing(function: "getAll URLError: \(urlError.localizedDescription)")
+                         } else {
+                             self.tracing(function: "getAll error: \(error.localizedDescription)")
+                         }
                 }
 
             } receiveValue: { [weak self] returnedItems in
                 self?.shoplists = returnedItems
+                                self?.tracing(function: "getAll returnedItems: \(returnedItems.count)")
             }
             .store(in: &cancellables)
         }

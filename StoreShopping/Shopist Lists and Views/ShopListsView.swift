@@ -41,10 +41,13 @@ struct ShopListsView: View {
                     }
                 }
             }
+            .refreshable {
+                modelshoplist.getAll(shopper: Int(Int64(MyDefaults().myMasterShopperShopper)))
+            }
             .listStyle(InsetGroupedListStyle())
             Divider()
         }
-        .navigationBarTitle("Lists Available")
+        .navigationBarTitle(modelshoplist.getAllResultsMsg)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: addNewButton)
             ToolbarItem(placement: .navigationBarLeading, content: changeButton)

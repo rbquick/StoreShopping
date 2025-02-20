@@ -138,6 +138,33 @@ class ModelItem: ObservableObject {
             }
             .store(in: &cancellables)
         }
+    func getaCountOnAnyList(shopper: Int, listnumber: Int, _ completion: @escaping (Int) -> Void) {
+        let predicate = NSPredicate(format:"shopper == %@ AND listnumber == %@ AND onList == %@",
+                                    NSNumber(value: shopper),
+                                    NSNumber(value: listnumber),
+                                    NSNumber(value: true))
+        let query = CKQuery(recordType: myRecordType.Item.rawValue, predicate: predicate)
+        let operation = CKQueryOperation(query: query)
+        operation.desiredKeys = [] // No need to fetch full records, just count them
+        operation.resultsLimit = 0 // Avoid unnecessary data transfer
+
+        var count = 0
+
+        operation.recordFetchedBlock = { _ in
+            count += 1
+        }
+
+        operation.queryCompletionBlock = { returned, error in
+            if let error = error {
+                print("Error fetching count: \(error.localizedDescription)")
+            } else {
+                print("Total count: \(count)")
+                completion(count)
+            }
+        }
+
+        Model().publicDB.add(operation)
+    }
     func getACountOnList(listnumber: Int) -> Int {
         tracing(function: "getACountOnList  listnumber: \(listnumber)")
         // return a count of items where the items.listnumber equals listnumber and onList is true

@@ -51,26 +51,34 @@ struct ShopListRowView: View {
                 HStack {
                     Text(shoplist.name)
                         .font(.headline)
-                
-                    Text(itemsOnList())
+                    Spacer()
+                    Text(myOnlistCount > 0 ? "Items on list: \(myOnlistCount)" : "")
                         .font(.subheadline)
+                    if myOnlistCount > 0 {
+                        Image(systemName: "cart")
+                            .foregroundColor(.blue)
+                            .font(.subheadline)
+                    }
+                    
                 }
             }
+            .onAppear(perform: itemsOnList)
             // we do not show the location index in SL16
 //            if !location.isUnknownLocation {
 //                Spacer()
-//                Text(String(location.visitationOrder))
+//                Text(String(.visitationOrder))
 //            }
         } // end of HStack
     } // end of body: some View
-    func itemsOnList() -> String {
-//        modelitem.getACountOnList(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
-//            myOnlistCount = count
+    func itemsOnList()  {
+            modelitem.getaCountOnAnyList(shopper: Int(shoplist.shopper), listnumber: Int(shoplist.listnumber)) { count in
+                myOnlistCount = count
+            }
+        
+//        DispatchQueue.main.async {
+//            myOnlistCount = modelitem.getACountOnList( listnumber: Int(shoplist.listnumber))
 //        }
-        DispatchQueue.main.async {
-            myOnlistCount = modelitem.getACountOnList( listnumber: Int(shoplist.listnumber))
-        }
-        return (myOnlistCount > 0 ? "Items on shopping list: \(myOnlistCount)" : "")
+//        return (myOnlistCount > 0 ? "Items on shopping list: \(myOnlistCount)" : "")
     }
     func subtitle() -> String {
 

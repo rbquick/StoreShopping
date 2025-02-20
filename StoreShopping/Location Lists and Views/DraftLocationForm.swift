@@ -125,7 +125,10 @@ struct DraftLocationForm: View {
             color = Color(red: red, green: green, blue: blue, opacity: opacity)
             copyToLocationNumber = modellocation.locations.count > 0 ? modellocation.locations[0].locationnumber : 0
             if copyToLocationNumber == draftLocation.locationnumber {
+                if modellocation.locations.count > 1 {
+                    
                 copyToLocationNumber = modellocation.locations[1].locationnumber
+                }
             }
         }
         .sheet(isPresented: $mastervalues.isAddNewItemSheetPresented) {
