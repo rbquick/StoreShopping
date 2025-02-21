@@ -88,7 +88,6 @@ class ModelItem: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-#warning("RBQ:condition this when developing delete verses single delete")
                 if !MyDefaults().developmentDeleting {
                     self.items.remove(at: index)
                 }
@@ -150,18 +149,25 @@ class ModelItem: ObservableObject {
 
         var count = 0
 
-        operation.recordFetchedBlock = { _ in
-            count += 1
-        }
-
-        operation.queryCompletionBlock = { returned, error in
-            if let error = error {
-                print("Error fetching count: \(error.localizedDescription)")
-            } else {
-                print("Total count: \(count)")
-                completion(count)
+        operation.recordMatchedBlock = { recordID, result in
+            switch result {
+            case .success(_):
+                count += 1
+            case .failure(let error):
+                print("Error fetching record: \(error.localizedDescription)")
             }
         }
+
+        operation.queryResultBlock = { result in
+                switch result {
+                case .success:
+                    print("Total count: \(count)")
+                    completion(count)
+                case .failure(let error):
+                    print("Error fetching count: \(error.localizedDescription)")
+                    completion(0) // Return 0 in case of error
+                }
+            }
 
         Model().publicDB.add(operation)
     }

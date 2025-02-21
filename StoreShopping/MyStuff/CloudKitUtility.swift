@@ -492,7 +492,7 @@ extension CloudKitUtility {
                     }
                 }
         }
-#warning("RBQ:I have taken the private off this since I am deleting records I already have fetched in this app")
+// ("RBQ:I have taken the private off this since I am deleting records I already have fetched in this app")
     static func deleteAllRecords(_ records: [CKRecord.ID]) {
         let maxNumberOfRecordsToModify = 400
                 if records.count > maxNumberOfRecordsToModify {

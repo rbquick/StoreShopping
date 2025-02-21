@@ -91,8 +91,8 @@ struct WatchContentView: View {
  https://stackoverflow.com/questions/77209828/swiftui-preview-macro-not-working-with-observation
  */
 #Preview {
-    var modelitem = ModelItem()
-    var modelLocation = ModelLocation()
+    let modelitem = ModelItem()
+    let modelLocation = ModelLocation()
     return WatchContentView()
         .environmentObject(modelitem)
         .environmentObject(modelLocation)

@@ -123,7 +123,6 @@ class ModelLocation: ObservableObject {
     }
     func addOrUpdate(location: CKLocationRec, _ completion: @escaping (String) -> ()) {
        tracing(function: "addOrUpdate")
-        let message = "Adding location"
         let index = locations.firstIndex(where: { $0.id == location.id })
 
         CloudKitUtility.update(item: location)
@@ -161,7 +160,6 @@ class ModelLocation: ObservableObject {
                     completion("delete error = \(error.localizedDescription)")
                 }
             } receiveValue: { success in
-#warning("RBQ:condition this when developing delete verses single delete")
                 if !MyDefaults().developmentDeleting {
                     self.locations.remove(at: index)
                 }
