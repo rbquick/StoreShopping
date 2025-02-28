@@ -4,6 +4,16 @@
 //
 //  Created by Brian Quick on 2024-07-04.
 //
+//
+/*
+ ✅ 3. Use Background Execution Mode
+
+ If the iPhone app is in the background, it may not receive data immediately. Enable background execution for Watch Connectivity in your iPhone's Info.plist:
+
+ Open Xcode → Select your iPhone app target.
+ Go to Signing & Capabilities → Click + Capability → Add Background Modes.
+ Enable "Uses Bluetooth LE Accessories" and "Acts as a Bluetooth LE Accessory".
+ */
 
 import SwiftUI
 import Foundation
@@ -12,17 +22,22 @@ import CloudKit
 
 class WatchConnector: NSObject, WCSessionDelegate, ObservableObject {
 
-   
+//   static let shared = WatchConnector()
     var session: WCSession
     var modelitem: ModelItem? = nil
     var modelLocation: ModelLocation? = nil
+    
+    @Published var sendMessageSucceedded: Bool = false
     
     init(session: WCSession = .default) {
         
         self.session = session
         super.init()
         session.delegate = self
-        session.activate()
+        if session.activationState == .notActivated {
+            print("WatchConnector: activating session")
+            session.activate()
+        }
     }
     
     // user default. what to use when sending data to/from the watch
@@ -35,13 +50,17 @@ class WatchConnector: NSObject, WCSessionDelegate, ObservableObject {
     
     func sessionDidBecomeInactive(_ session: WCSession) {
         print("ios sessionDidBecomeInactive activationState: \(WCSessionActivationState.RawValue())" )
-        session.activate()
+        if session.activationState == .notActivated {
+            session.activate()
+        }
     }
     
     func sessionDidDeactivate(_ session: WCSession) {
         // Activate the new session after having switched to a new watch.
         print("ios sessionDidDeactivate activationState: \(WCSessionActivationState.RawValue())" )
-        session.activate()
+        if session.activationState == .notActivated {
+            session.activate()
+        }
     }
 
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
@@ -52,12 +71,16 @@ class WatchConnector: NSObject, WCSessionDelegate, ObservableObject {
         print("IOS - didReceiveUserInfo", userInfo)
         handleReceived(message: userInfo)
     }
+    // take the item off the watch's list
+    //  only if it is onList ... we do not want it to reappear
     func handleReceived(message: [String : Any]) {
         if let name = message["name"] as? String {
             if let index = modelitem?.items.firstIndex(where: {$0.name == name }) {
                 DispatchQueue.main.async {
                     let aRec: CKItemRec = CKItemRec(record: self.modelitem!.items[index].record)!
-                    self.modelitem!.setOnListStatus(item: aRec, onlist: false)
+                    if aRec.onList {
+                        self.modelitem!.setOnListStatus(item: aRec, onlist: false)
+                    }
                 }
             }
                 
@@ -68,6 +91,10 @@ class WatchConnector: NSObject, WCSessionDelegate, ObservableObject {
     // be send or not
     func sendItemToWatch(item: CKItemRec, initialize: Bool = false) {
         if initialize {
+            print("WCSession activated: \(WCSession.default.activationState == .activated)")
+            print("isPaired: \(WCSession.default.isPaired)")
+            print("isWatchAppInstalled: \(WCSession.default.isWatchAppInstalled)")
+            print("activationState: s/b 2 -- \(WCSession.default.activationState.rawValue)") // Should be 2 (activated)
             let aRec = CKItemRec(shopper: 1, listnumber: 1, locationnumber: 1, onList: true, quantity: 1, isAvailable: true, name: modelitem!.initializeWatch, dateLastPurchased: Date())!
             sendOneItemToWatch(item: aRec)
         }
@@ -78,22 +105,37 @@ class WatchConnector: NSObject, WCSessionDelegate, ObservableObject {
     }
     func sendOneItemToWatch(item: CKItemRec) {
         print("sendItemToWatch entry with \(item.name)")
-        if session.isReachable {
+        sendMessageSucceedded = true
+//        if session.isReachable {
             let data: [String: Any] = [
                 "name": item.name,
                 "locationnumber": item.locationnumber,
                 "locationname": modelLocation?.GetLocationNameByLocationnumber(locationnumber: item.locationnumber) ?? "unKnown",
                 "listnumber" :modelLocation?.GetvisitationOrderByLocationnumber(locationnumber: item.locationnumber) ?? 1
             ]
-            if usetransferUserInfo {
-                session.transferUserInfo(data)
-            } else {
-                session.sendMessage(data, replyHandler: nil) {error in
-                    print(error.localizedDescription)
-                }
+        session.sendMessage(data, replyHandler: { response in
+            // ✅ Message was received successfully on the Watch
+            DispatchQueue.main.async {
+                self.sendMessageSucceedded = true
+                print("✅ sendMessage succeeded")
             }
-        } else {
-            print("watch session is not reachable")
-        }
+        }, errorHandler: { error in
+            // ❌ Message failed
+            DispatchQueue.main.async {
+                self.sendMessageSucceedded = false
+                print("❌ sendMessage failed: \(error.localizedDescription)")
+
+                // 🔄 Use transferUserInfo as a backup
+                print("🔄 Trying transferUserInfo as a fallback")
+                self.session.transferUserInfo(data)
+            }
+        })
+//              this is supposed to wake up the app on the watch ... it does not
+//                print("trying transferUserInfo")
+//                self.session.transferUserInfo(data)
+                            }
+//        } else {
+//            print("watch session is not reachable")
+//        }
     }
-}
+

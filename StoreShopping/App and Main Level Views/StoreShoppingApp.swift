@@ -29,6 +29,7 @@ struct StoreShoppingApp: App {
     @StateObject var modelitem = ModelItem()
     @StateObject var modelitemsection = ModelItemSection()
     @StateObject var inStoreTimer = InStoreTimer()
+    @StateObject var watchConnector = WatchConnector()
 
     @Environment(\.scenePhase) var scenePhase
 	let resignActivePublisher =
@@ -61,6 +62,7 @@ struct StoreShoppingApp: App {
                     .environmentObject(modellocation)
                     .environmentObject(modelitem)
                     .environmentObject(modelitemsection)
+                    .environmentObject(watchConnector)
                 
             }
 

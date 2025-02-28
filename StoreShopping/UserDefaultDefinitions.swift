@@ -25,7 +25,7 @@ let kPurchasedMostRecentlyDefaultValue = 3
 let kDisableTimerWhenInBackgroundDefaultValue = false
 let kMasterShopListListnumberDefaultValue = 1
 let kMasterShopListNameDefaultValue = "Costco"
-let ktransferUserInfoDefaultValue = false
+let ktransferUserInfoDefaultValue = true
 
 
 

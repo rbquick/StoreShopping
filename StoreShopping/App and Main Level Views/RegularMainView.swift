@@ -12,7 +12,7 @@ import UIKit
 
 struct RegularMainView: View {
     @EnvironmentObject var mastervalues: MasterValues
-    @StateObject var watchConnector = WatchConnector()
+    @EnvironmentObject var watchConnector: WatchConnector
     @State private var selection: NavigationItem? = .shoppingList
 	
 	var sidebarView: some View {

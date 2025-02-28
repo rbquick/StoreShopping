@@ -236,8 +236,11 @@ class ModelItem: ObservableObject {
 #if !os(iOS)
         thisOS = "WatchOS"
     guard let index = items.firstIndex(where: { $0.name == item.name } ) else { return }
+        print("setOnListTatus before: \(items[index].name) onlist: \(items[index].onList)")
     let changerec = CKItemRec(shopper: item.shopper, listnumber: item.listnumber, locationnumber: item.locationnumber, onList: onlist, quantity: item.quantity, isAvailable: item.isAvailable, name: item.name, dateLastPurchased: item.dateLastPurchased)!
         items[index] = changerec
+        print("changerec      after: \(changerec.name) onlist: \(changerec.onList)")
+        print("setOnListTatus after: \(items[index].name) onlist: \(items[index].onList)")
 #endif
 
 #if os(iOS)

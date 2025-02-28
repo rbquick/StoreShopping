@@ -10,7 +10,7 @@ struct CompactMainView: View {
 
     @EnvironmentObject var mastervalues: MasterValues
     @EnvironmentObject var modelitem: ModelItem
-    @StateObject var watchConnector = WatchConnector()
+    @EnvironmentObject var watchConnector: WatchConnector
     // what screen do you want to show 1st
     @State private var selection: NavigationItem = .shoppingList
     @State private var navPath = NavigationPath()
@@ -53,15 +53,15 @@ struct CompactMainView: View {
                 .tabItem { Label("Locations", systemImage: "map") }
                 .tag(NavigationItem.locationList)
             if UIDevice.isIPhone {
-                if mastervalues.isWatchAvailable {
+//                if mastervalues.isWatchAvailable {
                     Rectangle()
                         .tabItem { Label("Watch", systemImage: "applewatch.and.arrow.forward") }
                         .tag(NavigationItem.watch)
-                } else {
-                    Rectangle()
-                        .tabItem { Label("Preferences", systemImage: "gear") }
-                        .tag(NavigationItem.preferences)
-                }
+//                } else {
+//                    Rectangle()
+//                        .tabItem { Label("Preferences", systemImage: "gear") }
+//                        .tag(NavigationItem.preferences)
+//                }
             }
             
         } // end of TabView

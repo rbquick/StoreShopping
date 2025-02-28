@@ -22,6 +22,7 @@ struct PurchasedItemsView: View {
     @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var modelitemsection: ModelItemSection
     @EnvironmentObject var mastervalues: MasterValues
+    @EnvironmentObject var watchConnector: WatchConnector
 		// the value of Calendar.current is in the environment
 	@Environment(\.calendar) private var calendar
 	

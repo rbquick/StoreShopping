@@ -10,7 +10,7 @@ import CloudKit
 
 struct WatchConnectorView: View {
     @EnvironmentObject var mastervalues: MasterValues
-    @StateObject var watchConnector = WatchConnector()
+    @EnvironmentObject var watchConnector: WatchConnector
     @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var modelLocation: ModelLocation
     
@@ -21,28 +21,33 @@ struct WatchConnectorView: View {
     var body: some View {
         VStack {
             Text("Watch activated is: \(mastervalues.isWatchAvailable)")
-            Button {
+//            Button {
 //                activateWatch()
-            } label: {
-                Text("activate Watch")
-            }
+//            } label: {
+//                Text("activate Watch")
+//            }
             Button {
                 activateWatch()
                 itemsSent = 0
-                if mastervalues.isWatchAvailable {
+//                if watchConnector.session.isReachable{
                     for i in 0...modelitem.items.count - 1 {
                         if modelitem.items[i].onList {
                             itemsSent += 1
                         }
                         watchConnector.sendItemToWatch(item: modelitem.items[i], initialize: i == 0 ? true : false)
                     }
-                }
+//                }
             } label: {
-                Text("Send message")
+                Text("Send list to watch")
             }
-            Text("Using \(usetransferUserInfo ? "transferUserInfo"  :  "sendMessage") for transfer")
-            Text("Items sent: \(itemsSent)")
-            Text("All items have been sent to the watch.  Leave this open to get updated as the watch clears things as finished").font(.headline)
+            if watchConnector.session.isReachable || itemsSent != 0 {
+                Text("Using \(usetransferUserInfo ? "transferUserInfo"  :  "sendMessage") for transfer")
+                Text("Items sent: \(itemsSent)")
+                Text("All items have been sent to the watch.  Leave this open to get updated as the watch clears things as finished").font(.headline)
+            } else {
+                Text("Activate the watch shopping list application first then click the Send list ")
+                    .background(.red)
+            }
             List {
                 ForEach(modelitem.items.indices, id: \.self) { index in
                     if modelitem.items[index].onList {
@@ -72,23 +77,15 @@ struct WatchConnectorView: View {
         }
         .onAppear() {
             activateWatch()
-            itemsSent = 0
-            if mastervalues.isWatchAvailable {
-                for i in 0...modelitem.items.count - 1 {
-                    if modelitem.items[i].onList {
-                        itemsSent += 1
-                    }
-                    watchConnector.sendItemToWatch(item: modelitem.items[i], initialize: i == 0 ? true : false)
-                }
-            }
         }
         .padding()
     }
     func activateWatch() {
+        watchConnector.modelitem = modelitem
+        watchConnector.modelLocation = modelLocation
         if watchConnector.session.isReachable {
             mastervalues.isWatchAvailable = true
-            watchConnector.modelitem = modelitem
-            watchConnector.modelLocation = modelLocation
+
         } else {
             mastervalues.isWatchAvailable = false
         }

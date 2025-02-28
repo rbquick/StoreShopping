@@ -12,6 +12,7 @@ struct LocationsView: View {
 
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var mastervalues: MasterValues
+    @EnvironmentObject var watchConnector: WatchConnector
     @Environment(\.editMode) private var editMode
 
 		// MARK: - @State and @StateObject Properties

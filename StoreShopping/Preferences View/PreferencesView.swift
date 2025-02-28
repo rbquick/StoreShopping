@@ -50,6 +50,7 @@ struct PreferencesView: View {
     @EnvironmentObject var modelshoplist: ModelShopList
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
+    @EnvironmentObject var watchConnector: WatchConnector
 
     var body: some View {
         Form {

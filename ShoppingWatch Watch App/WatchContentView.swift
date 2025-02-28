@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct WatchContentView: View {
-    @StateObject var watchToiOSConnector = WatchToiOSConnector()
+    @EnvironmentObject var watchToiOSConnector: WatchToiOSConnector
     @EnvironmentObject var modelItem: ModelItem
     @EnvironmentObject var modelLocation: ModelLocation
+    
     
     @State var isLoading = false
 
@@ -21,7 +22,7 @@ struct WatchContentView: View {
                         
                         Button(action: restoreItems) {
                             Image(systemName: "restart.circle")
-                                .foregroundColor(.green)
+                                .foregroundColor(watchToiOSConnector.onlistColorSelector ? .green : .red)
                         }
                         .buttonStyle(BorderlessButtonStyle())
                         Text("Items: \(modelItem.onListItemCount)")
@@ -33,14 +34,14 @@ struct WatchContentView: View {
                                         HStack {
                                 Spacer()
                                 Text(" \(modelLocation.GetLocationNameByListNumber(listnumber: location))")
-                                    .foregroundColor(.green)
+                                    .foregroundColor(watchToiOSConnector.onlistColorSelector ? .green : .red)
                                 Spacer()
                             }
                             ) {
                                 ForEach(modelItem.groupedItems[location]!.sorted(by: { $0.name < $1.name }), id: \.self) { item in
-                                    ItemRow(item: item, deleteAction: {
+                                    ItemRow(item: item,  deleteAction: {
                                         deleteItem(item: item)
-                                    })
+                                    }, onlistColorSelector: watchToiOSConnector.onlistColorSelector)
                                 }
                             }
                         }
@@ -58,13 +59,13 @@ struct WatchContentView: View {
 //                    }
                 }
                 
-                if modelItem.items.count == 0 {
-                    Color.primary.opacity(0.7)
-                    
-                    ProgressView()
-                        .progressViewStyle(.automatic)
-                        .scaleEffect(3)
-                }
+//                if modelItem.items.count == 0 {
+//                    Color.primary.opacity(0.7)
+//                    
+//                    ProgressView()
+//                        .progressViewStyle(.automatic)
+//                        .scaleEffect(3)
+//                }
             }
             .ignoresSafeArea()
         }
@@ -79,6 +80,7 @@ struct WatchContentView: View {
 
     }
     func restoreItems() {
+        watchToiOSConnector.onlistColorSelector.toggle()
         for i in 0..<modelItem.items.count {
             modelItem.setOnListStatus(item: modelItem.items[i], onlist: true )
         }
@@ -100,7 +102,7 @@ struct WatchContentView: View {
 struct ItemRow: View {
     let item: CKItemRec
     let deleteAction: () -> Void
-    
+    var onlistColorSelector: Bool
     var body: some View {
         
         HStack {
@@ -108,7 +110,7 @@ struct ItemRow: View {
             Spacer()
             Button(action: deleteAction) {
                 Image(systemName: "cart")
-                    .foregroundColor(.green)
+                    .foregroundColor(onlistColorSelector ? .green : .red)
             }
             .buttonStyle(BorderlessButtonStyle())
         }

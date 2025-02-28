@@ -14,6 +14,7 @@ import SwiftUI
 struct TimerView: View {
 	
 	@EnvironmentObject var instoreTimer: InStoreTimer
+    @EnvironmentObject var watchConnector: WatchConnector
 
 	var body: some View {
 			VStack {

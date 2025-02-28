@@ -15,6 +15,7 @@ struct ShoppingListView: View {
     @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
     @EnvironmentObject var modelitemsection: ModelItemSection
+    @EnvironmentObject var watchConnector: WatchConnector
 		// MARK: - @State and @AppStorage Properties
 	
 		// trigger to confirm moving all items off the shopping list
@@ -80,6 +81,7 @@ struct ShoppingListView: View {
 	
 	private func trailingButtons() -> some View {
 		HStack(spacing: 12) {
+           
 			ShareLink("", item: shareContent())
                 .disabled(modelitem.items.count == 0)
 			
@@ -121,7 +123,7 @@ struct ShoppingListView: View {
         print("ShoppingListViel.onappear modelitem.items.count is \(modelitem.items.count)")
         myshoplist = MyDefaults().myMasterShopperName
         modelitemsection.currentSection = "List"
-//        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
+        modelitemsection.setItemSection(locations: modellocation.locations, items: modelitem.items)
     }
 	
 	

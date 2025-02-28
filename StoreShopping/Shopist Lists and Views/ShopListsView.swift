@@ -14,6 +14,7 @@ struct ShopListsView: View {
     @EnvironmentObject var modellocation: ModelLocation
     @EnvironmentObject var modelitem: ModelItem
     @EnvironmentObject var mastervalues: MasterValues
+    @EnvironmentObject var watchConnector: WatchConnector
 
     // MARK: - @State and @StateObject Properties
 

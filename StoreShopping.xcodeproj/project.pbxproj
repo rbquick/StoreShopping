@@ -138,6 +138,7 @@
 		714E3B982B21005C00DFC4CB /* csvHeading.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = csvHeading.swift; sourceTree = "<group>"; };
 		71627F452AD61C8D00E3EF8B /* ModifyExistingItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModifyExistingItemView.swift; sourceTree = "<group>"; };
 		71627F472AD61CF400E3EF8B /* DraftItemForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraftItemForm.swift; sourceTree = "<group>"; };
+		71674E6B2D6FC2CF00277F83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		716BF52B2AC6D643009197F6 /* StoreShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StoreShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		716BF5322AC6D645009197F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		716BF5352AC6D645009197F6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -332,6 +333,7 @@
 		716BF52D2AC6D643009197F6 /* StoreShopping */ = {
 			isa = PBXGroup;
 			children = (
+				71674E6B2D6FC2CF00277F83 /* Info.plist */,
 				71B3FD5D2C441A7C00A8FB50 /* WatchInterfacing */,
 				710CC7982B1394E400DF08EF /* Core */,
 				71B2CED32AD2B4FF006B52E3 /* Item Lists and Views */,
@@ -785,6 +787,7 @@
 				DEVELOPMENT_TEAM = 37U896T65Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoreShopping/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -794,7 +797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -819,6 +822,7 @@
 				DEVELOPMENT_TEAM = 37U896T65Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StoreShopping/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -828,7 +832,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.2;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.codewithbrian.StoreShopping;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
